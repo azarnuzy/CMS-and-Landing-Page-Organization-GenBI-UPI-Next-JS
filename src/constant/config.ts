@@ -1,7 +1,6 @@
 export const siteConfig = {
-  title: 'Next.js + Tailwind CSS + TypeScript Starter',
+  title: 'GenBI UPI',
   description:
-    'A starter for Next.js, Tailwind CSS, and TypeScript with Absolute Import, Seo, Link component, pre-configured with Husky',
-  /** Without additional '/' on the end, e.g. https://theodorusclarence.com */
-  url: 'https://tsnext-tw.thcl.dev',
+    'GenBI (Generasi Baru Indonesia) UPI merupakan komunitas penerima beasiswa Bank Indonesia di Universitas Pendidikan Indonesia',
+  url: 'https://genbiupi.vercel.app',
 };
