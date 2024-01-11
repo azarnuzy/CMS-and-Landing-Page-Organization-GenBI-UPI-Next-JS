@@ -7,7 +7,7 @@ import NextImage from '@/components/NextImage';
 const HeaderSection = () => {
   return (
     <div
-      className='h-[60vh] md:h-[65vh] lg:h-[70vh] w-full relative'
+      className='min-h-[60vh] md:min-h-[65vh] lg:min-h-[70vh] w-full relative'
       style={{
         background:
           'linear-gradient(101deg, #041C3F 3.31%, #11418B 39.48%, #11418B 98.43%)',
@@ -34,7 +34,7 @@ const HeaderSection = () => {
       />
       <div className='h-full relative z-[2]'>
         <BaseLayout>
-          <div className='h-[60vh] md:h-[65vh] lg:h-[70vh] grid items-center grid-cols-3'>
+          <div className='min-h-[60vh] md:min-h-[65vh] lg:min-h-[70vh] grid items-center grid-cols-3'>
             <div className='col-span-3 md:col-span-2 flex flex-col gap-3'>
               <h1 className='text-neutral-100 h0'>
                 Membentuk <i>Generasi Baru</i>
@@ -59,7 +59,7 @@ const HeaderSection = () => {
                   <h2 className='text-neutral-100'>Energi Untuk Negeri</h2>
                 </div>
               </div>
-              <p className='text-lg font-medium text-neutral-100 w-[490px]'>
+              <p className='text-lg font-medium text-neutral-100 lg:w-[490px]'>
                 Kami <strong>GenBI UPI</strong> hadir untuk mewujudkan perubahan
                 nyata. Temukan kisah, prestasi, dan komitmen kami di sini.
               </p>
