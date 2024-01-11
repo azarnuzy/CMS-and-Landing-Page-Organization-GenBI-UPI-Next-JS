@@ -2,6 +2,8 @@
 
 import * as React from 'react';
 
+import HeaderSection from '@/modules/landing-page/header-section';
+
 /**
  * SVGR Support
  * Caveat: No React Props Type.
@@ -15,5 +17,9 @@ import * as React from 'react';
 // to customize the default configuration.
 
 export default function HomePage() {
-  return <main className='h-60 bg-primary-5 w-full'>hey</main>;
+  return (
+    <main className='min-h-60 w-full'>
+      <HeaderSection />
+    </main>
+  );
 }
