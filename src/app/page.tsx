@@ -19,7 +19,7 @@ import HeaderSection from '@/modules/landing-page/header-section';
 
 export default function HomePage() {
   return (
-    <main className='min-h-60 w-full'>
+    <main className='min-h-60 w-full overflow-hidden'>
       <HeaderSection />
       <AboutSection />
     </main>
