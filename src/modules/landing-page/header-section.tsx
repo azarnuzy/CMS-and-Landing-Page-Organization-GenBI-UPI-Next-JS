@@ -1,3 +1,4 @@
+import { ArrowDown } from 'lucide-react';
 import Image from 'next/image';
 import React, { Fragment, useState } from 'react';
 // import required modules
@@ -11,6 +12,7 @@ import 'swiper/css/effect-fade';
 // Import Swiper styles
 import './index.css';
 
+import Button from '@/components/buttons/Button';
 import BaseLayout from '@/components/layouts/base';
 
 interface Swiper {
@@ -119,9 +121,9 @@ const HeaderSection = () => {
               </p>
             </div>
 
-            <div className='col-span-3 lg:col-span-1 relative h-full flex justify-center lg:justify-normal'>
+            <div className='col-span-3 lg:col-span-1 relative h-full flex justify-end lg:justify-normal'>
               <div
-                className='max-w-[500px] lg:max-w-[700px] w-full bg-neutral-100 px-4 py-6 rounded-3xl flex flex-col gap-[14px] text-neutral-main relative lg:absolute -bottom-10 pb-10 right-0'
+                className='max-w-[500px] lg:max-w-[700px] w-full bg-neutral-100 px-4 py-6 rounded-3xl flex flex-col gap-[14px] text-neutral-main relative lg:absolute -bottom-10 pb-10 right-0 '
                 style={{
                   boxShadow: ' 0px 4px 4px 0px rgba(78, 77, 77, 0.18)',
                 }}
@@ -170,6 +172,12 @@ const HeaderSection = () => {
                     totalSlides={swiper.slides.length}
                   />
                 )}
+                <Button className='hidden sm:absolute sm:-left-[220px] bg-warning-main sm:flex gap-3 items-center rounded-r-none bottom-20 hover:bg-warning-600'>
+                  <ArrowDown className='text-white' />
+                  <span className='text-neutral-50 font-bold text-lg'>
+                    Perjalanan Kami
+                  </span>
+                </Button>
               </div>
             </div>
           </div>
