@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import React from 'react';
 import { IoMenu } from 'react-icons/io5';
 
@@ -36,13 +37,13 @@ const Navbar = () => {
         <BaseLayout>
           <div className='flex justify-between items-center'>
             <div className='flex items-center gap-4'>
-              <NextImage
+              <Image
                 alt='Logo BI'
                 src='/images/logo-bi.png'
                 width={36}
                 height={36}
               />
-              <NextImage
+              <Image
                 alt='Logo GenBI'
                 src='/images/logo-genbi.png'
                 width={38}

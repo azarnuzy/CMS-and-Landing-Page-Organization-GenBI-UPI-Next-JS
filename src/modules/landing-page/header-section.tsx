@@ -1,10 +1,64 @@
 import Image from 'next/image';
-import React from 'react';
+import React, { Fragment, useState } from 'react';
+// import required modules
+import { Autoplay, EffectFade, Pagination } from 'swiper/modules';
+// Import Swiper React components
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
+import 'swiper/css/pagination';
+import 'swiper/css/effect-fade';
+
+// Import Swiper styles
+import './index.css';
 
 import BaseLayout from '@/components/layouts/base';
-import NextImage from '@/components/NextImage';
+
+interface Swiper {
+  activeIndex: number;
+  slides: { length: number };
+}
+
+const CustomPagination = ({
+  currentIndex,
+  totalSlides,
+}: {
+  currentIndex: number;
+  totalSlides: number;
+}) => {
+  const progressPercentage = ((currentIndex + 1) / totalSlides) * 100;
+
+  return (
+    <div className='w-full bg-primary-200 rounded-xl h-2'>
+      <div
+        className='h-2 rounded-xl bg-primary-main transform transition-all duration-300 ease-in-out'
+        style={{ width: `${progressPercentage}%` }}
+      ></div>
+      <div className='w-full flex justify-between'>
+        <span className='text-xl font-semibold'>01</span>
+        <span className='text-xl font-semibold'>04</span>
+      </div>
+    </div>
+  );
+};
 
 const HeaderSection = () => {
+  const [swiper, setSwiper] = useState<Swiper | null>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  const pagination = {
+    el: '.custom-pagination',
+    clickable: true,
+    renderBullet: function (index: number, className: string) {
+      return `<span class="${className}">${index + 1}</span>`;
+    },
+  };
+
+  const handleSlideChange = () => {
+    if (swiper) {
+      setActiveIndex(swiper.activeIndex);
+    }
+  };
+
   return (
     <div
       className='min-h-[60vh] md:min-h-[65vh] lg:min-h-[70vh] w-full relative'
@@ -19,10 +73,10 @@ const HeaderSection = () => {
         alt='ellipse bg'
         width={0}
         height={0}
-        sizes='40vw z-0'
+        sizes='40vw'
       />
       <Image
-        className='absolute w-full h-[60vh] md:h-[65vh] lg:h-[70vh] -left-[38vw] z-0'
+        className='absolute w-full h-[60vh] md:h-[65vh] lg:h-[70vh] -left-[38vw]'
         src='/images/line-pattern-head.svg'
         alt='ellipse bg'
         width={0}
@@ -41,13 +95,13 @@ const HeaderSection = () => {
               </h1>
               <div className='flex gap-4 items-center'>
                 <div className='flex flex-col gap-2.5 items-center bg-neutral-100 rounded-full p-[14px]'>
-                  <NextImage
+                  <Image
                     alt='Logo BI'
                     src='/images/logo-bi-color.png'
                     width={36}
                     height={36}
                   />
-                  <NextImage
+                  <Image
                     alt='Logo GenBI'
                     src='/images/logo-genbi-color.png'
                     width={38}
@@ -65,7 +119,59 @@ const HeaderSection = () => {
               </p>
             </div>
 
-            <div className='col-span-3 md:col-span-1'></div>
+            <div className='col-span-3 md:col-span-1 relative h-full'>
+              <div
+                className='w-full bg-neutral-100 px-4 py-6 rounded-3xl flex flex-col gap-[14px] text-neutral-main absolute -bottom-10 pb-10 right-0'
+                style={{
+                  boxShadow: ' 0px 4px 4px 0px rgba(78, 77, 77, 0.18)',
+                }}
+              >
+                <div className='flex justify-between'>
+                  <div className='flex flex-col gap-1'>
+                    <p>
+                      <i>Generasi Baru Indonesia</i>
+                    </p>
+                    <h3>GenBI UPI 23.24</h3>
+                  </div>
+                  <div className='w-7 h-7 bg-error-main rounded-full'></div>
+                </div>
+                <div className='w-full h-[300px]'>
+                  <Swiper
+                    onSwiper={setSwiper}
+                    onSlideChange={handleSlideChange}
+                    pagination={pagination}
+                    autoplay={{
+                      delay: 2500,
+                      disableOnInteraction: false,
+                    }}
+                    effect='fade'
+                    modules={[Pagination, Autoplay, EffectFade]}
+                    className='mySwiper w-full h-full'
+                  >
+                    {Array.from({ length: 4 }, (_, i) => (
+                      <Fragment key={i + 1}>
+                        <SwiperSlide>
+                          <Image
+                            src={`/images/hero-${i + 1}.webp`}
+                            width={0}
+                            height={0}
+                            sizes='50vw'
+                            className='w-full h-full object-cover rounded-3xl'
+                            alt='hero-1'
+                          />
+                        </SwiperSlide>
+                      </Fragment>
+                    ))}
+                  </Swiper>
+                </div>
+                {swiper && (
+                  <CustomPagination
+                    currentIndex={activeIndex}
+                    totalSlides={swiper.slides.length}
+                  />
+                )}
+              </div>
+            </div>
           </div>
         </BaseLayout>
       </div>
