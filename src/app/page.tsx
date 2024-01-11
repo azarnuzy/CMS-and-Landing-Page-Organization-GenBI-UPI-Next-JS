@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 
+import AboutSection from '@/modules/landing-page/about-section';
 import HeaderSection from '@/modules/landing-page/header-section';
 
 /**
@@ -20,6 +21,7 @@ export default function HomePage() {
   return (
     <main className='min-h-60 w-full'>
       <HeaderSection />
+      <AboutSection />
     </main>
   );
 }

@@ -172,7 +172,7 @@ const HeaderSection = () => {
                     totalSlides={swiper.slides.length}
                   />
                 )}
-                <Button className='hidden sm:absolute sm:-left-[220px] bg-warning-main sm:flex gap-3 items-center rounded-r-none bottom-20 hover:bg-warning-600'>
+                <Button className='hidden sm:absolute sm:-left-[220px] bg-warning-main sm:flex gap-3 items-center rounded-r-none bottom-20 hover:bg-warning-600 z-0'>
                   <ArrowDown className='text-white' />
                   <span className='text-neutral-50 font-bold text-lg'>
                     Perjalanan Kami
