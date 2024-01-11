@@ -1,9 +1,9 @@
-import type { Config } from 'tailwindcss';
+/** @type {import('tailwindcss').Config} */
 import defaultTheme from 'tailwindcss/defaultTheme';
-
-export default {
+module.exports = {
   darkMode: ['class'],
   content: ['./src/**/*.{js,jsx,ts,tsx}'],
+  prefix: '',
   theme: {
     container: {
       center: true,
@@ -143,4 +143,4 @@ export default {
     },
   },
   plugins: [require('tailwindcss-animate')],
-} satisfies Config;
+};
