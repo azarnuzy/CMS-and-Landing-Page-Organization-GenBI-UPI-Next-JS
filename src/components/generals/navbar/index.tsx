@@ -21,18 +21,18 @@ const Navbar = () => {
   return (
     <>
       <div
-        className='h-[63px] w-full relative -z-10'
+        className='h-[63px] w-full relative -z-10 bg-primary-600'
         style={{
           background:
             'linear-gradient(101deg, #041C3F 3.31%, #11418B 39.48%, #11418B 98.43%)',
         }}
       ></div>
       <nav
-        className='w-full fixed top-0 left-0 z-50 h-16 flex justify-center items-center backdrop-blur-xl'
-        style={{
-          background: 'rgba(255, 255, 255, 0.15)',
-          // backdropFilter: 'blur(25px)',
-        }}
+        className='w-full fixed top-0 left-0 z-50 h-16 flex justify-center items-center bg-primary-main'
+        // style={{
+        //   background: 'rgba(255, 255, 255, 0.15)',
+        //   // backdropFilter: 'blur(25px)',
+        // }}
       >
         <BaseLayout>
           <div className='flex justify-between items-center'>
@@ -103,7 +103,7 @@ const Navbar = () => {
                 Galeri
               </span>
             </div>
-            <Button variant='primary' size='base' className='hidden sm:block'>
+            <Button variant='light' size='base' className='hidden sm:block'>
               Masuk
             </Button>
             {/* Menu Mobile Button */}
