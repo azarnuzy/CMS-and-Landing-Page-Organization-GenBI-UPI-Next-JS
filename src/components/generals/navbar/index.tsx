@@ -63,7 +63,7 @@ const Navbar = () => {
                   <NavigationMenuItem>
                     <NavigationMenuTrigger>Tentang Kami</NavigationMenuTrigger>
                     <NavigationMenuContent>
-                      <div className='grid w-[350px] sm:w-[400px]  p-4 md:w-[450px]'>
+                      <div className='grid w-[350px] sm:w-[380px]  p-4 md:w-[400px]'>
                         <div className='rounded-2xl hover:bg-blue-100 transition-colors duration-300 ease-in-out p-4 flex gap-4 items-start'>
                           <span className='text-neutral-main text-lg font-semibold'>
                             01

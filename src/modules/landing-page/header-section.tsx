@@ -61,14 +61,14 @@ const HeaderSection = () => {
 
   return (
     <div
-      className='min-h-[60vh] md:min-h-[65vh] lg:min-h-[70vh] w-full relative'
+      className='pt-20 lg:pt-0 min-h-[60vh] md:min-h-[65vh] lg:min-h-[70vh] w-full relative'
       style={{
         background:
           'linear-gradient(101deg, #041C3F 3.31%, #11418B 39.48%, #11418B 98.43%)',
       }}
     >
       <Image
-        className='absolute w-full h-[50vh] md:h-[55vh] lg:h-[60vh] -right-96 -top-10'
+        className='absolute w-full h-[50vh] md:h-[55vh] lg:h-[60vh]  -right-64 lg:-right-96 -top-10'
         src='/images/Ellipse.svg'
         alt='ellipse bg'
         width={0}
@@ -76,7 +76,7 @@ const HeaderSection = () => {
         sizes='40vw'
       />
       <Image
-        className='absolute w-full h-[60vh] md:h-[65vh] lg:h-[70vh] -left-[38vw]'
+        className='absolute w-full h-[60vh] md:h-[65vh] lg:h-[70vh] -left-[20vw] lg:-left-[38vw]'
         src='/images/line-pattern-head.svg'
         alt='ellipse bg'
         width={0}
@@ -89,7 +89,7 @@ const HeaderSection = () => {
       <div className='h-full relative z-[2]'>
         <BaseLayout>
           <div className='min-h-[60vh] md:min-h-[65vh] lg:min-h-[70vh] grid items-center grid-cols-3'>
-            <div className='col-span-3 md:col-span-2 flex flex-col gap-3'>
+            <div className='col-span-3 lg:col-span-2 flex flex-col gap-3 lg:justify-start justify-center'>
               <h1 className='text-neutral-100 h0'>
                 Membentuk <i>Generasi Baru</i>
               </h1>
@@ -119,9 +119,9 @@ const HeaderSection = () => {
               </p>
             </div>
 
-            <div className='col-span-3 md:col-span-1 relative h-full'>
+            <div className='col-span-3 lg:col-span-1 relative h-full flex justify-center lg:justify-normal'>
               <div
-                className='w-full bg-neutral-100 px-4 py-6 rounded-3xl flex flex-col gap-[14px] text-neutral-main absolute -bottom-10 pb-10 right-0'
+                className='max-w-[500px] lg:max-w-[700px] w-full bg-neutral-100 px-4 py-6 rounded-3xl flex flex-col gap-[14px] text-neutral-main relative lg:absolute -bottom-10 pb-10 right-0'
                 style={{
                   boxShadow: ' 0px 4px 4px 0px rgba(78, 77, 77, 0.18)',
                 }}
