@@ -3,6 +3,7 @@
 import * as React from 'react';
 
 import AboutSection from '@/modules/landing-page/about-section';
+import FAQSection from '@/modules/landing-page/faq-section';
 import HeaderSection from '@/modules/landing-page/header-section';
 import NewsSection from '@/modules/landing-page/news-section';
 
@@ -24,6 +25,7 @@ export default function HomePage() {
       <HeaderSection />
       <AboutSection />
       <NewsSection />
+      <FAQSection />
     </main>
   );
 }
