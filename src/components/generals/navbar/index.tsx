@@ -6,7 +6,6 @@ import { IoMenu } from 'react-icons/io5';
 
 import Button from '@/components/buttons/Button';
 import BaseLayout from '@/components/layouts/base';
-import NextImage from '@/components/NextImage';
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -135,13 +134,13 @@ const NavbarMobileMenu = ({
       <>
         <div className='flex justify-between items-center'>
           <div className='flex items-center gap-4'>
-            <NextImage
+            <Image
               alt='Logo BI'
               src='/images/logo-bi.png'
               width={36}
               height={36}
             />
-            <NextImage
+            <Image
               alt='Logo GenBI'
               src='/images/logo-genbi.png'
               width={38}

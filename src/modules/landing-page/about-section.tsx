@@ -1,12 +1,43 @@
 import Image from 'next/image';
 import React from 'react';
+import { BsTrophy } from 'react-icons/bs';
+import { GrAnnounce } from 'react-icons/gr';
+import { HiMiniUsers } from 'react-icons/hi2';
 import { IoArrowForwardOutline } from 'react-icons/io5';
 
 import BaseLayout from '@/components/layouts/base';
 
+import Zap from '~/images/zap-fast.svg';
+
+const misiData = [
+  {
+    icon: <Zap className='2-6 h-6 text-neutral-100' />,
+    description:
+      'Menciptakan lingkungan GenBI yang supportif terhadap gagasan baru.',
+    color: 'bg-warning-main',
+  },
+  {
+    icon: <BsTrophy className='w-6 h-6 text-neutral-100' />,
+    description: 'Mempererat hubungan antar anggota.',
+    color: 'bg-error-main',
+  },
+  {
+    icon: <HiMiniUsers className='w-6 h-6 text-neutral-100' />,
+    description:
+      'Bergerak adaptif dan optimal dalam memanfaatkan potensi perkembangan zaman.',
+    color: 'bg-primary-main',
+  },
+  {
+    icon: <GrAnnounce className='w-6 h-6 text-neutral-100' />,
+    description:
+      'Siap dan selaras menyuarakan kebijakan Bank Indonesia kepada masyarakat.',
+    color: 'bg-blue-300',
+  },
+];
+
 const AboutSection = () => {
   return (
-    <div className='min-h-screen w-full pt-40'>
+    <div className='min-h-screen w-full pt-40 relative'>
       <div className='h-full relative'>
         <Image
           src='/images/line-pattern-about.svg'
@@ -19,7 +50,7 @@ const AboutSection = () => {
       </div>
       <BaseLayout>
         <>
-          <div className='flex flex-col gap-12'>
+          <div className='flex flex-col gap-12 mb-28'>
             <div className='flex flex-col gap-6'>
               <h1>
                 Kenali Lebih Dekat Tentang{' '}
@@ -75,8 +106,52 @@ const AboutSection = () => {
               </div>
             </div>
           </div>
+          <div className='flex flex-col gap-4'>
+            <h1 className='text-center text-neutral-main'>
+              Visi & Misi <span className='text-primary-main'>GenBI UPI</span>{' '}
+            </h1>
+            <div className='rounded-3xl p-6 flex gap-4 items-center bg-neutral-100 text-neutral-600'>
+              <Image
+                src='/images/icon-visi.png'
+                width={56}
+                height={56}
+                sizes='50vw'
+                alt='icon visi'
+              />
+              <div className='flex flex-col gap-2'>
+                <h2>Visi</h2>
+                <p>
+                  GenBI sebagai wadah eksplorasi diri serta menjadi mediator BI
+                  untuk menyebarkan kebermanfaatan kepada masyarakat.
+                </p>
+              </div>
+            </div>
+            <div className='rounded-t-3xl p-6 flex flex-col gap-4 items-center bg-neutral-100 text-neutral-600'>
+              <div className='flex flex-col gap-4 w-full'>
+                {misiData.map((item, index) => (
+                  <div
+                    className='rounded-2xl bg-neutral-100 border border-neutral-300 p-4 flex gap-4 items-center w-full'
+                    key={index}
+                  >
+                    <div className={`p-1.5 ${item.color} rounded-md`}>
+                      {item.icon}
+                    </div>
+                    <p className='text-neutral-600'>{item.description}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
         </>
       </BaseLayout>
+      <Image
+        src='/images/about-section-bg.webp'
+        alt='about section bg'
+        width={0}
+        height={0}
+        sizes='50vw'
+        className='w-full h-1/2 absolute bottom-0 left-0 -z-10 object-cover object-top'
+      />
     </div>
   );
 };
