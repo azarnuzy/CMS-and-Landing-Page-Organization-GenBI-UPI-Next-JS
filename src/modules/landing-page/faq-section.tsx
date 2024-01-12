@@ -88,6 +88,7 @@ const FaqSection = () => {
               </AccordionItem>
             </Accordion>
           </div>
+          <div className='p-6 rounded-2xl shadow-md bg-white'></div>
         </div>
       </BaseLayout>
     </div>
