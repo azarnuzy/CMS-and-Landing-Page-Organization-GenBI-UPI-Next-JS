@@ -4,6 +4,7 @@ import * as React from 'react';
 
 import AboutSection from '@/modules/landing-page/about-section';
 import HeaderSection from '@/modules/landing-page/header-section';
+import NewsSection from '@/modules/landing-page/news-section';
 
 /**
  * SVGR Support
@@ -22,6 +23,7 @@ export default function HomePage() {
     <main className='min-h-60 w-full overflow-hidden'>
       <HeaderSection />
       <AboutSection />
+      <NewsSection />
     </main>
   );
 }
