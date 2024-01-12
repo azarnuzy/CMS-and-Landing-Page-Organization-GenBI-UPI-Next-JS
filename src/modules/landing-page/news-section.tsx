@@ -95,7 +95,7 @@ export const ArticleCard = ({
         width={0}
         height={0}
         sizes='40vw'
-        className='w-full  h-[265px] lg:h-[300px] object-cover rounded-3xl group-hover:h-[245px]  lg:group-hover:h-[260px] group-hover:pb-[20px] group-hover:rounded-b-none transition-all duration-500 ease-in-out '
+        className='w-full  h-[265px] lg:h-[300px] object-cover rounded-3xl  group-hover:pb-[40px]  transition-all duration-500 ease-in-out '
       />
       <Image
         src='/images/ellipse-article.svg'
@@ -108,22 +108,22 @@ export const ArticleCard = ({
         {tags.map((tag, i) => (
           <div
             key={i}
-            className='px-4 py-2 text-warning-500 bg-warning-100 rounded-3xl border border-warning-300 group-hover:-translate-y-[20px] transition-all duration-500 ease-in-out transform'
+            className='px-4 py-2 text-warning-500 bg-warning-100 rounded-3xl border border-warning-300 group-hover:-translate-y-[40px] transition-all duration-500 ease-in-out transform'
           >
             {tag}
           </div>
         ))}
       </div>
-      <h4 className=' group-hover:-translate-y-[20px] transition-all duration-500 ease-in-out transform'>
+      <h4 className=' group-hover:-translate-y-[40px] transition-all duration-500 ease-in-out transform'>
         {title}
       </h4>
-      <p className=' group-hover:-translate-y-[20px] transition-all duration-500 ease-in-out transform'>
+      <p className=' group-hover:-translate-y-[40px] transition-all duration-500 ease-in-out transform '>
         {/* max length description 50 character */}
         {descriptionTrimmed}
       </p>
       <Link
         href='/'
-        className='translate-y-[calc(100%+20px)] group-hover:translate-y-[calc(100%-40px)] transition-all duration-500 ease-in-out transform  flex gap-2 text-primary-main font-bold items-center justify-end'
+        className='translate-y-[calc(100%+40px)] group-hover:translate-y-[calc(100%-40px)] transition-all duration-500 ease-in-out transform  flex gap-2 text-primary-main font-bold items-center justify-end'
       >
         <span> Lihat Selengkapnya </span>
         <IoArrowForwardOutline />
