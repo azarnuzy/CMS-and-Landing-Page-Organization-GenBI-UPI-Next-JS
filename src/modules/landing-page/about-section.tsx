@@ -56,7 +56,7 @@ const AboutSection = () => {
                 Kenali Lebih Dekat Tentang{' '}
                 <span className='text-primary-main'>GenBI UPI</span>
               </h1>
-              <p className='text-neutral-600 w-1/2'>
+              <p className='text-neutral-600 sm:w-1/2'>
                 GenBI (Generasi Baru Indonesia) UPI merupakan komunitas penerima
                 beasiswa Bank Indonesia di Universitas Pendidikan Indonesia.
               </p>
@@ -116,9 +116,9 @@ const AboutSection = () => {
                 width={56}
                 height={56}
                 sizes='50vw'
-                alt='icon visi'
+                alt='icon visi w-14 h-14'
               />
-              <div className='flex flex-col gap-2'>
+              <div className='flex flex-col gap-2 w-fit'>
                 <h2>Visi</h2>
                 <p>
                   GenBI sebagai wadah eksplorasi diri serta menjadi mediator BI
@@ -126,7 +126,8 @@ const AboutSection = () => {
                 </p>
               </div>
             </div>
-            <div className='rounded-t-3xl p-6 flex flex-col gap-4 items-center bg-neutral-100 text-neutral-600'>
+            <div className='rounded-t-3xl p-6 flex flex-col gap-4 justify-center bg-neutral-100 text-neutral-600'>
+              <h2 className='text-start'>Misi</h2>
               <div className='flex flex-col gap-4 w-full'>
                 {misiData.map((item, index) => (
                   <div
