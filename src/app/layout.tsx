@@ -4,6 +4,7 @@ import * as React from 'react';
 import '@/styles/globals.css';
 
 import Navbar from '@/components/generals/navbar';
+import { Toaster } from '@/components/ui/sonner';
 
 import { siteConfig } from '@/constant/config';
 
@@ -53,6 +54,7 @@ export default function RootLayout({
       <body>
         <Navbar />
         {children}
+        <Toaster />
       </body>
     </html>
   );

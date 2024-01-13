@@ -1,5 +1,11 @@
+import { zodResolver } from '@hookform/resolvers/zod';
 import Image from 'next/image';
 import React from 'react';
+import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
+import { z } from 'zod';
+
+import { ValidationSchemaSuggestionForm } from '@/lib/validations/landing-page';
 
 import BaseLayout from '@/components/layouts/base';
 import {
@@ -8,6 +14,17 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
+import { Button } from '@/components/ui/button';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
 
 const requirementData = [
   'Biodata Mahasiswa;',
@@ -27,6 +44,14 @@ const requirementData = [
 ];
 
 const FaqSection = () => {
+  const form = useForm<z.infer<typeof ValidationSchemaSuggestionForm>>({
+    resolver: zodResolver(ValidationSchemaSuggestionForm),
+  });
+
+  const onSubmit = (data: z.infer<typeof ValidationSchemaSuggestionForm>) => {
+    toast.success(`Pesan berhasil dikirim ${JSON.stringify(data)}`);
+  };
+
   return (
     <div
       className='min-h-[60vh] w-full relative'
@@ -88,7 +113,71 @@ const FaqSection = () => {
               </AccordionItem>
             </Accordion>
           </div>
-          <div className='p-6 rounded-2xl shadow-md bg-white'></div>
+          <div className='p-6 rounded-2xl shadow-md bg-white flex gap-14'>
+            <Form {...form}>
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className='flex flex-col gap-4 w-full'
+              >
+                <div className='grid grid-cols-2 gap-4'>
+                  <FormField
+                    control={form.control}
+                    name='name'
+                    render={({ field }) => (
+                      <FormItem className='grid w-full items-center gap-1.5'>
+                        <FormLabel>Nama</FormLabel>
+                        <FormControl>
+                          <Input {...field} type='text' placeholder='Nama' />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name='email'
+                    render={({ field }) => (
+                      <FormItem className='grid w-full items-center gap-1.5'>
+                        <FormLabel>Nama</FormLabel>
+                        <FormControl>
+                          <Input {...field} type='email' placeholder='Email' />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+                <FormField
+                  control={form.control}
+                  name='question'
+                  render={({ field }) => (
+                    <FormItem className='grid w-full items-center gap-1.5'>
+                      <FormLabel>Pertanyaan</FormLabel>
+                      <FormControl>
+                        <Textarea {...field} placeholder='Pertanyaan' />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <p className='text-neutral-500'>
+                  Jawaban akan dikirim melalui email
+                </p>
+                <Button
+                  type='submit'
+                  className='rounded-full bg-warning-main text-white w-full'
+                >
+                  Kirim Pesan
+                </Button>
+              </form>
+            </Form>
+            <div className='w-fit whitespace-nowrap'>
+              <h2 className='text-end'>
+                <span className='text-primary-main'>Punya Pertanyaan</span>
+              </h2>
+              <h2>atau Pesan Untuk GenBI?</h2>
+            </div>
+          </div>
         </div>
       </BaseLayout>
     </div>
