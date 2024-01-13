@@ -113,13 +113,13 @@ const FaqSection = () => {
               </AccordionItem>
             </Accordion>
           </div>
-          <div className='p-6 rounded-2xl shadow-md bg-white flex gap-14'>
+          <div className='p-6 rounded-2xl shadow-md bg-white flex flex-col sm:flex-row gap-4 sm:gap-14'>
             <Form {...form}>
               <form
                 onSubmit={form.handleSubmit(onSubmit)}
-                className='flex flex-col gap-4 w-full'
+                className='flex flex-col gap-4 w-full order-2 sm:order-1'
               >
-                <div className='grid grid-cols-2 gap-4'>
+                <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
                   <FormField
                     control={form.control}
                     name='name'
@@ -171,8 +171,8 @@ const FaqSection = () => {
                 </Button>
               </form>
             </Form>
-            <div className='w-fit whitespace-nowrap'>
-              <h2 className='text-end'>
+            <div className='w-full sm:w-fit whitespace-nowrap order-1 sm:order-2 sm:text-end'>
+              <h2>
                 <span className='text-primary-main'>Punya Pertanyaan</span>
               </h2>
               <h2>atau Pesan Untuk GenBI?</h2>
