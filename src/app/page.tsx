@@ -4,6 +4,7 @@ import * as React from 'react';
 
 import AboutSection from '@/modules/landing-page/about-section';
 import FAQSection from '@/modules/landing-page/faq-section';
+import GallerySection from '@/modules/landing-page/gallery-section';
 import HeaderSection from '@/modules/landing-page/header-section';
 import NewsSection from '@/modules/landing-page/news-section';
 
@@ -26,6 +27,7 @@ export default function HomePage() {
       <AboutSection />
       <NewsSection />
       <FAQSection />
+      <GallerySection />
     </main>
   );
 }
