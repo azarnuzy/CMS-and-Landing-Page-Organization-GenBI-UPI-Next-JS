@@ -14,7 +14,7 @@ const GallerySection = () => {
       }}
     >
       <BaseLayout>
-        <div className='gap-4 flex flex-col justify-center items-center'>
+        <div className='gap-6 flex flex-col justify-center items-center'>
           <div className='flex flex-nowrap gap-6 justify-center'>
             {Array.from({ length: 8 }).map((_, i) => (
               <div

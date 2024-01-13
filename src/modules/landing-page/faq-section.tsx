@@ -165,7 +165,8 @@ const FaqSection = () => {
                 </p>
                 <Button
                   type='submit'
-                  className='rounded-full bg-warning-main text-white w-full'
+                  variant='default'
+                  className='rounded-full bg-warning-main text-white w-full hover:bg-warning-600'
                 >
                   Kirim Pesan
                 </Button>
