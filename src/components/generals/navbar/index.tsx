@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import Link from 'next/link';
 import React from 'react';
 import { IoMenu } from 'react-icons/io5';
 
@@ -54,9 +55,12 @@ const Navbar = () => {
             </div>
             {/* Menu Navigation Tablet, Laptop, and Desktop */}
             <div className='hidden sm:flex sm:gap-2 lg:gap-6 items-center'>
-              <span className=' py-2 text-neutral-100 text-lg font-semibold '>
+              <Link
+                href='/berita'
+                className=' py-2 text-neutral-100 text-lg font-semibold '
+              >
                 Berita
-              </span>
+              </Link>
               <NavigationMenu>
                 <NavigationMenuList>
                   <NavigationMenuItem>
