@@ -150,20 +150,22 @@ const HeaderSection = () => {
                     modules={[Pagination, Autoplay, EffectFade]}
                     className='mySwiper w-full h-full'
                   >
-                    {Array.from({ length: 4 }, (_, i) => (
-                      <Fragment key={i + 1}>
-                        <SwiperSlide>
-                          <Image
-                            src={`/images/hero-${i + 1}.webp`}
-                            width={0}
-                            height={0}
-                            sizes='50vw'
-                            className='w-full h-full object-cover rounded-3xl'
-                            alt='hero-1'
-                          />
-                        </SwiperSlide>
-                      </Fragment>
-                    ))}
+                    {Array(4)
+                      .fill('_')
+                      .map((_, i) => (
+                        <Fragment key={i}>
+                          <SwiperSlide>
+                            <Image
+                              src={`/images/hero-${i + 1}.webp`}
+                              width={0}
+                              height={0}
+                              sizes='50vw'
+                              className='w-full h-full object-cover rounded-3xl'
+                              alt='hero-1'
+                            />
+                          </SwiperSlide>
+                        </Fragment>
+                      ))}
                   </Swiper>
                 </div>
                 {swiper && (

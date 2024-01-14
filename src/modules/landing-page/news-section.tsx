@@ -108,7 +108,7 @@ export const ArticleCard = ({
         alt='ellipse-article'
         className='opacity-0 group-hover:opacity-100 absolute -left-5 -bottom-5 transition-all duration-500 ease-in-out '
       />
-      <div className='flex gap-3 items-center flex-nowrap overflow-x-scroll group-hover:-translate-y-[40px] transition-all duration-500 ease-in-out transform'>
+      <div className='flex gap-3 items-center flex-nowrap overflow-x-auto group-hover:-translate-y-[40px] transition-all duration-500 ease-in-out transform'>
         {tags.map((tag, i) => (
           <div
             key={i}
