@@ -2,18 +2,62 @@ import Image from 'next/image';
 import React from 'react';
 import { IoSearch } from 'react-icons/io5';
 
+import { ArticleCard } from '@/components/card/article';
 import BaseLayout from '@/components/layouts/base';
 import { Button } from '@/components/ui/button';
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from '@/components/ui/pagination';
+
+const data = [
+  {
+    image: '/images/article-temp-2.webp',
+    title: 'Lorem ipsum dolor sit amet.',
+    tags: ['Press Release', 'Social Environment'],
+    description:
+      'lorem ipsum dolor sit amet consectetur adipisicing elit. Vel provident ipsa aut iure veritatis sapiente nulla distinctio aliquam et cumque?',
+    link: '/',
+  },
+  {
+    image: '/images/article-temp-1.webp',
+    title: 'Lorem ipsum dolor sit amet.',
+    tags: ['Press Release', 'Social Environment'],
+    description:
+      'lorem ipsum dolor sit amet consectetur adipisicing elit. Vel provident ipsa aut iure veritatis sapiente nulla distinctio aliquam et cumque?',
+    link: '/',
+  },
+  {
+    image: '/images/article-temp-2.webp',
+    title: 'Lorem ipsum dolor sit amet.',
+    tags: ['Press Release', 'Social Environment'],
+    description:
+      'lorem ipsum dolor sit amet consectetur adipisicing elit. Vel provident ipsa aut iure veritatis sapiente nulla distinctio aliquam et cumque?',
+    link: '/',
+  },
+  {
+    image: '/images/article-temp-1.webp',
+    title: 'Lorem ipsum dolor sit amet.',
+    tags: ['Press Release', 'Social Environment'],
+    description:
+      'lorem ipsum dolor sit amet consectetur adipisicing elit. Vel provident ipsa aut iure veritatis sapiente nulla distinctio aliquam et cumque?',
+    link: '/',
+  },
+];
 
 const NewsArticleSection = () => {
   return (
-    <div className='relative w-full min-h-[40vh] '>
+    <div className='relative w-full min-h-[40vh] py-10'>
       <Image
         width={0}
         height={0}
         src='/svg/news-bg.svg'
         alt='news-bg'
-        className='absolute -top-72 w-full h-full z-[1]'
+        className='absolute -top-52 sm:-top-72 w-full h-[400px] z-[1]'
         sizes='100vw'
       />
       <BaseLayout>
@@ -70,6 +114,23 @@ const NewsArticleSection = () => {
               Marketing
             </Button>
           </div>
+          <div className='grid grid-cols-2 gap-5'>
+            {data.map((item, i) => (
+              <div className='col-span-2 md:col-span-1' key={i}>
+                <ArticleCard {...item} />
+              </div>
+            ))}
+          </div>
+          <Pagination>
+            <PaginationContent>
+              <PaginationPrevious href='#' />
+              <PaginationLink href='#'>1</PaginationLink>
+              <PaginationLink href='#'>2</PaginationLink>
+              <PaginationEllipsis />
+              <PaginationLink href='#'>10</PaginationLink>
+              <PaginationNext href='#' />
+            </PaginationContent>
+          </Pagination>
         </div>
       </BaseLayout>
     </div>

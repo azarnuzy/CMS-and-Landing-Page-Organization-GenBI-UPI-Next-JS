@@ -31,7 +31,7 @@ const HiglightSection = () => {
                 "linear-gradient(180deg, rgba(0, 0, 0, 0.00) 0%, #0A1E3C 100%), url('/images/peran-1.webp') center/cover no-repeat, lightgray 50%",
             }}
           >
-            <div className='flex md:flex-col flex-row lg:flex-row justify-between md:items-start lg:items-center gap-y-2 items-center'>
+            <div className='flex flex-col  lg:flex-row items-start lg:items-center gap-y-2 '>
               <div className='flex gap-2 items-center flex-wrap'>
                 <Badge
                   variant='outline'
