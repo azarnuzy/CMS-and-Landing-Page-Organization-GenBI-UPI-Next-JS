@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 const HiglightSection = () => {
   return (
     <div
-      className='w-full h-full min-h-[40vh] py-12 relative'
+      className='w-full h-full min-h-[40vh] pt-12 pb-56 relative'
       style={{
         background:
           'radial-gradient(106.84% 43.83% at 8.16% 86.94%, #FFD99F 0%, #F9F9F9 75.08%)',

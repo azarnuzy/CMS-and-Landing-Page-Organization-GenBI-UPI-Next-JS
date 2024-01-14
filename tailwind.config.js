@@ -1,4 +1,5 @@
 /** @type {import('tailwindcss').Config} */
+import tailwindScrollbar from 'tailwind-scrollbar';
 import defaultTheme from 'tailwindcss/defaultTheme';
 module.exports = {
   darkMode: ['class'],
@@ -142,5 +143,8 @@ module.exports = {
       },
     },
   },
-  plugins: [require('tailwindcss-animate')],
+  plugins: [
+    tailwindScrollbar({ nocompatible: true }),
+    require('tailwindcss-animate'),
+  ],
 };

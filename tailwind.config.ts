@@ -1,3 +1,4 @@
+import tailwindScrollbar from 'tailwind-scrollbar';
 import type { Config } from 'tailwindcss';
 import defaultTheme from 'tailwindcss/defaultTheme';
 
@@ -142,5 +143,8 @@ export default {
       },
     },
   },
-  plugins: [require('tailwindcss-animate')],
+  plugins: [
+    require('tailwindcss-animate'),
+    tailwindScrollbar({ nocompatible: true }),
+  ],
 } satisfies Config;
