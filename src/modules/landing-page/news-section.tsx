@@ -46,7 +46,11 @@ const NewsSection = () => {
               <ArticleCard
                 image='/images/article-temp-1.webp'
                 title='Lorem ipsum dolor sit amet.'
-                tags={['Press Release', 'Social Environment']}
+                tags={[
+                  'Press Release',
+                  'Social Environment',
+                  'Social Environment',
+                ]}
                 description='lorem ipsum dolor sit amet consectetur adipisicing elit. Vel provident ipsa aut iure veritatis sapiente nulla distinctio aliquam et cumque?'
                 link='/'
               />
@@ -104,11 +108,11 @@ export const ArticleCard = ({
         alt='ellipse-article'
         className='opacity-0 group-hover:opacity-100 absolute -left-5 -bottom-5 transition-all duration-500 ease-in-out '
       />
-      <div className='flex gap-3 items-center '>
+      <div className='flex gap-3 items-center flex-nowrap overflow-x-scroll group-hover:-translate-y-[40px] transition-all duration-500 ease-in-out transform'>
         {tags.map((tag, i) => (
           <div
             key={i}
-            className='px-4 py-2 text-warning-500 bg-warning-100 rounded-3xl border border-warning-300 group-hover:-translate-y-[40px] transition-all duration-500 ease-in-out transform'
+            className='px-4 py-1 text-warning-500 whitespace-nowrap  bg-warning-100 rounded-3xl border border-warning-300 '
           >
             {tag}
           </div>

@@ -49,7 +49,9 @@ const FaqSection = () => {
   });
 
   const onSubmit = (data: z.infer<typeof ValidationSchemaSuggestionForm>) => {
-    toast.success(`Pesan berhasil dikirim ${JSON.stringify(data)}`);
+    toast.success(
+      `Pesan berhasil dikirim, balasan akan dikirim ke email ${data.email}`
+    );
   };
 
   return (
@@ -138,7 +140,7 @@ const FaqSection = () => {
                     name='email'
                     render={({ field }) => (
                       <FormItem className='grid w-full items-center gap-1.5'>
-                        <FormLabel>Nama</FormLabel>
+                        <FormLabel>Email</FormLabel>
                         <FormControl>
                           <Input {...field} type='email' placeholder='Email' />
                         </FormControl>
