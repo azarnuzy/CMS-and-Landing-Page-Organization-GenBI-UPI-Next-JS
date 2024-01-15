@@ -1,7 +1,18 @@
 import Image from 'next/image';
 import React from 'react';
 
+import GalleryComponent from '@/components/gallery';
 import { Badge } from '@/components/ui/badge';
+
+import { contentHtml } from '@/modules/news/detail/constant';
+
+const images = [
+  { src: '/images/peran-1.webp' },
+  { src: '/images/gallery-1.webp' },
+  { src: '/images/peran-3.webp' },
+  // { src: '/images/gallery-2.jpeg' },
+  // { src: '/images/peran-3.webp' },
+];
 
 const ContentSection = () => {
   return (
@@ -67,6 +78,11 @@ const ContentSection = () => {
             </div>
           </div>
         </div>
+        <div
+          className='flex flex-col gap-2'
+          dangerouslySetInnerHTML={{ __html: contentHtml() }}
+        ></div>
+        <GalleryComponent images={images} />
       </div>
     </div>
   );
