@@ -14,11 +14,11 @@ const GalleryComponent = ({
       case 2:
         return 'grid-cols-2 grid-rows-1';
       case 3:
-        return 'grid-cols-3 grid-rows-3';
+        return 'grid-cols-3 grid-rows-2';
       case 4:
-        return 'grid-cols-4 grid-rows-4';
+        return 'grid-cols-4 grid-rows-3';
       case 5:
-        return 'grid-cols-5 grid-rows-5';
+        return 'grid-cols-5 grid-rows-4';
       case 6:
         return 'grid-cols-2 md:grid-cols-3 lg:grid-cols-6 grid-rows-1 md:grid-rows-1 lg:grid-rows-2';
       default:
