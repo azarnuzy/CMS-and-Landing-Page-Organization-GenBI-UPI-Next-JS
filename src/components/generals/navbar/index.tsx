@@ -27,16 +27,10 @@ const Navbar = () => {
             'linear-gradient(101deg, #041C3F 3.31%, #11418B 39.48%, #11418B 98.43%)',
         }}
       ></div>
-      <nav
-        className='w-full fixed top-0 left-0 z-50 h-16 flex justify-center items-center bg-primary-main'
-        // style={{
-        //   background: 'rgba(255, 255, 255, 0.15)',
-        //   // backdropFilter: 'blur(25px)',
-        // }}
-      >
+      <nav className='w-full fixed top-0 left-0 z-50 h-16 flex justify-center items-center bg-primary-800'>
         <BaseLayout>
           <div className='flex justify-between items-center'>
-            <div className='flex items-center gap-4'>
+            <Link href='/' className='flex items-center gap-4'>
               <Image
                 alt='Logo BI'
                 src='/images/logo-bi.png'
@@ -52,7 +46,7 @@ const Navbar = () => {
               <h5 className='text-2xl text-neutral-100 font-bold tracking-wider'>
                 GenBI UPI
               </h5>
-            </div>
+            </Link>
             {/* Menu Navigation Tablet, Laptop, and Desktop */}
             <div className='hidden sm:flex sm:gap-2 md:gap-4 lg:gap-6 items-center'>
               <Link
@@ -67,7 +61,10 @@ const Navbar = () => {
                     <NavigationMenuTrigger>Tentang Kami</NavigationMenuTrigger>
                     <NavigationMenuContent>
                       <div className='grid w-[350px] sm:w-[380px]  p-4 md:w-[400px]'>
-                        <div className='rounded-2xl hover:bg-blue-100 transition-colors duration-300 ease-in-out p-4 flex gap-4 items-start'>
+                        <Link
+                          href='/tentang-genbi'
+                          className='rounded-2xl hover:bg-blue-100 transition-colors duration-300 ease-in-out p-4 flex gap-4 items-start'
+                        >
                           <span className='text-neutral-main text-lg font-semibold'>
                             01
                           </span>
@@ -77,7 +74,7 @@ const Navbar = () => {
                               Kenali lebih jauh tentang Generasi Baru Indonesia
                             </p>
                           </div>
-                        </div>
+                        </Link>
                         <div className='rounded-2xl hover:bg-blue-100 transition-colors duration-300 ease-in-out p-4 flex gap-4 items-start'>
                           <span className='text-neutral-main text-lg font-semibold'>
                             02
@@ -137,7 +134,7 @@ const NavbarMobileMenu = ({
     <BaseLayout>
       <>
         <div className='flex justify-between items-center'>
-          <div className='flex items-center gap-4'>
+          <Link href='/' className='flex items-center gap-4'>
             <Image
               alt='Logo BI'
               src='/images/logo-bi.png'
@@ -153,7 +150,7 @@ const NavbarMobileMenu = ({
             <h5 className='text-2xl text-neutral-100 font-bold tracking-wider'>
               GenBI UPI
             </h5>
-          </div>
+          </Link>
           <button onClick={() => setOpen(!open)}>
             <IoMenu className=' text-white text-3xl' />
           </button>

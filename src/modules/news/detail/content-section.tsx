@@ -83,7 +83,7 @@ const ContentSection = () => {
           dangerouslySetInnerHTML={{ __html: contentHtml() }}
         ></div>
         <GalleryComponent images={images} />
-        <div className='flex gap-2 items-center'>
+        <div className='flex gap-2 items-center flex-wrap'>
           {Array(4)
             .fill('_')
             .map((_, i) => (
