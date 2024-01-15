@@ -1,5 +1,6 @@
 import Image from 'next/image';
 
+import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 const GalleryComponent = ({
   images,
 }: {
@@ -48,19 +49,43 @@ const GalleryComponent = ({
   return (
     <div className={`grid gap-4 ${getGridClass(images.length)} items-center`}>
       {images.map((image, index) => (
-        <Image
+        <div
           key={index}
-          src={image.src}
-          width={0}
-          height={0}
-          sizes='60vw'
-          alt={`Image ${index + 1}`}
           className={`w-full h-full object-cover rounded-md  ${
             index === 0
               ? spanFirstImage(images.length)
               : 'col-span-1 row-span-1'
           }`}
-        />
+        >
+          <Dialog>
+            <DialogTrigger className='h-full'>
+              <Image
+                key={index}
+                src={image.src}
+                width={0}
+                height={0}
+                sizes='60vw'
+                alt={`Image ${index + 1}`}
+                className={`w-full h-full object-cover rounded-md `}
+              />
+            </DialogTrigger>
+            <DialogContent className='bg-transparent border-none p-10 shadow-none text-neutral-100 max-w-4xl'>
+              <Image
+                key={index}
+                src={image.src}
+                width={0}
+                height={0}
+                sizes='60vw'
+                alt={`Image ${index + 1}`}
+                className={`w-full h-full object-cover rounded-md  ${
+                  index === 0
+                    ? spanFirstImage(images.length)
+                    : 'col-span-1 row-span-1'
+                }`}
+              />
+            </DialogContent>
+          </Dialog>
+        </div>
       ))}
     </div>
   );

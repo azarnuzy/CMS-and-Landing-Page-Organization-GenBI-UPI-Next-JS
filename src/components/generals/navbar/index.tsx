@@ -54,7 +54,7 @@ const Navbar = () => {
               </h5>
             </div>
             {/* Menu Navigation Tablet, Laptop, and Desktop */}
-            <div className='hidden sm:flex sm:gap-2 lg:gap-6 items-center'>
+            <div className='hidden sm:flex sm:gap-2 md:gap-4 lg:gap-6 items-center'>
               <Link
                 href='/berita'
                 className=' py-2 text-neutral-100 text-lg font-semibold '
