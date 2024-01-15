@@ -48,7 +48,7 @@ const HiglightSection = () => {
             <h2 className='text-balance text-white'>
               Lorem ipsum dolor sit amet consectetur.
             </h2>
-            <div className='absolute top-0 left-0 w-full h-[480px] hover:bg-[#011739D6] transition-all duration-300 ease-in-out flex justify-center items-center hover:z-[10] hover:opacity-100 rounded-3xl'>
+            <div className='absolute top-0 left-0 w-full h-[480px] hover:bg-[#011739D6] transition-all duration-300 ease-in-out flex justify-center items-center hover:z-[10] hover:opacity-100 rounded-3xl hover:backdrop-blur-sm'>
               <Button
                 className='border border-neutral-100 rounded-3xl text-neutral-100 hover:bg-neutral-100 hover:text-balance transition-all duration-300 ease-in-out group-hover:flex gap-1 items-center py-1 text-sm hidden '
                 variant='ghost'
@@ -69,7 +69,7 @@ const HiglightSection = () => {
                   className='bg-neutral-100 rounded-3xl p-4 flex flex-col gap-2.5 relative group'
                   key={i}
                 >
-                  <div className='absolute top-0 left-0 w-full h-full hover:bg-[#011739D6] transition-all duration-300 ease-in-out flex justify-center items-center hover:z-[10] opacity-0 hover:opacity-100 rounded-3xl '>
+                  <div className='absolute top-0 left-0 w-full h-full hover:bg-[#011739D6] transition-all duration-300 ease-in-out flex justify-center items-center hover:z-[10] opacity-0 hover:opacity-100 rounded-3xl hover:backdrop-blur-sm'>
                     <Button
                       className='border border-neutral-100 rounded-3xl text-neutral-100 hover:bg-neutral-100 hover:text-balance transition-all duration-300 ease-in-out group-hover:flex gap-1 items-center py-1 text-sm hidden '
                       variant='ghost'

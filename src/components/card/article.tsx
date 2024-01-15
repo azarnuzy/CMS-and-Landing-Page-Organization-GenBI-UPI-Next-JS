@@ -7,12 +7,12 @@ export const ArticleCard = ({
   title,
   tags,
   description,
+  link = '/berita',
 }: {
   image: string;
   title: string;
   tags: string[];
   description: string;
-  // link is optional
   link?: string;
 }) => {
   /* func to create max length desc 50 character  */
@@ -41,7 +41,7 @@ export const ArticleCard = ({
         alt='ellipse-article'
         className='opacity-0 group-hover:opacity-100 absolute -left-5 -bottom-5 transition-all duration-500 ease-in-out '
       />
-      <div className='flex gap-3 items-center flex-nowrap overflow-x-auto group-hover:-translate-y-[40px] transition-all duration-500 ease-in-out transform'>
+      <div className='flex gap-3 items-center flex-nowrap overflow-x-auto group-hover:-translate-y-[40px] transition-all duration-500 ease-in-out transform scrollbar-thin'>
         {tags.map((tag, i) => (
           <div
             key={i}
@@ -59,7 +59,7 @@ export const ArticleCard = ({
         {descriptionTrimmed}
       </p>
       <Link
-        href='/'
+        href={link}
         className='translate-y-[calc(100%+40px)] group-hover:translate-y-[calc(100%-40px)] transition-all duration-500 ease-in-out transform  flex gap-2 text-primary-main font-bold items-center justify-end'
       >
         <span> Lihat Selengkapnya </span>

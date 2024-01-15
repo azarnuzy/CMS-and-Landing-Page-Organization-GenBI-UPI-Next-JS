@@ -21,7 +21,7 @@ const data = [
     tags: ['Press Release', 'Social Environment'],
     description:
       'lorem ipsum dolor sit amet consectetur adipisicing elit. Vel provident ipsa aut iure veritatis sapiente nulla distinctio aliquam et cumque?',
-    link: '/',
+    link: '/berita/1',
   },
   {
     image: '/images/article-temp-1.webp',
@@ -29,7 +29,7 @@ const data = [
     tags: ['Press Release', 'Social Environment'],
     description:
       'lorem ipsum dolor sit amet consectetur adipisicing elit. Vel provident ipsa aut iure veritatis sapiente nulla distinctio aliquam et cumque?',
-    link: '/',
+    link: '/berita/1',
   },
   {
     image: '/images/article-temp-2.webp',
@@ -37,7 +37,7 @@ const data = [
     tags: ['Press Release', 'Social Environment'],
     description:
       'lorem ipsum dolor sit amet consectetur adipisicing elit. Vel provident ipsa aut iure veritatis sapiente nulla distinctio aliquam et cumque?',
-    link: '/',
+    link: '/berita/1',
   },
   {
     image: '/images/article-temp-1.webp',
@@ -45,7 +45,7 @@ const data = [
     tags: ['Press Release', 'Social Environment'],
     description:
       'lorem ipsum dolor sit amet consectetur adipisicing elit. Vel provident ipsa aut iure veritatis sapiente nulla distinctio aliquam et cumque?',
-    link: '/',
+    link: '/berita/1',
   },
 ];
 
