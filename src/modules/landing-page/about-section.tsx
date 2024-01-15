@@ -9,7 +9,7 @@ import BaseLayout from '@/components/layouts/base';
 
 import Zap from '~/images/zap-fast.svg';
 
-const misiData = [
+export const misiData = [
   {
     icon: <Zap className='2-6 h-6 text-neutral-100' />,
     description:
