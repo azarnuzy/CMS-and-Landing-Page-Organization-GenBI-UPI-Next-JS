@@ -17,7 +17,7 @@ const ContentSection = () => {
         className='w-full top-[30%] absolute -z-10 object-cover'
       />
       <BaseLayout>
-        <div className='flex flex-none sm:flex-row gap-14'>
+        <div className='flex flex-none flex-col sm:flex-row gap-4  sm:gap-14'>
           <div className='relative w-fit h-full bg-neutral-100 shadow-md border p-4 rounded-3xl'>
             <Image
               src='/images/video-genbi-upi.png'

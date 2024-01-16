@@ -16,7 +16,7 @@ const HeaderUpiSection = () => {
       />
       <BaseLayout>
         <div className=' grid grid-cols-5 gap-4 pt-10 '>
-          <div className='flex flex-col gap-4 relative z-[1] md:col-span-3 col-span-4 justify-center'>
+          <div className='flex flex-col gap-4 relative z-[1] md:col-span-3 col-span-5 justify-center'>
             <div className='flex gap-4 items-center'>
               <div className='flex flex-col gap-4 justify-center bg-neutral-100 rounded-full p-[14px] '>
                 <Image

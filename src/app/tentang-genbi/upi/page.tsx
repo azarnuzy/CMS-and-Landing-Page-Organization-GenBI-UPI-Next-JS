@@ -1,6 +1,7 @@
 import React from 'react';
 
 import ContentSection from '@/modules/about-genbi/upi/content-section';
+import DivisorSection from '@/modules/about-genbi/upi/divisor-section';
 import HeaderUpiSection from '@/modules/about-genbi/upi/header-upi-section';
 
 const TentangGenBIUPIPage = () => {
@@ -8,6 +9,7 @@ const TentangGenBIUPIPage = () => {
     <main className=' w-full overflow-hidden'>
       <HeaderUpiSection />
       <ContentSection />
+      <DivisorSection />
     </main>
   );
 };
