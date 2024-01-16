@@ -16,7 +16,7 @@ const HeaderAboutGenBISection = () => {
       />
       <BaseLayout>
         <div className=' grid grid-cols-5 gap-4 pt-10 '>
-          <div className='flex flex-col gap-4 relative z-[1] md:col-span-3 col-span-5 justify-center'>
+          <div className='flex flex-col gap-4 relative z-[1] md:col-span-3 col-span-4 justify-center'>
             <h1 className='h0 text-neutral-100'>Generasi Baru Indonesia</h1>
             <div className='pl-4 text-neutral-100 text-xl md:max-w-2xl border-l border-neutral-100'>
               <p>

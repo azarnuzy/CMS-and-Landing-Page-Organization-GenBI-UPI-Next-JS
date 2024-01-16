@@ -156,16 +156,22 @@ const NavbarMobileMenu = ({
           </button>
         </div>
         <div className='flex flex-col gap-2 mt-4'>
-          <span className=' py-2 text-neutral-100 text-lg font-semibold '>
+          <Link
+            href='/berita'
+            className=' py-2 text-neutral-100 text-lg font-semibold '
+          >
             Berita
-          </span>
+          </Link>
           <NavigationMenu>
             <NavigationMenuList>
               <NavigationMenuItem>
                 <NavigationMenuTrigger>Tentang Kami</NavigationMenuTrigger>
                 <NavigationMenuContent>
                   <div className='grid w-[300px] '>
-                    <div className='rounded-2xl hover:bg-blue-100 transition-colors duration-300 ease-in-out p-4 flex gap-4 items-start'>
+                    <Link
+                      href='/tentang-genbi'
+                      className='rounded-2xl hover:bg-blue-100 transition-colors duration-300 ease-in-out p-4 flex gap-4 items-start'
+                    >
                       <span className='text-neutral-main text-lg font-semibold'>
                         01
                       </span>
@@ -175,7 +181,7 @@ const NavbarMobileMenu = ({
                           Kenali lebih jauh tentang Generasi Baru Indonesia
                         </p>
                       </div>
-                    </div>
+                    </Link>
                     <div className='rounded-2xl hover:bg-blue-100 transition-colors duration-300 ease-in-out p-4 flex gap-4 items-start'>
                       <span className='text-neutral-main text-lg font-semibold'>
                         02
