@@ -29,7 +29,7 @@ const HeaderDepartmentSection = () => {
         alt='bg-shape-header-about'
         width={0}
         height={0}
-        className='absolute top-0 right-0 object-cover object-bottom w-full h-full -z-[1] transform scale-x-110 blur'
+        className='absolute top-0 right-0 object-cover object-right-bottom w-full h-full -z-[1] transform scale-x-110 blur'
         sizes='100vw'
       />
       <BaseLayout>

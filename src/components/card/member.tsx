@@ -47,7 +47,7 @@ const AwardeeCard = ({
       />
       <Image
         src={img}
-        className='w-full h-full absolute right-0 top-0  z-[2] '
+        className='w-[232px] h-[248px] absolute right-0 top-0  z-[2] '
         alt='profile'
         width={0}
         height={0}
