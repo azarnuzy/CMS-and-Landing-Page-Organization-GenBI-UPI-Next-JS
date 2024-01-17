@@ -15,7 +15,7 @@ interface TDepartmentCard {
 const DepartmentCard = ({ name, link, img, className }: TDepartmentCard) => {
   return (
     <div
-      className={`h-[200px] w-[482px] ${className} rounded-3xl px-8 py-[18px] relative`}
+      className={`h-[200px] w-full sm:w-[482px] ${className} rounded-3xl px-8 py-[18px] relative`}
     >
       <Image
         src={img}
