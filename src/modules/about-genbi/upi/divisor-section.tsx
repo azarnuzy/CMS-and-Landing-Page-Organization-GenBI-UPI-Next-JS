@@ -20,9 +20,17 @@ const DivisorSection = () => {
         className='absolute top-0 -right-40 w-full h-full object-cover -z-[1]'
         sizes='50vw'
       />
+      <Image
+        src='/svg/line-pattern-header-divisor.svg'
+        width={0}
+        height={0}
+        alt='line pattern'
+        className='absolute top-0 left-0 w-1/2 h-full object-cover z-[0]'
+        sizes='50vw'
+      />
 
       <BaseLayout>
-        <div className='flex items-start justify-center flex-col h-[245px]'>
+        <div className='flex items-start justify-center flex-col h-[245px] relative z-[2]'>
           <h1 className='text-neutral-100'>Struktur Komunitas</h1>
           <h1 className='text-warning-main'>GenBI UPI</h1>
         </div>
