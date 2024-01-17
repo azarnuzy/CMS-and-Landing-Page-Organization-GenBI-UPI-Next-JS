@@ -102,9 +102,12 @@ const Navbar = () => {
                   </NavigationMenuItem>
                 </NavigationMenuList>
               </NavigationMenu>
-              <span className=' py-2 text-neutral-100 text-lg font-semibold '>
-                Kegiatan
-              </span>
+              <Link
+                href='/acara'
+                className=' py-2 text-neutral-100 text-lg font-semibold '
+              >
+                Acara
+              </Link>
               <span className=' py-2 text-neutral-100 text-lg font-semibold '>
                 Galeri
               </span>
@@ -215,9 +218,12 @@ const NavbarMobileMenu = ({
               </NavigationMenuItem>
             </NavigationMenuList>
           </NavigationMenu>
-          <span className=' py-2 text-neutral-100 text-lg font-semibold '>
-            Kegiatan
-          </span>
+          <Link
+            href='/acara'
+            className=' py-2 text-neutral-100 text-lg font-semibold '
+          >
+            Acara
+          </Link>
           <span className=' py-2 text-neutral-100 text-lg font-semibold '>
             Galeri
           </span>
