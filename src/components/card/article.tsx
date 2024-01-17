@@ -25,7 +25,10 @@ export const ArticleCard = ({
     ) + '...';
 
   return (
-    <div className='w-full shadow-xl border rounded-3xl p-4 flex flex-col gap-3 group overflow-hidden relative'>
+    <Link
+      href={link}
+      className='w-full shadow-xl border rounded-3xl p-4 flex flex-col gap-3 group overflow-hidden relative'
+    >
       <Image
         src={image}
         alt='article'
@@ -58,13 +61,10 @@ export const ArticleCard = ({
         {/* max length description 50 character */}
         {descriptionTrimmed}
       </p>
-      <Link
-        href={link}
-        className='translate-y-[calc(100%+40px)] group-hover:translate-y-[calc(100%-40px)] transition-all duration-500 ease-in-out transform  flex gap-2 text-primary-main font-bold items-center justify-end'
-      >
+      <p className='translate-y-[calc(100%+40px)] group-hover:translate-y-[calc(100%-40px)] transition-all duration-500 ease-in-out transform  flex gap-2 text-primary-main font-bold items-center justify-end'>
         <span> Lihat Selengkapnya </span>
         <IoArrowForwardOutline />
-      </Link>
-    </div>
+      </p>
+    </Link>
   );
 };

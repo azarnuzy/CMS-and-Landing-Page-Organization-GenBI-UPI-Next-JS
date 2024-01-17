@@ -1,5 +1,6 @@
 import React from 'react';
 
+import DepartmentCard from '@/components/card/department';
 import AwardeeCard from '@/components/card/member';
 import BaseLayout from '@/components/layouts/base';
 
@@ -27,6 +28,44 @@ const data = [
   },
 ];
 
+const departmentData = [
+  {
+    name: 'Marketing',
+    link: '/',
+    img: '/images/marketing.png',
+  },
+  {
+    name: 'Economic',
+    link: '/',
+    img: '/images/economic.png',
+  },
+  {
+    name: 'Healthcare',
+    link: '/',
+    img: '/images/healthcare.png',
+  },
+  {
+    name: 'Public Relation',
+    link: '/',
+    img: '/images/pr.png',
+  },
+  {
+    name: 'Human Resources',
+    link: '/',
+    img: '/images/hr.png',
+  },
+  {
+    name: 'Education',
+    link: '/',
+    img: '/images/education.png',
+  },
+  {
+    name: 'Social & Environment',
+    link: '/',
+    img: '/images/socen.png',
+  },
+];
+
 const StructureGenbiSection = () => {
   return (
     <div className='py-10'>
@@ -45,6 +84,20 @@ const StructureGenbiSection = () => {
                     position={item.position}
                     instagram={item.instagram}
                     linkedin={item.linkedin}
+                    img={item.img}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+          <h1 className='text-neutral-main text-center'>Department</h1>
+          <div className='w-full flex justify-center'>
+            <div className='flex flex-wrap justify-center gap-8'>
+              {departmentData.map((item, i) => (
+                <div key={i} className=' w-full sm:w-fit  flex justify-center'>
+                  <DepartmentCard
+                    name={item.name}
+                    link={item.link}
                     img={item.img}
                   />
                 </div>

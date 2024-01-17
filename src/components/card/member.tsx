@@ -59,18 +59,18 @@ const AwardeeCard = ({
         </h4>
         <p className='text-neutral-600 italic text-[10px]'>{position}</p>
       </div>
-      <div className='flex gap-2 items-center absolute left-5 top-1/2 sm:-translate-y-2 transition-all transform sm:-translate-x-52 translate-x-0 translate-y-16  z-[2] group-hover:translate-x-0 group-hover:translate-y-16 duration-500'>
+      <div className='flex gap-2 items-center absolute left-5 top-1/2 sm:translate-y-0 transition-all transform sm:-translate-x-24 translate-x-0 translate-y-16  z-[2] group-hover:translate-x-0 group-hover:translate-y-20 duration-500'>
         <Link
           href={instagram}
-          className='bg-primary-main text-neutral-100 p-3 rounded-full'
+          className='bg-primary-main text-neutral-100 p-2 rounded-full'
         >
-          <Instagram size={24} />
+          <Instagram size={18} />
         </Link>
         <Link
           href={linkedin}
-          className='bg-primary-main text-neutral-100 p-3 rounded-full'
+          className='bg-primary-main text-neutral-100 p-2 rounded-full'
         >
-          <BsLinkedin size={24} />
+          <BsLinkedin size={18} />
         </Link>
       </div>
     </div>
