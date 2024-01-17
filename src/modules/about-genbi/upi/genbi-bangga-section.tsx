@@ -17,7 +17,7 @@ const GenbiBanggaSection = () => {
         sizes='60vw'
       />
       <BaseLayout>
-        <div className='flex justify-center pt-[10vh] 2xl:pr-[8vw] flex-col items-end gap-14 h-full'>
+        <div className='flex justify-center pt-[10vh] 2xl:pr-[4vw] flex-col items-end gap-14 h-full'>
           <div className='flex flex-col gap-2 items-end max-w-[200px] sm:max-w-full'>
             <h1>
               GenBI <span className='text-warning-main'>Bangga</span>
