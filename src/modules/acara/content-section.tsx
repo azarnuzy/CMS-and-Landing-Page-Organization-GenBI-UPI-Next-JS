@@ -49,38 +49,38 @@ const ContentEventSection = () => {
             <Button className='bg-warning-main text-warning-900 rounded-full hover:bg-warning-500 border border-warning-600 '>
               Semua
             </Button>
-            <Button className='bg-warning-100 text-warning-900 rounded-full hover:bg-warning-200 border border-warning-500 '>
-              Press Release
-            </Button>
-            <Button className='bg-error-100 text-error-700 rounded-full hover:bg-error-200 border border-error-400 '>
-              Semua
+            <Button
+              variant='outline'
+              className='text-neutral-main rounded-full'
+            >
+              Coming Soon
             </Button>
             <Button
               variant='outline'
               className='text-neutral-main rounded-full'
             >
-              Bank Indonesia
+              Open Registration
             </Button>
             <Button
               variant='outline'
               className='text-neutral-main rounded-full'
             >
-              Bank Indonesia Jabar
+              Ongoing
             </Button>
             <Button
               variant='outline'
               className='text-neutral-main rounded-full'
             >
-              Executive
+              Close Registration
             </Button>
             <Button
               variant='outline'
               className='text-neutral-main rounded-full'
             >
-              Marketing
+              Finished
             </Button>
           </div>
-          <div className='py-10 flex-wrap flex justify-center gap-10'>
+          <div className=' flex-wrap flex justify-center gap-10'>
             {dataEvents.map((item, i) => (
               <AcaraCard key={i} {...item} />
             ))}
