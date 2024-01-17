@@ -5,7 +5,7 @@ import BaseLayout from '@/components/layouts/base';
 
 const HeaderAcaraSection = () => {
   return (
-    <div className='min-h-[40vh] relative py-12'>
+    <div className='min-h-[40vh] relative pt-12 pb-48 lg:pb-64'>
       <div
         className='w-[577px] h-[577px] absolute -top-40 -right-48 rounded-full blur-[100px]'
         style={{
@@ -31,7 +31,7 @@ const HeaderAcaraSection = () => {
           <Image
             src='/images/marketing.png'
             alt='banner event'
-            className='w-1/2 h-[200px] object-cover object-center rounded-3xl absolute -top-10 translate-y-1/2 left-0 transform -translate-x-16 -z-[1]'
+            className='w-1/2 h-[230px] object-cover object-center rounded-3xl absolute -top-16 translate-y-1/2 left-0 transform -translate-x-14 -z-[1]'
             width={0}
             height={0}
             sizes='50vw'
@@ -39,7 +39,7 @@ const HeaderAcaraSection = () => {
           <Image
             src='/images/marketing.png'
             alt='banner event'
-            className='w-1/2 h-[200px] object-cover object-center rounded-3xl absolute -top-10 translate-y-1/2 right-0 transform translate-x-16 -z-[1]'
+            className='w-1/2 h-[230px] object-cover object-center rounded-3xl absolute -top-16 translate-y-1/2 right-0 transform translate-x-14 -z-[1]'
             width={0}
             height={0}
             sizes='50vw'
