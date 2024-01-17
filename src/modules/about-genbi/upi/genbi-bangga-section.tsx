@@ -13,11 +13,11 @@ const GenbiBanggaSection = () => {
         alt='genbi bangga'
         width={0}
         height={0}
-        className='absolute top-0 left-0  object-right w-5/6 lg:w-full h-full object-cover -z-[1]'
+        className='absolute top-0 left-0  object-right w-5/6  h-full object-cover -z-[1]'
         sizes='60vw'
       />
       <BaseLayout>
-        <div className='flex justify-center pt-[10vh] lg:pr-[10vw] flex-col items-end gap-14 h-full'>
+        <div className='flex justify-center pt-[10vh] 2xl:pr-[8vw] flex-col items-end gap-14 h-full'>
           <div className='flex flex-col gap-2 items-end max-w-[200px] sm:max-w-full'>
             <h1>
               GenBI <span className='text-warning-main'>Bangga</span>

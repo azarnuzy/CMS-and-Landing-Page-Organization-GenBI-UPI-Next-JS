@@ -11,7 +11,7 @@ const HeaderUpiSection = () => {
         width={0}
         height={0}
         alt='bg-shape-header-about'
-        className='absolute top-0 -left-0 object-cover w-full h-full z-0'
+        className='absolute top-0 -left-0 object-cover w-full h-full z-0 object-right-bottom'
         sizes='100vw'
       />
       <BaseLayout>

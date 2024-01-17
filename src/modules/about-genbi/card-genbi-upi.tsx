@@ -14,7 +14,7 @@ const CardGenBIUPI = () => {
         alt='bg shape about 2'
         width={0}
         height={0}
-        className='absolute top-0 left-0 w-full h-full -z-10 object-cover'
+        className='absolute top-0 left-0 w-full h-full -z-10 object-cover object-top'
         sizes='60vw'
       />
       <BaseLayout>
