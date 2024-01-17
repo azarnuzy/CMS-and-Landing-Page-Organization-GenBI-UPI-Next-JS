@@ -31,37 +31,37 @@ const data = [
 const departmentData = [
   {
     name: 'Marketing',
-    link: '/',
+    link: '/tentang-genbi/upi/marketing',
     img: '/images/marketing.png',
   },
   {
     name: 'Economic',
-    link: '/',
+    link: '/tentang-genbi/upi/economic',
     img: '/images/economic.png',
   },
   {
     name: 'Healthcare',
-    link: '/',
+    link: '/tentang-genbi/upi/healthcare',
     img: '/images/healthcare.png',
   },
   {
     name: 'Public Relation',
-    link: '/',
+    link: '/tentang-genbi/upi/public-relation',
     img: '/images/pr.png',
   },
   {
     name: 'Human Resources',
-    link: '/',
+    link: '/tentang-genbi/upi/human-resources',
     img: '/images/hr.png',
   },
   {
     name: 'Education',
-    link: '/',
+    link: '/tentang-genbi/upi/education',
     img: '/images/education.png',
   },
   {
     name: 'Social & Environment',
-    link: '/',
+    link: '/tentang-genbi/upi/social-environment',
     img: '/images/socen.png',
   },
 ];
