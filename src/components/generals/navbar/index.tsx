@@ -82,12 +82,18 @@ const Navbar = () => {
                           <div>
                             <h4>GenBI UPI</h4>
                             <div className='border-l  border-neutral-main px-3 py-1.5 flex flex-col gap-2'>
-                              <p className='text-sm hover:text-primary-main hover:font-bold transition-all duration-300 ease-in-out'>
+                              <Link
+                                href='/tentang-genbi/upi'
+                                className='text-sm hover:text-primary-main hover:font-bold transition-all duration-300 ease-in-out'
+                              >
                                 Struktur Organisasi GenBI UPI
-                              </p>{' '}
-                              <p className='text-sm hover:text-primary-main hover:font-bold transition-all duration-300 ease-in-out'>
+                              </Link>{' '}
+                              <Link
+                                href='/tentang-genbi/upi/bangga'
+                                className='text-sm hover:text-primary-main hover:font-bold transition-all duration-300 ease-in-out'
+                              >
                                 GenBI Bangga
-                              </p>
+                              </Link>
                             </div>
                           </div>
                         </div>
@@ -189,12 +195,18 @@ const NavbarMobileMenu = ({
                       <div>
                         <h4>GenBI UPI</h4>
                         <div className='border-l  border-neutral-main px-3 py-1.5 flex flex-col gap-2'>
-                          <p className='text-sm hover:text-primary-main hover:font-bold transition-all duration-300 ease-in-out'>
+                          <Link
+                            href='/tentang-genbi/upi'
+                            className='text-sm hover:text-primary-main hover:font-bold transition-all duration-300 ease-in-out'
+                          >
                             Struktur Organisasi GenBI UPI
-                          </p>{' '}
-                          <p className='text-sm hover:text-primary-main hover:font-bold transition-all duration-300 ease-in-out'>
+                          </Link>{' '}
+                          <Link
+                            href='/tentang-genbi/upi/bangga'
+                            className='text-sm hover:text-primary-main hover:font-bold transition-all duration-300 ease-in-out'
+                          >
                             GenBI Bangga
-                          </p>
+                          </Link>
                         </div>
                       </div>
                     </div>
