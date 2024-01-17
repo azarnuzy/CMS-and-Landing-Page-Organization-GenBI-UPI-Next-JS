@@ -19,8 +19,24 @@ const MemberSection = () => {
 
   return (
     <div className='pt-14 pb-10 relative'>
+      <Image
+        src='/svg/line-pattern-about-genbi-upi.svg'
+        width={0}
+        height={0}
+        sizes='50vw'
+        alt='line pattern'
+        className='w-full top-[30%] absolute -z-10 object-cover'
+      />
+      <Image
+        src='/images/line-pattern-department.png'
+        width={0}
+        height={0}
+        sizes='50vw'
+        alt='line pattern'
+        className='w-full right-0 -bottom-[40%] absolute -z-10 '
+      />
       <BaseLayout>
-        <div className='w-full max-w-4xl mx-auto'>
+        <div className='w-full max-w-4xl mx-auto relative z-[2]'>
           <div className='flex justify-center w-full pb-6'>
             <div className='flex gap-6 items-center max-w-[800px]  justify-center flex-col sm:flex-row'>
               <AwardeeCard
@@ -55,7 +71,7 @@ const MemberSection = () => {
                       instagram='instagram.com/genbiupi'
                       linkedin='linkedin.com/in/genbiupi'
                       img='/images/secretary.png'
-                      className='col-span-3 md:col-span-1'
+                      className='col-span-3 md:col-span-1 bg-white'
                     />
                   </div>
                 ))}
@@ -75,7 +91,11 @@ const MemberSection = () => {
                   width={32}
                   height={32}
                 />
-                <div className='w-[2px] min-h-[70px] bg-primary-100'></div>
+                <div
+                  className={`w-[2px] min-h-[70px] bg-primary-100 ${
+                    programs.length - 2 === i
+                  } && 'hidden' `}
+                ></div>
               </div>
               <div className='pb-8 flex flex-col gap-2 w-full'>
                 <h4 className='text-primary-main'>{item.title}</h4>
@@ -86,30 +106,6 @@ const MemberSection = () => {
               </div>
             </div>
           ))}
-          {/* <div className='flex gap-4 items-start'>
-            <div className='flex flex-col items-center gap-1 h-full'>
-              <Image
-                src='/svg/step-icon.svg'
-                alt='step icon'
-                width={32}
-                height={32}
-              />
-              <div className='w-[2px] min-h-[70px] bg-primary-100'></div>
-            </div>
-            <div className='pb-8 flex flex-col gap-2'>
-              <h4 className='text-primary-main'>GenBI Awarding</h4>
-              <div>
-                <p className='text-sm text-neutral-600'>
-                  Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                  Fugiat, dolores.
-                </p>
-                <p className='text-sm text-neutral-600 italic'>
-                  Lorem ipsum dolor sit, amet consectetur adipisicing elit. Rem,
-                  nesciunt?
-                </p>
-              </div>
-            </div>
-          </div> */}
         </div>
       </BaseLayout>
     </div>
