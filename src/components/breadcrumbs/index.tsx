@@ -1,8 +1,8 @@
-import Image from 'next/image';
 import Link from 'next/link';
 import { FC, Fragment, ReactElement } from 'react';
 // import { TBreadCrumbProps } from './types';
 import { MdChevronRight } from 'react-icons/md';
+import { RiHome6Line } from 'react-icons/ri';
 
 import { cn } from '@/lib/utils';
 
@@ -49,12 +49,13 @@ export const BreadCrumb: FC<TBreadCrumbProps> = ({
                     scroll={true}
                   >
                     {crumb.name.includes('Home') ? (
-                      <Image
-                        src='/svg/home.svg'
-                        width={16}
-                        height={16}
-                        alt='home'
-                      />
+                      // <Image
+                      //   src='/svg/home.svg'
+                      //   width={16}
+                      //   height={16}
+                      //   alt='home'
+                      // />
+                      <RiHome6Line className={`text-lg ${textColor}`} />
                     ) : (
                       crumb.name
                     )}

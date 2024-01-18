@@ -35,8 +35,7 @@ const AcaraCard = ({
   return (
     <Link
       href={link}
-      target='_blank'
-      className='w-[270px] h-full p-4 flex flex-col gap-3 bg-neutral-100 shadow-md border'
+      className='w-[270px] h-full p-4 flex flex-col gap-3 bg-neutral-100 shadow-md border rounded-3xl'
     >
       <Image
         src={image}
