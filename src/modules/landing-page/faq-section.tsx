@@ -6,6 +6,7 @@ import { toast } from 'sonner';
 import { z } from 'zod';
 
 import { ValidationSchemaSuggestionForm } from '@/lib/validations/landing-page';
+import { usePostContactUs } from '@/hooks/landing-page/hook';
 
 import BaseLayout from '@/components/layouts/base';
 import {
@@ -46,12 +47,27 @@ const requirementData = [
 const FaqSection = () => {
   const form = useForm<z.infer<typeof ValidationSchemaSuggestionForm>>({
     resolver: zodResolver(ValidationSchemaSuggestionForm),
+    defaultValues: {
+      name: '',
+      email: '',
+      message: '',
+    },
   });
 
+  const { mutate } = usePostContactUs();
+
   const onSubmit = (data: z.infer<typeof ValidationSchemaSuggestionForm>) => {
-    toast.success(
-      `Pesan berhasil dikirim, balasan akan dikirim ke email ${data.email}`
-    );
+    mutate(data, {
+      onSuccess: () => {
+        toast.success(
+          `Pesan berhasil dikirim, balasan akan dikirim ke email ${data.email}`
+        );
+        form.reset();
+        form.setValue('name', '');
+        form.setValue('email', '');
+        form.setValue('message', '');
+      },
+    });
   };
 
   return (
@@ -151,7 +167,7 @@ const FaqSection = () => {
                 </div>
                 <FormField
                   control={form.control}
-                  name='question'
+                  name='message'
                   render={({ field }) => (
                     <FormItem className='grid w-full items-center gap-1.5'>
                       <FormLabel>Pertanyaan</FormLabel>

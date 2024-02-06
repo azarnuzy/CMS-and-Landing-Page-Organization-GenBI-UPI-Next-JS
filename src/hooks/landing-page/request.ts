@@ -1,6 +1,10 @@
 import { api } from '@/lib/api';
 
-import { THomeSummaryDataResponse } from '@/types/landing-page/index.';
+import {
+  TContactUsDataResponse,
+  TContactUsPayload,
+  THomeSummaryDataResponse,
+} from '@/types/landing-page/index.';
 
 export const getHomeSummaryRequest =
   async (): Promise<THomeSummaryDataResponse> => {
@@ -8,3 +12,14 @@ export const getHomeSummaryRequest =
 
     return data;
   };
+
+export const postContactUs = async (
+  payload: TContactUsPayload
+): Promise<TContactUsDataResponse> => {
+  const { data } = await api.post<TContactUsDataResponse>(
+    'v1/contact/send-email',
+    payload
+  );
+
+  return data;
+};

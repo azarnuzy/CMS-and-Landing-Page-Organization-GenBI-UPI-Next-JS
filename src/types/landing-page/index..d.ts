@@ -9,3 +9,11 @@ export type THomeSummaryData = {
 };
 
 export type THomeSummaryDataResponse = TMetaResponseSingle<THomeSummaryData>;
+
+export type TContactUsPayload = {
+  email: string;
+  name: string;
+  message: string;
+};
+
+export type TContactUsDataResponse = TMetaResponseSingle<null>;

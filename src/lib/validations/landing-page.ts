@@ -11,7 +11,7 @@ export const ValidationSchemaSuggestionForm = z.object({
       required_error: 'Email harus diisi',
     })
     .min(1, 'Email harus diisi'),
-  question: z
+  message: z
     .string({
       required_error: 'Pertanyaan harus diisi',
     })
