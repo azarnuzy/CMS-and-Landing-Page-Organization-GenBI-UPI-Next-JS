@@ -36,7 +36,7 @@ const GallerySection = () => {
             href='/'
             className='text-white px-4 py-2 bg-transparent flex gap-1 border items-center border-neutral-100 w-fit rounded-full hover:bg-neutral-100 hover:text-primary-main transition-all duration-300 ease-in-out font-medium'
           >
-            <span>Lihat Galeri GenBI</span> <IoArrowForwardOutline />{' '}
+            <span>View GenBI Gallery</span> <IoArrowForwardOutline />{' '}
           </Link>
         </div>
       </BaseLayout>

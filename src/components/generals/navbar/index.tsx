@@ -108,9 +108,12 @@ const Navbar = () => {
               >
                 Event
               </Link>
-              <span className=' py-2 text-neutral-100 text-lg font-semibold '>
+              <Link
+                href='/gallery'
+                className=' py-2 text-neutral-100 text-lg font-semibold '
+              >
                 Gallery
-              </span>
+              </Link>
             </div>
             <Button variant='light' size='base' className='hidden sm:block'>
               Login
@@ -138,7 +141,7 @@ const NavbarMobileMenu = ({
   <div
     className={`${
       open ? 'top-0' : '-top-[100vh]'
-    } py-4 absolute md:hidden transition-all ease-in-out duration-300  shadow-md border-b-2 w-full bg-primary-main z-50 left-0`}
+    } py-4 absolute md:hidden transition-all ease-in-out duration-300  shadow-md border-b-2 w-full bg-primary-600 z-50 left-0`}
   >
     <BaseLayout>
       <>
@@ -224,9 +227,12 @@ const NavbarMobileMenu = ({
           >
             Event
           </Link>
-          <span className=' py-2 text-neutral-100 text-lg font-semibold '>
+          <Link
+            href='/gallery'
+            className=' py-2 text-neutral-100 text-lg font-semibold '
+          >
             Gallery
-          </span>
+          </Link>
           <Button variant='light' size='base' className='w-fit'>
             Masuk
           </Button>
