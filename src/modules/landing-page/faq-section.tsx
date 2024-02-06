@@ -67,6 +67,9 @@ const FaqSection = () => {
         form.setValue('email', '');
         form.setValue('message', '');
       },
+      onError: (error) => {
+        toast.error(error.message);
+      },
     });
   };
 

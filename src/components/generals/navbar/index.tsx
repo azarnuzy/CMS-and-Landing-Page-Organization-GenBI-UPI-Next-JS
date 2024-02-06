@@ -53,12 +53,12 @@ const Navbar = () => {
                 href='/berita'
                 className=' py-2 text-neutral-100 text-lg font-semibold '
               >
-                Berita
+                News
               </Link>
               <NavigationMenu>
                 <NavigationMenuList>
                   <NavigationMenuItem>
-                    <NavigationMenuTrigger>Tentang Kami</NavigationMenuTrigger>
+                    <NavigationMenuTrigger>About Us</NavigationMenuTrigger>
                     <NavigationMenuContent>
                       <div className='grid w-[350px] sm:w-[380px]  p-4 md:w-[400px]'>
                         <Link
@@ -106,14 +106,14 @@ const Navbar = () => {
                 href='/acara'
                 className=' py-2 text-neutral-100 text-lg font-semibold '
               >
-                Acara
+                Event
               </Link>
               <span className=' py-2 text-neutral-100 text-lg font-semibold '>
-                Galeri
+                Gallery
               </span>
             </div>
             <Button variant='light' size='base' className='hidden sm:block'>
-              Masuk
+              Login
             </Button>
             {/* Menu Mobile Button */}
             <button onClick={() => setOpen(!open)} className='block sm:hidden'>
@@ -169,12 +169,12 @@ const NavbarMobileMenu = ({
             href='/berita'
             className=' py-2 text-neutral-100 text-lg font-semibold '
           >
-            Berita
+            News
           </Link>
           <NavigationMenu>
             <NavigationMenuList>
               <NavigationMenuItem>
-                <NavigationMenuTrigger>Tentang Kami</NavigationMenuTrigger>
+                <NavigationMenuTrigger>About Us</NavigationMenuTrigger>
                 <NavigationMenuContent>
                   <div className='grid w-[300px] '>
                     <Link
@@ -222,10 +222,10 @@ const NavbarMobileMenu = ({
             href='/acara'
             className=' py-2 text-neutral-100 text-lg font-semibold '
           >
-            Acara
+            Event
           </Link>
           <span className=' py-2 text-neutral-100 text-lg font-semibold '>
-            Galeri
+            Gallery
           </span>
           <Button variant='light' size='base' className='w-fit'>
             Masuk

@@ -18,23 +18,23 @@ const links = [
   },
   {
     name: 'Artikel',
-    href: '/',
+    href: '/berita',
   },
   {
-    name: 'Tentang GenBI',
-    href: '/',
+    name: 'About GenBI',
+    href: '/tentang-genbi',
   },
   {
-    name: 'Tentang GenBI UPI',
-    href: '/',
+    name: 'About GenBI UPI',
+    href: '/tentang-genbi/upi',
   },
   {
-    name: 'Acara',
-    href: '/',
+    name: 'Event',
+    href: '/acara',
   },
   {
-    name: 'Galeri',
-    href: '/',
+    name: 'Gallery',
+    href: '/galeri',
   },
 ];
 
@@ -132,7 +132,7 @@ const Footer = () => {
                 Jawa Barat 40154
               </p>
             </div>
-            <div className='flex gap-4 items-start col-span-4 md:col-span-2 lg:col-span-1'>
+            <div className='flex gap-4 items-start col-span-4 md:col-span-2 lg:col-span-1 flex-wrap'>
               {socialMedia.map((social, index) => (
                 <Link href={social.href} key={index}>
                   {social.icons}
