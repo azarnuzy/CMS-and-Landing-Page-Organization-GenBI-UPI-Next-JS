@@ -1,6 +1,6 @@
 import { ArrowDown } from 'lucide-react';
 import Image from 'next/image';
-import React, { Fragment, useState } from 'react';
+import React, { useState } from 'react';
 // import required modules
 import { Autoplay, EffectFade, Pagination } from 'swiper/modules';
 // Import Swiper React components
@@ -152,20 +152,22 @@ const HeaderSection = () => {
                   >
                     {Array(4)
                       .fill('_')
-                      .map((_, i) => (
-                        <Fragment key={i}>
-                          <SwiperSlide>
-                            <Image
-                              src={`/images/hero-${i + 1}.webp`}
-                              width={0}
-                              height={0}
-                              sizes='50vw'
-                              className='w-full h-full object-cover rounded-3xl'
-                              alt='hero-1'
-                            />
-                          </SwiperSlide>
-                        </Fragment>
-                      ))}
+                      .map((_, i) => {
+                        return (
+                          <div key={i}>
+                            <SwiperSlide key={i}>
+                              <Image
+                                src={`/images/hero-${i + 1}.webp`}
+                                width={0}
+                                height={0}
+                                sizes='50vw'
+                                className='w-full h-full object-cover rounded-3xl'
+                                alt='hero-1'
+                              />
+                            </SwiperSlide>
+                          </div>
+                        );
+                      })}
                   </Swiper>
                 </div>
                 {swiper && (

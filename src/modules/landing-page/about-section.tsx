@@ -1,9 +1,13 @@
+'use client';
+
 import Image from 'next/image';
 import React from 'react';
 import { BsTrophy } from 'react-icons/bs';
 import { GrAnnounce } from 'react-icons/gr';
 import { HiMiniUsers } from 'react-icons/hi2';
 import { IoArrowForwardOutline } from 'react-icons/io5';
+
+import { useGetHomeSummary } from '@/hooks/landing-page/hook';
 
 import BaseLayout from '@/components/layouts/base';
 
@@ -36,6 +40,8 @@ export const misiData = [
 ];
 
 const AboutSection = () => {
+  const { data } = useGetHomeSummary();
+
   return (
     <div className='min-h-screen w-full pt-40 relative'>
       <div className='h-full relative'>
@@ -57,8 +63,10 @@ const AboutSection = () => {
                 <span className='text-primary-main'>GenBI UPI</span>
               </h1>
               <p className='text-neutral-600 sm:w-1/2'>
-                GenBI (Generasi Baru Indonesia) UPI merupakan komunitas penerima
-                beasiswa Bank Indonesia di Universitas Pendidikan Indonesia.
+                GenBI UPI merupakan komunitas penerima beasiswa Bank Indonesia
+                di Universitas Pendidikan Indonesia yang telah aktif sejak 2019.
+                Kami mencakup beragam bidang seperti ekonomi, pendidikan,
+                kesehatan, dan sosial lingkungan.
               </p>
               <div className='flex flex-col sm:flex-row items-start sm:items-center gap-6'>
                 <button className='bg-primary-main text-white px-6 py-2 rounded-full border border-transparent flex gap-3 items-center hover:bg-primary-600 hover:border-primary-main  duration-300 transition-all ease-in-out'>
@@ -74,23 +82,33 @@ const AboutSection = () => {
             <div className='flex flex-col sm:flex-row gap-6'>
               <div className='sm:w-[160px] flex flex-row flex-wrap  sm:flex-col gap-3'>
                 <div className=' px-3 py-2'>
-                  <h2 className='border-l-2  border-primary-main px-3'>120</h2>
+                  <h2 className='border-l-2  border-primary-main px-3'>
+                    {data?.data?.events || 0}
+                  </h2>
                   <p className='text-neutral-600 px-5'>Kegiatan</p>
                 </div>
                 <div className=' px-3 py-2'>
-                  <h2 className='border-l-2  border-primary-main px-3'>90</h2>
+                  <h2 className='border-l-2  border-primary-main px-3'>
+                    {data?.data?.posts || 0}
+                  </h2>
                   <p className='text-neutral-600 px-5'>Berita</p>
                 </div>
                 <div className=' px-3 py-2'>
-                  <h2 className='border-l-2  border-primary-main px-3'>11</h2>
+                  <h2 className='border-l-2  border-primary-main px-3'>
+                    {data?.data?.years || 0}
+                  </h2>
                   <p className='text-neutral-600 px-5'>Tahun</p>
                 </div>
                 <div className=' px-3 py-2'>
-                  <h2 className='border-l-2  border-primary-main px-3'>120</h2>
+                  <h2 className='border-l-2  border-primary-main px-3'>
+                    {data?.data?.visitors || 0}
+                  </h2>
                   <p className='text-neutral-600 px-5'>Pengunjung</p>
                 </div>
                 <div className=' px-3 py-2'>
-                  <h2 className='border-l-2  border-primary-main px-3'>120</h2>
+                  <h2 className='border-l-2  border-primary-main px-3'>
+                    {data?.data?.awardees || 0}
+                  </h2>
                   <p className='text-neutral-600 px-5'>Penerima</p>
                 </div>
               </div>
