@@ -5,6 +5,7 @@ import '@/styles/globals.css';
 
 import Footer from '@/components/generals/footer';
 import Navbar from '@/components/generals/navbar';
+import Provider from '@/components/generals/provider';
 import { Toaster } from '@/components/ui/sonner';
 
 import { siteConfig } from '@/constant/config';
@@ -51,13 +52,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html>
-      <body>
-        <Navbar />
-        {children}
-        <Toaster />
-        <Footer />
-      </body>
-    </html>
+    <Provider>
+      <html>
+        <body>
+          <Navbar />
+          {children}
+          <Toaster />
+          <Footer />
+        </body>
+      </html>
+    </Provider>
   );
 }

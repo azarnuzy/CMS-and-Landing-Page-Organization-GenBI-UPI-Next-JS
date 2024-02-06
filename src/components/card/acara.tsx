@@ -35,14 +35,14 @@ const AcaraCard = ({
   return (
     <Link
       href={link}
-      className='w-[270px] h-full p-4 flex flex-col gap-3 bg-neutral-100 shadow-md border rounded-3xl'
+      className='w-full sm:w-[270px] h-full p-4 flex flex-col gap-3 bg-neutral-100 shadow-md border rounded-3xl'
     >
       <Image
         src={image}
         alt='bg-shape-header-about'
         width={0}
         height={0}
-        className='w-[270px] h-[337px] object-cover'
+        className='mx-auto w-[270px] h-[337px] object-cover'
         sizes='50vw'
       />
       <div
