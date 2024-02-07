@@ -1,25 +1,18 @@
-'use client';
-
 import Image from 'next/image';
-import React, { useEffect } from 'react';
-
-import {
-  useGetManagement,
-  useManagementDataState,
-} from '@/hooks/managements/hook';
+import React from 'react';
 
 import BaseLayout from '@/components/layouts/base';
 
 const HeaderUpiSection = () => {
-  const { data } = useGetManagement('23.24');
+  // const { data } = useGetManagement('23.24');
 
-  const { setDataManagement } = useManagementDataState();
+  // const { setDataManagement } = useManagementDataState();
 
-  useEffect(() => {
-    if (data) {
-      setDataManagement(data?.data);
-    }
-  }, [data, setDataManagement]);
+  // useEffect(() => {
+  //   if (data) {
+  //     setDataManagement(data?.data);
+  //   }
+  // }, [data, setDataManagement]);
 
   return (
     <div className='min-h-[50vh] relative'>

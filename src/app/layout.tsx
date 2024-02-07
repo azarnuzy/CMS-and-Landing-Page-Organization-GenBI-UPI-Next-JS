@@ -3,9 +3,8 @@ import * as React from 'react';
 
 import '@/styles/globals.css';
 
-import Footer from '@/components/generals/footer';
-import Navbar from '@/components/generals/navbar';
 import Provider from '@/components/generals/provider';
+import RootBaseLayout from '@/components/layouts/root';
 import { Toaster } from '@/components/ui/sonner';
 
 import { siteConfig } from '@/constant/config';
@@ -55,10 +54,10 @@ export default function RootLayout({
     <Provider>
       <html>
         <body>
-          <Navbar />
-          {children}
-          <Toaster position='top-right' richColors />
-          <Footer />
+          <RootBaseLayout>
+            {children}
+            <Toaster position='top-right' richColors />
+          </RootBaseLayout>
         </body>
       </html>
     </Provider>

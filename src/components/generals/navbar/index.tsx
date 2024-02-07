@@ -115,9 +115,11 @@ const Navbar = () => {
                 Gallery
               </Link>
             </div>
-            <Button variant='light' size='base' className='hidden sm:block'>
-              Login
-            </Button>
+            <Link href='/login'>
+              <Button variant='light' size='base' className='hidden sm:block'>
+                Login
+              </Button>
+            </Link>
             {/* Menu Mobile Button */}
             <button onClick={() => setOpen(!open)} className='block sm:hidden'>
               <IoMenu className=' text-white text-3xl' />
@@ -257,3 +259,38 @@ const NavbarMobileMenu = ({
 };
 
 export default Navbar;
+
+export const NavbarLogin = () => (
+  <>
+    <div
+      className='h-[63px] w-full relative -z-10 bg-primary-600'
+      style={{
+        background:
+          'linear-gradient(101deg, #041C3F 3.31%, #11418B 39.48%, #11418B 98.43%)',
+      }}
+    ></div>
+    <nav className='w-full fixed top-0 left-0 z-50 h-16 flex justify-center items-center bg-primary-800'>
+      <BaseLayout>
+        <div className='flex justify-between items-center'>
+          <Link href='/' className='flex items-center gap-4'>
+            <Image
+              alt='Logo BI'
+              src='/images/logo-bi.png'
+              width={36}
+              height={36}
+            />
+            <Image
+              alt='Logo GenBI'
+              src='/images/logo-genbi.png'
+              width={38}
+              height={38}
+            />
+            <h5 className='text-2xl text-neutral-100 font-bold tracking-wider'>
+              GenBI UPI
+            </h5>
+          </Link>
+        </div>
+      </BaseLayout>
+    </nav>
+  </>
+);
