@@ -4,7 +4,7 @@ import React from 'react';
 const HeaderGallerySection = () => {
   return (
     <div
-      className='pt-20 lg:pt-0 min-h-[60vh] md:min-h-[65vh] lg:min-h-[70vh] w-full relative'
+      className='pt-20 lg:pt-0 min-h-[60vh] md:min-h-[65vh] lg:min-h-[70vh] w-full relative overflow-hidden'
       style={{
         background:
           'linear-gradient(101deg, #041C3F 3.31%, #11418B 39.48%, #11418B 98.43%)',
