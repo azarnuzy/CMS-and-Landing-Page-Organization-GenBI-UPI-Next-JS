@@ -32,7 +32,7 @@ const HeaderUpiSection = () => {
                   height={38}
                 />
               </div>
-              <div className='flex flex-col gap-1'>
+              <div className='flex flex-col gap-1 max-w-[50%] sm:max-w-full'>
                 <h1 className='text-neutral-100 h0'>GenBI UPI </h1>
                 <h2 className='text-neutral-100'>Generasi Baru Indonesia</h2>
                 <h2 className='text-neutral-100'>

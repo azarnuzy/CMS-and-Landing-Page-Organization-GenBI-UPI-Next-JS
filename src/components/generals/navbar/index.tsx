@@ -137,109 +137,123 @@ const NavbarMobileMenu = ({
 }: {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-}) => (
-  <div
-    className={`${
-      open ? 'top-0' : '-top-[100vh]'
-    } py-4 absolute md:hidden transition-all ease-in-out duration-300  shadow-md border-b-2 w-full bg-primary-600 z-50 left-0`}
-  >
-    <BaseLayout>
-      <>
-        <div className='flex justify-between items-center'>
-          <Link href='/' className='flex items-center gap-4'>
-            <Image
-              alt='Logo BI'
-              src='/images/logo-bi.png'
-              width={36}
-              height={36}
-            />
-            <Image
-              alt='Logo GenBI'
-              src='/images/logo-genbi.png'
-              width={38}
-              height={38}
-            />
-            <h5 className='text-2xl text-neutral-100 font-bold tracking-wider'>
-              GenBI UPI
-            </h5>
-          </Link>
-          <button onClick={() => setOpen(!open)}>
-            <IoMenu className=' text-white text-3xl' />
-          </button>
-        </div>
-        <div className='flex flex-col gap-2 mt-4'>
-          <Link
-            href='/berita'
-            className=' py-2 text-neutral-100 text-lg font-semibold '
-          >
-            News
-          </Link>
-          <NavigationMenu>
-            <NavigationMenuList>
-              <NavigationMenuItem>
-                <NavigationMenuTrigger>About Us</NavigationMenuTrigger>
-                <NavigationMenuContent>
-                  <div className='grid w-[300px] '>
-                    <Link
-                      href='/tentang-genbi'
-                      className='rounded-2xl hover:bg-blue-100 transition-colors duration-300 ease-in-out p-4 flex gap-4 items-start'
-                    >
-                      <span className='text-neutral-main text-lg font-semibold'>
-                        01
-                      </span>
-                      <div>
-                        <h4>Generasi Baru Indonesia</h4>
-                        <p className='text-sm'>
-                          Kenali lebih jauh tentang Generasi Baru Indonesia
-                        </p>
-                      </div>
-                    </Link>
-                    <div className='rounded-2xl hover:bg-blue-100 transition-colors duration-300 ease-in-out p-4 flex gap-4 items-start'>
-                      <span className='text-neutral-main text-lg font-semibold'>
-                        02
-                      </span>
-                      <div>
-                        <h4>GenBI UPI</h4>
-                        <div className='border-l  border-neutral-main px-3 py-1.5 flex flex-col gap-2'>
-                          <Link
-                            href='/tentang-genbi/upi'
-                            className='text-sm hover:text-primary-main hover:font-bold transition-all duration-300 ease-in-out'
-                          >
-                            Struktur Organisasi GenBI UPI
-                          </Link>{' '}
-                          <Link
-                            href='/tentang-genbi/upi/bangga'
-                            className='text-sm hover:text-primary-main hover:font-bold transition-all duration-300 ease-in-out'
-                          >
-                            GenBI Bangga
-                          </Link>
+}) => {
+  const handleClose = () => setOpen(false);
+
+  return (
+    <div
+      className={`${
+        open ? 'top-0' : '-top-[100vh]'
+      } py-4 absolute md:hidden transition-all ease-in-out duration-300  shadow-md border-b-2 w-full bg-primary-800 z-50 left-0`}
+    >
+      <BaseLayout>
+        <>
+          <div className='flex justify-between items-center'>
+            <Link
+              onClick={handleClose}
+              href='/'
+              className='flex items-center gap-4'
+            >
+              <Image
+                alt='Logo BI'
+                src='/images/logo-bi.png'
+                width={36}
+                height={36}
+              />
+              <Image
+                alt='Logo GenBI'
+                src='/images/logo-genbi.png'
+                width={38}
+                height={38}
+              />
+              <h5 className='text-2xl text-neutral-100 font-bold tracking-wider'>
+                GenBI UPI
+              </h5>
+            </Link>
+            <button onClick={() => setOpen(!open)}>
+              <IoMenu className=' text-white text-3xl' />
+            </button>
+          </div>
+          <div className='flex flex-col gap-2 mt-4'>
+            <Link
+              onClick={handleClose}
+              href='/berita'
+              className=' py-2 text-neutral-100 text-lg font-semibold '
+            >
+              News
+            </Link>
+            <NavigationMenu>
+              <NavigationMenuList>
+                <NavigationMenuItem>
+                  <NavigationMenuTrigger>About Us</NavigationMenuTrigger>
+                  <NavigationMenuContent>
+                    <div className='grid w-[300px] '>
+                      <Link
+                        onClick={handleClose}
+                        href='/tentang-genbi'
+                        className='rounded-2xl hover:bg-blue-100 transition-colors duration-300 ease-in-out p-4 flex gap-4 items-start'
+                      >
+                        <span className='text-neutral-main text-lg font-semibold'>
+                          01
+                        </span>
+                        <div>
+                          <h4>Generasi Baru Indonesia</h4>
+                          <p className='text-sm'>
+                            Kenali lebih jauh tentang Generasi Baru Indonesia
+                          </p>
+                        </div>
+                      </Link>
+                      <div className='rounded-2xl hover:bg-blue-100 transition-colors duration-300 ease-in-out p-4 flex gap-4 items-start'>
+                        <span className='text-neutral-main text-lg font-semibold'>
+                          02
+                        </span>
+                        <div>
+                          <h4>GenBI UPI</h4>
+                          <div className='border-l  border-neutral-main px-3 py-1.5 flex flex-col gap-2'>
+                            <Link
+                              onClick={handleClose}
+                              href='/tentang-genbi/upi'
+                              className='text-sm hover:text-primary-main hover:font-bold transition-all duration-300 ease-in-out'
+                            >
+                              Struktur Organisasi GenBI UPI
+                            </Link>{' '}
+                            <Link
+                              onClick={handleClose}
+                              href='/tentang-genbi/upi/bangga'
+                              className='text-sm hover:text-primary-main hover:font-bold transition-all duration-300 ease-in-out'
+                            >
+                              GenBI Bangga
+                            </Link>
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                </NavigationMenuContent>
-              </NavigationMenuItem>
-            </NavigationMenuList>
-          </NavigationMenu>
-          <Link
-            href='/acara'
-            className=' py-2 text-neutral-100 text-lg font-semibold '
-          >
-            Event
-          </Link>
-          <Link
-            href='/gallery'
-            className=' py-2 text-neutral-100 text-lg font-semibold '
-          >
-            Gallery
-          </Link>
-          <Button variant='light' size='base' className='w-fit'>
-            Masuk
-          </Button>
-        </div>
-      </>
-    </BaseLayout>
-  </div>
-);
+                  </NavigationMenuContent>
+                </NavigationMenuItem>
+              </NavigationMenuList>
+            </NavigationMenu>
+            <Link
+              onClick={handleClose}
+              href='/acara'
+              className=' py-2 text-neutral-100 text-lg font-semibold '
+            >
+              Event
+            </Link>
+            <Link
+              onClick={handleClose}
+              href='/gallery'
+              className=' py-2 text-neutral-100 text-lg font-semibold '
+            >
+              Gallery
+            </Link>
+            <Button variant='light' size='base' className='w-fit'>
+              Login
+            </Button>
+          </div>
+        </>
+      </BaseLayout>
+    </div>
+  );
+};
 
 export default Navbar;
