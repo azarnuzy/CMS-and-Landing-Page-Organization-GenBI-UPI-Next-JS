@@ -5,25 +5,34 @@ import React, { FC, Fragment, ReactNode } from 'react';
 
 import Footer from '@/components/generals/footer';
 import Navbar, { NavbarLogin } from '@/components/generals/navbar';
+import Sidebar from '@/components/generals/sidebar';
 
 const pathnames = ['/acara', '/berita', '/gallery', '/tentang-genbi'];
 
 const RootBaseLayout: FC<{ children: ReactNode }> = ({ children }) => {
   const pathname = usePathname();
 
-  let isAdmin = false;
+  let pageType = 'user';
 
   pathnames.map((path) => {
     if (pathname.includes(path)) {
-      isAdmin = true;
+      pageType = 'user';
     }
   });
 
   if (pathname === '/') {
-    isAdmin = true;
+    pageType = 'user';
   }
 
-  if (isAdmin) {
+  if (pathname.includes('/login')) {
+    pageType = 'login';
+  }
+
+  if (pathname.includes('/admin')) {
+    pageType = 'admin';
+  }
+
+  if (pageType === 'user') {
     return (
       <Fragment>
         <Navbar />
@@ -31,10 +40,17 @@ const RootBaseLayout: FC<{ children: ReactNode }> = ({ children }) => {
         <Footer />
       </Fragment>
     );
-  } else {
+  } else if (pageType === 'login') {
     return (
       <Fragment>
         <NavbarLogin />
+        {children}
+      </Fragment>
+    );
+  } else {
+    return (
+      <Fragment>
+        <Sidebar />
         {children}
       </Fragment>
     );
