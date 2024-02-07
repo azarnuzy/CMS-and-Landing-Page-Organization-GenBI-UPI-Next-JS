@@ -1,7 +1,13 @@
 import React from 'react';
 
+import LoginSection from '@/modules/login/login-section';
+
 const LoginPage = () => {
-  return <div>LoginPage</div>;
+  return (
+    <main>
+      <LoginSection />
+    </main>
+  );
 };
 
 export default LoginPage;
