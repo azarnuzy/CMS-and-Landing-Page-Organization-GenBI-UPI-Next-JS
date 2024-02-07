@@ -105,3 +105,7 @@ export interface Self {
 }
 
 export type TDataManagementResponse = TMetaResponseSingle<TDataManagement>;
+export type TuseManagementDataState = {
+  getDataManagement: TDataManagement | null;
+  setDataManagement: (val: TDataManagement) => void;
+};

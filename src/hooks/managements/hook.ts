@@ -1,9 +1,15 @@
 import { useQuery, UseQueryResult } from '@tanstack/react-query';
+import { useRecoilState } from 'recoil';
 
 import { getManagementRequest } from '@/hooks/managements/request';
 
+import { activeManagementState } from '@/recoils/about-genbi/atom';
+
 import { TMetaErrorResponse } from '@/types';
-import { TDataManagementResponse } from '@/types/managements';
+import {
+  TDataManagementResponse,
+  TuseManagementDataState,
+} from '@/types/managements';
 
 export const useGetManagement = (
   year: string
@@ -12,3 +18,12 @@ export const useGetManagement = (
     queryKey: ['management', year],
     queryFn: async () => await getManagementRequest(year),
   });
+
+export const useManagementDataState = (): TuseManagementDataState => {
+  const [get, set] = useRecoilState(activeManagementState);
+
+  return {
+    getDataManagement: get,
+    setDataManagement: (val) => set(val),
+  };
+};
