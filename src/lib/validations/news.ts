@@ -26,10 +26,18 @@ export const ValidationSchemaAddNewsForm = z.object({
     .min(1, 'Department should be filled'),
   content: z
     .string({
-      required_error: 'Content should be filled',
+      required_error: 'Content should be filled with minimum 5 character',
     })
-    .min(1, 'Content should be filled'),
+    .min(5, { message: 'Content should be filled with minimum 5 character' })
+    .refine((value) => value.trim() !== '<p></p>', {
+      message: 'Content should be filled with minimum 5 character',
+    }),
   hashtag: z
+    .string({
+      required_error: 'Hashtag should be filled',
+    })
+    .min(1, 'Hashtag should be filled'),
+  event: z
     .string({
       required_error: 'Hashtag should be filled',
     })
@@ -48,6 +56,12 @@ export const ValidationSchemaAddNewsForm = z.object({
       (files: File[]) => ACCEPTED_MEDIA_TYPES.includes(files?.[0].type),
       'Accepts only .jpg, .jpeg, .png, and .webp'
     ),
+  caption_thumbnail: z
+    .string({
+      required_error: 'Hashtag should be filled',
+    })
+    .min(1, 'Hashtag should be filled')
+    .optional(),
   othersPhoto: z
     .any()
     .refine((files: File[]) => {
