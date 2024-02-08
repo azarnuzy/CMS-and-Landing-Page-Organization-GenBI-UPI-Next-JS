@@ -26,9 +26,9 @@ import {
 } from '@/modules/admin/news/constant';
 const HeaderNewsSection = () => {
   return (
-    <div className='flex flex-col gap-5 border-b-[3px] pb-5'>
+    <div className='flex flex-col  border-b pb-5'>
       <BreadCrumb items={breadcrumbNewsData} textColor='text-primary-main' />
-      <div className='flex justify-between items-center'>
+      <div className='flex flex-col lg:flex-row justify-between lg:items-center gap-y-4'>
         <h3 className='text-primary-900'>News Management</h3>
         <div className='flex gap-4 items-center'>
           <div className='rounded-full border border-neutral-300 py-2.5 px-6 flex gap-2'>

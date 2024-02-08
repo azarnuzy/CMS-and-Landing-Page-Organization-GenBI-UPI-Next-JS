@@ -70,3 +70,97 @@ export const departmentData = [
     name: 'Social Environtment',
   },
 ];
+
+type TNewsData = {
+  id: number;
+  title: string;
+  type: 'press-release' | 'article' | 'all-data' | 'default';
+  department:
+    | 'marketing'
+    | 'all-department'
+    | 'bank-indonesia'
+    | 'bank-indonesia-jabar'
+    | 'economic'
+    | 'education'
+    | 'executive'
+    | 'healthcare'
+    | 'human-resources'
+    | 'public-relation'
+    | 'social-environtment'
+    | 'default';
+};
+
+export const newsData: TNewsData[] = [
+  {
+    id: 1,
+    title:
+      'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Consequatur, placeat.',
+    type: 'press-release',
+    department: 'marketing',
+  },
+  // create more data
+
+  {
+    id: 2,
+    title:
+      'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Consequatur, placeat.',
+    type: 'article',
+    department: 'healthcare',
+  },
+  {
+    id: 3,
+    title:
+      'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Consequatur, placeat.',
+    type: 'press-release',
+    department: 'marketing',
+  },
+  {
+    id: 4,
+    title:
+      'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Consequatur, placeat.',
+    type: 'article',
+    department: 'marketing',
+  },
+  {
+    id: 5,
+    title:
+      'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Consequatur, placeat.',
+    type: 'press-release',
+    department: 'economic',
+  },
+  {
+    id: 6,
+    title:
+      'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Consequatur, placeat.',
+    type: 'article',
+    department: 'education',
+  },
+  {
+    id: 7,
+    title:
+      'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Consequatur, placeat.',
+    type: 'press-release',
+    department: 'executive',
+  },
+  {
+    id: 8,
+    title:
+      'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Consequatur, placeat.',
+    type: 'article',
+    department: 'healthcare',
+  },
+  {
+    id: 9,
+    title:
+      'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Consequatur, placeat.',
+    type: 'press-release',
+    department: 'healthcare',
+  },
+  {
+    id: 10,
+    title:
+      'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Consequatur, placeat.',
+    type: 'article',
+    department: 'healthcare',
+  },
+];

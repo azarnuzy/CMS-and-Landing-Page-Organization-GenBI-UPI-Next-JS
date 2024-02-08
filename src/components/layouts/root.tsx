@@ -52,7 +52,7 @@ const RootBaseLayout: FC<{ children: ReactNode }> = ({ children }) => {
     return (
       <div className='flex'>
         <Sidebar />
-        <div className='flex flex-col gap-4'>
+        <div className='flex flex-col gap-4 max-w-[calc(100vw-300px)]'>
           <NavbarAdmin />
           <div className='px-10'>{children}</div>
         </div>
