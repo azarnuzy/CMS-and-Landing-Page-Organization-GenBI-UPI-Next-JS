@@ -11,8 +11,8 @@ import { RiHome6Fill } from 'react-icons/ri';
 
 const Sidebar: FC = () => {
   return (
-    <div className='w-[300px] min-h-screen py-10 bg-primary-main relative'>
-      <div className='fixed top-0 left-0 h-screen bg-primary-main overflow-y-auto pb-10 pt-10 w-[300px]'>
+    <div className='w-[300px] min-h-screen  bg-primary-main relative'>
+      <div className='fixed top-0 left-0 h-screen bg-primary-main overflow-y-auto pb-10 pt-4 w-[300px]'>
         <div className='pl-[35px] pb-[10px] flex gap-4 items-center'>
           <Image
             alt='Logo BI'
@@ -28,7 +28,7 @@ const Sidebar: FC = () => {
           />
           <p className='text-xl font-bold text-white'>GenBI UPI</p>
         </div>
-        <div className='flex gap-2 flex-col w-full'>
+        <div className='flex gap-2 flex-col w-full pt-4'>
           {dataSideBar.map((item, i) => (
             <div className='flex flex-col ' key={i}>
               <p className='text-sm text-white pl-[35px] py-2 max-w-[190px]'>
@@ -83,7 +83,7 @@ const dataSideBar = [
       },
       {
         title: 'News',
-        link: '/admin',
+        link: '/admin/news',
         icon: <BiSolidBookAlt className='w-6 h-6  text-white' />,
       },
       {

@@ -19,7 +19,7 @@ const NavbarAdmin = () => {
       </Badge>
       <Menubar>
         <MenubarMenu>
-          <MenubarTrigger>
+          <MenubarTrigger className='cursor-pointer'>
             <Avatar className='w-10 h-10'>
               <AvatarImage src='/images/avatar.jpeg' />
               <AvatarFallback>CN</AvatarFallback>
