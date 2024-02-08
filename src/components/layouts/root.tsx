@@ -5,6 +5,7 @@ import React, { FC, Fragment, ReactNode } from 'react';
 
 import Footer from '@/components/generals/footer';
 import Navbar, { NavbarLogin } from '@/components/generals/navbar';
+import NavbarAdmin from '@/components/generals/navbar/admin';
 import Sidebar from '@/components/generals/sidebar';
 
 const pathnames = ['/acara', '/berita', '/gallery', '/tentang-genbi'];
@@ -49,10 +50,13 @@ const RootBaseLayout: FC<{ children: ReactNode }> = ({ children }) => {
     );
   } else {
     return (
-      <Fragment>
+      <div className='flex'>
         <Sidebar />
-        {children}
-      </Fragment>
+        <div className='flex flex-col gap-4'>
+          <NavbarAdmin />
+          <div className='px-10'>{children}</div>
+        </div>
+      </div>
     );
   }
 };

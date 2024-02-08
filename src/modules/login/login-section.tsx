@@ -3,6 +3,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { IoIosArrowRoundBack } from 'react-icons/io';
@@ -17,6 +18,8 @@ import { Form } from '@/components/ui/form';
 import { TextField } from '@/components/ui/text-field';
 
 const LoginSection = () => {
+  const router = useRouter();
+
   const form = useForm<z.infer<typeof ValidationSchemaLoginForm>>({
     resolver: zodResolver(ValidationSchemaLoginForm),
     defaultValues: {
@@ -27,6 +30,7 @@ const LoginSection = () => {
 
   const onSubmit = (data: z.infer<typeof ValidationSchemaLoginForm>) => {
     toast.success(`Login Success. Welcome ${data.username}`);
+    router.push('/admin');
   };
 
   return (
