@@ -26,7 +26,7 @@ import {
 } from '@/modules/admin/news/constant';
 const HeaderNewsSection = () => {
   return (
-    <div className='flex flex-col gap-5'>
+    <div className='flex flex-col gap-5 border-b-[3px] pb-5'>
       <BreadCrumb items={breadcrumbNewsData} textColor='text-primary-main' />
       <div className='flex justify-between items-center'>
         <h3 className='text-primary-900'>News Management</h3>
@@ -101,58 +101,6 @@ const HeaderNewsSection = () => {
               </div>
             </PopoverContent>
           </Popover>
-          {/* <Menubar>
-            <MenubarMenu>
-              <MenubarTrigger className='cursor-pointer'>
-                <div className='border border-primary-main rounded-lg p-[10px] flex items-center'>
-                  <IoFilterSharp className='text-2xl text-primary-main' />
-                </div>
-              </MenubarTrigger>
-              <MenubarContent>
-                <div className='flex flex-col gap-2 rounded-[18px] py-2'>
-                  <p className='text-neutral-800 py-2 px-4 font-medium text-base'>
-                    Filter
-                  </p>
-                  <RadioGroup defaultValue='all-data'>
-                    {filterData.map((item, i) => (
-                      <div
-                        key={i}
-                        className=' flex items-center space-x-2 px-4'
-                      >
-                        <RadioGroupItem value={item.id} id={item.id} />
-                        <Label
-                          className='text-base text-neutral-800'
-                          htmlFor={item.id}
-                        >
-                          {item.name}
-                        </Label>
-                      </div>
-                    ))}
-                  </RadioGroup>
-                  <MenubarSeparator />
-                  <p className='text-neutral-800 py-2 px-4 font-medium text-base'>
-                    Department
-                  </p>
-                  <RadioGroup defaultValue='all-department'>
-                    {departmentData.map((item, i) => (
-                      <div
-                        key={i}
-                        className=' flex items-center space-x-2 px-4'
-                      >
-                        <RadioGroupItem value={item.id} id={item.id} />
-                        <Label
-                          className='text-base text-neutral-800'
-                          htmlFor={item.id}
-                        >
-                          {item.name}
-                        </Label>
-                      </div>
-                    ))}
-                  </RadioGroup>
-                </div>
-              </MenubarContent>
-            </MenubarMenu>
-          </Menubar> */}
         </div>
       </div>
     </div>
