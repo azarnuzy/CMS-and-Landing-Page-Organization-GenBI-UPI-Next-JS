@@ -2,15 +2,19 @@
 
 import { usePathname } from 'next/navigation';
 import React, { FC, Fragment, ReactNode } from 'react';
+import { useRecoilState } from 'recoil';
 
 import Footer from '@/components/generals/footer';
 import Navbar, { NavbarLogin } from '@/components/generals/navbar';
 import NavbarAdmin from '@/components/generals/navbar/admin';
 import Sidebar from '@/components/generals/sidebar';
 
+import { sidebarMinimizeState } from '@/recoils/sidebar/atom';
+
 const pathnames = ['/acara', '/berita', '/gallery', '/tentang-genbi'];
 
 const RootBaseLayout: FC<{ children: ReactNode }> = ({ children }) => {
+  const [isMinimize] = useRecoilState(sidebarMinimizeState);
   const pathname = usePathname();
 
   let pageType = 'user';
@@ -52,7 +56,11 @@ const RootBaseLayout: FC<{ children: ReactNode }> = ({ children }) => {
     return (
       <div className='flex'>
         <Sidebar />
-        <div className='flex flex-col gap-4 max-w-[calc(100vw-300px)]'>
+        <div
+          className={`flex flex-col gap-4 ${
+            isMinimize ? 'w-[calc(100vw-100px)]' : 'w-[calc(100vw-300px)]'
+          }`}
+        >
           <NavbarAdmin />
           <div className='px-10'>{children}</div>
         </div>
