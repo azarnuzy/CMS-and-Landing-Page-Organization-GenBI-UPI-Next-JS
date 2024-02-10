@@ -27,16 +27,14 @@ export const UploadField = <T extends FieldValues>(
         >
           {props.label}
           {props.required && (
-            <span className='ml-1 font-bold  text-red-600'>*</span>
+            <span className='ml-1 font-bold  text-red-500'>*</span>
           )}
         </label>
       )}
 
       <label className='mb-2' htmlFor={props.name}>
         <section
-          className={`${
-            props.status === 'error' && ' border-red-700'
-          } flex overflow-hidden border mb-1 rounded-lg ${props.className}`}
+          className={`flex overflow-hidden border mb-1 rounded-lg ${props.className}`}
         >
           <div className='w-full flex items-center bg-white'>
             <span
@@ -51,7 +49,7 @@ export const UploadField = <T extends FieldValues>(
             <p
               className={`${
                 props.status === 'error' ? 'text-red-500 italic' : ''
-              } px-4 text-xs`}
+              } px-4 text-xs text-nowrap overflow-hidden overflow-ellipsis whitespace-nowrap`}
             >
               {getName || props.files ? (
                 <span>
@@ -72,7 +70,7 @@ export const UploadField = <T extends FieldValues>(
         <span
           className={`${
             props.status === 'error'
-              ? 'text-red-700'
+              ? 'text-red-500 text-sm font-semibold'
               : props.status === 'success'
               ? 'text-green-base'
               : props.status === 'warning'
@@ -96,7 +94,7 @@ export const UploadField = <T extends FieldValues>(
         className={`
             ${
               props.status === 'error' &&
-              'focus:ring-1 bg-red-100 placeholder:text-white ring-1 ring-red-base text-sm'
+              ' bg-red-100 placeholder:text-white  text-sm'
             }
 
             ${

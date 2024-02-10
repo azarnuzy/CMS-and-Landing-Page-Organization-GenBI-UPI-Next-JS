@@ -7,13 +7,13 @@ const HeaderAcaraSection = () => {
   return (
     <div className='min-h-[40vh] relative pt-12 pb-48 lg:pb-64'>
       <div
-        className='w-[577px] h-[577px] absolute -top-40 -right-48 rounded-full blur-[100px]'
+        className='w-[577px] h-[577px] absolute -top-40 -right-48 rounded-full blur-[75px]'
         style={{
           background: 'rgba(189, 219, 240, 0.82)',
         }}
       ></div>
       <div
-        className='w-[577px] h-[577px] absolute -bottom-40 -left-48 rounded-full blur-[100px]'
+        className='w-[577px] h-[577px] absolute -bottom-40 -left-48 rounded-full blur-[75px]'
         style={{
           background: 'rgba(250, 210, 164, 0.82)',
         }}

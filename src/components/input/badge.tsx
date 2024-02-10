@@ -47,20 +47,6 @@ const InputBadge = <T extends FieldValues>({
     setInputText(e.target.value);
   };
 
-  // const handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-  //   // Cek apakah input aktif
-  //   const isInputActive = document.activeElement === inputRef.current;
-
-  //   if (e.key === 'Enter' && !isInputActive) {
-  //     if (inputText.trim() !== '') {
-  //       setItems([...items, inputText]);
-
-  //       setInputText('');
-  //     }
-  //     e.preventDefault();
-  //   }
-  // };
-
   const messageStatus = clsx({
     'text-error-base': status === 'error',
     'text-warning-base': status === 'warning',

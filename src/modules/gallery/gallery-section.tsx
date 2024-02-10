@@ -41,7 +41,7 @@ const GallerySection = () => {
   const handleMovePrev = () => setIndex(prevIndex);
   const handleMoveNext = () => setIndex(nextIndex);
   return (
-    <div className='-mt-[50px] sm:-mt-[100px] lg:-mt-[200px]  pb-10'>
+    <div className='-mt-[50px] sm:-mt-[75px] lg:-mt-[200px]  pb-10'>
       <BaseLayout>
         <>
           <Gallery

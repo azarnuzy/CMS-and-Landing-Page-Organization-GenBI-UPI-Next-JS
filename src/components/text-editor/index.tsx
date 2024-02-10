@@ -31,7 +31,7 @@ const DraftEditor: React.FC<DraftEditorProps> = ({
     <div className='flex flex-col gap-2'>
       <div
         className={`text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 ${
-          error ? 'text-red-700' : ''
+          error ? 'text-red-500' : ''
         }`}
       >
         {label}
@@ -107,7 +107,7 @@ const DraftEditor: React.FC<DraftEditorProps> = ({
           }}
         />
       </div>
-      <div className={`text-sm font-medium text-red-700 ${!error && 'hidden'}`}>
+      <div className={`text-sm font-medium text-red-500 ${!error && 'hidden'}`}>
         {error}
       </div>
     </div>

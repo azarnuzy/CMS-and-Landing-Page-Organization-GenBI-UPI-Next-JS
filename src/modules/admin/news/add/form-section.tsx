@@ -13,8 +13,8 @@ import { z } from 'zod';
 import logger from '@/lib/logger';
 import { ValidationSchemaAddNewsForm } from '@/lib/validations/news';
 
-import InputBadge from '@/components/input/badge';
 import { DraggableImageInput } from '@/components/input/draggable-input';
+import InputTag from '@/components/input/tag';
 import { UploadField } from '@/components/input/upload-file';
 import { Button } from '@/components/ui/button';
 import {
@@ -80,6 +80,8 @@ const FormAddNewsSection = () => {
 
   const othersPhotoLength = form.watch('othersPhoto')?.length;
 
+  logger(othersPhotoLength);
+
   const onSubmit = (data: z.infer<typeof ValidationSchemaAddNewsForm>) => {
     toast.success(`Berhasil menambahkan berita ${data.title}`);
     logger(data);
@@ -99,7 +101,9 @@ const FormAddNewsSection = () => {
                 name='title'
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Title</FormLabel>
+                    <FormLabel>
+                      Title <span className='text-error-main'>*</span>
+                    </FormLabel>
                     <FormControl>
                       <Input placeholder='Input news title...' {...field} />
                     </FormControl>
@@ -114,7 +118,9 @@ const FormAddNewsSection = () => {
                 name='type'
                 render={({ field }) => (
                   <FormItem className='space-y-3'>
-                    <FormLabel>Type</FormLabel>
+                    <FormLabel>
+                      Type <span className='text-error-main'>*</span>
+                    </FormLabel>
                     <FormControl>
                       <RadioGroup
                         onValueChange={field.onChange}
@@ -148,7 +154,9 @@ const FormAddNewsSection = () => {
                 name='department'
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Department</FormLabel>
+                    <FormLabel>
+                      Department <span className='text-error-main'>*</span>
+                    </FormLabel>
                     <Select
                       onValueChange={field.onChange}
                       defaultValue={field.value}
@@ -185,7 +193,7 @@ const FormAddNewsSection = () => {
             </div>
             <div className='col-span-2 lg:col-span-1'>
               {' '}
-              <FormField
+              {/* <FormField
                 control={form.control}
                 name='hashtag'
                 render={({ field }) => (
@@ -197,11 +205,29 @@ const FormAddNewsSection = () => {
                         placeholder='ex: #tags'
                         {...field}
                       />
+                      
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
-              />
+              /> */}
+              <div className=''>
+                <FormLabel
+                  className={`${
+                    form.formState?.errors?.hashtag
+                      ? 'text-red-500'
+                      : 'text-black'
+                  }`}
+                >
+                  Hashtag <span className='text-error-main'>*</span>
+                </FormLabel>
+                <InputTag name='hashtag' />
+                {form.formState?.errors?.hashtag && (
+                  <p className='text-red-500 font-medium mt-1 text-sm'>
+                    Hashtag is required
+                  </p>
+                )}
+              </div>
             </div>
             <div className='col-span-2 lg:col-span-1'>
               <FormField
@@ -234,7 +260,15 @@ const FormAddNewsSection = () => {
               />
             </div>
             <div className='w-full col-span-2 lg:col-span-1'>
-              <Label htmlFor='thumbnail'>Thumbnail</Label>
+              <FormLabel
+                className={`${
+                  form.formState?.errors?.thumbnail
+                    ? 'text-red-500'
+                    : 'text-black'
+                }`}
+              >
+                Thumbnail <span className='text-error-main'>*</span>
+              </FormLabel>
               <UploadField
                 control={form.control}
                 name='thumbnail'
@@ -265,7 +299,7 @@ const FormAddNewsSection = () => {
             <div className='col-span-2 lg:col-span-1'>
               <Label htmlFor='othersPhoto'>Foto Lainnya (Maksimal 5)</Label>
               <DraggableImageInput
-                className='border-none min-h-[80px]'
+                className='border-none min-h-[75px]'
                 name='othersPhoto'
                 variant='lg'
                 control={form.control}
@@ -280,36 +314,37 @@ const FormAddNewsSection = () => {
                 )}
             </div>
             <div className='col-span-2 lg:col-span-1 flex flex-col  w-full lg:pt-[155px] gap-4 lg:gap-8'>
-              {Array(othersPhotoLength)
-                .fill(0)
-                .map((_, index) => (
-                  <div key={index} className='lg:h-40'>
-                    <FormField
-                      control={form.control}
-                      name={
-                        `caption_othersPhoto_${index + 1}` as keyof z.infer<
-                          typeof ValidationSchemaAddNewsForm
-                        >
-                      }
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>
-                            Caption Foto Lainnya {index + 1}
-                          </FormLabel>
-                          <FormControl>
-                            <Input
-                              placeholder={`Input Caption for Photo ${
-                                index + 1
-                              }...`}
-                              {...field}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-                ))}
+              {othersPhotoLength !== undefined &&
+                Array(othersPhotoLength)
+                  .fill(0)
+                  .map((_, index) => (
+                    <div key={index} className='lg:h-40'>
+                      <FormField
+                        control={form.control}
+                        name={
+                          `caption_othersPhoto_${index + 1}` as keyof z.infer<
+                            typeof ValidationSchemaAddNewsForm
+                          >
+                        }
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>
+                              Caption Foto Lainnya {index + 1}
+                            </FormLabel>
+                            <FormControl>
+                              <Input
+                                placeholder={`Input Caption for Photo ${
+                                  index + 1
+                                }...`}
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                  ))}
             </div>
           </div>
           <div className='flex justify-between'>

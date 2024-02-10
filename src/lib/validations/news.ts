@@ -53,7 +53,7 @@ export const ValidationSchemaAddNewsForm = z.object({
       return files !== undefined && files?.[0]?.size <= MAX_FILE_SIZE;
     }, 'Maximum file size is 3mb.')
     .refine(
-      (files: File[]) => ACCEPTED_MEDIA_TYPES.includes(files?.[0].type),
+      (files: File[]) => ACCEPTED_MEDIA_TYPES.includes(files?.[0]?.type),
       'Accepts only .jpg, .jpeg, .png, and .webp'
     ),
   caption_thumbnail: z
@@ -71,7 +71,7 @@ export const ValidationSchemaAddNewsForm = z.object({
       return files !== undefined && files?.[0]?.size <= MAX_FILE_SIZE;
     }, 'Maximum file size is 3mb.')
     .refine(
-      (files: File[]) => ACCEPTED_MEDIA_TYPES.includes(files?.[0].type),
+      (files: File[]) => ACCEPTED_MEDIA_TYPES.includes(files?.[0]?.type),
       'Accepts only .jpg, .jpeg, .png, and .webp'
     )
     .refine(
