@@ -64,12 +64,24 @@ export const ValidationSchemaAddNewsForm = z.object({
     .optional(),
   othersPhoto: z
     .any()
+    // make sure that the file is uploaded with maximum 5 files
+
     .refine((files: File[]) => {
       // console.log(files);
       return files !== undefined && files?.[0]?.size <= MAX_FILE_SIZE;
-    }, 'Ukuran maksimun adalah 3mb.')
+    }, 'Maximum file size is 3mb.')
     .refine(
       (files: File[]) => ACCEPTED_MEDIA_TYPES.includes(files?.[0].type),
-      'hanya menerima .jpg, .jpeg, .png, dan .webp'
-    ),
+      'Accepts only .jpg, .jpeg, .png, and .webp'
+    )
+    .refine(
+      (files: File[]) => files !== undefined && files?.length <= 5,
+      'Maximum file is 5.'
+    )
+    .optional(),
+  caption_othersPhoto_1: z.string({}).optional(),
+  caption_othersPhoto_2: z.string({}).optional(),
+  caption_othersPhoto_3: z.string({}).optional(),
+  caption_othersPhoto_4: z.string({}).optional(),
+  caption_othersPhoto_5: z.string({}).optional(),
 });

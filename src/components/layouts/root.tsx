@@ -54,7 +54,7 @@ const RootBaseLayout: FC<{ children: ReactNode }> = ({ children }) => {
     );
   } else {
     return (
-      <div className='flex'>
+      <div className='flex overflow-x-hidden'>
         <Sidebar />
         <div
           className={`flex flex-col gap-4 ${
@@ -62,7 +62,7 @@ const RootBaseLayout: FC<{ children: ReactNode }> = ({ children }) => {
           }`}
         >
           <NavbarAdmin />
-          <div className='px-10'>{children}</div>
+          <div className='px-2 sm:px-10'>{children}</div>
         </div>
       </div>
     );

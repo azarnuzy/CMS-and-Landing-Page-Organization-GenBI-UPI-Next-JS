@@ -96,7 +96,7 @@ export const UploadField = <T extends FieldValues>(
         className={`
             ${
               props.status === 'error' &&
-              'focus:ring-1 focus:ring-red-base bg-red-100 placeholder:text-white ring-1 ring-red-base text-sm'
+              'focus:ring-1 bg-red-100 placeholder:text-white ring-1 ring-red-base text-sm'
             }
 
             ${
