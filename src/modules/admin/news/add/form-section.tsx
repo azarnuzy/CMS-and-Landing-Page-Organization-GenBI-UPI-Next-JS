@@ -270,7 +270,6 @@ const FormAddNewsSection = () => {
                 variant='lg'
                 control={form.control}
                 status={form.formState.errors.othersPhoto ? 'error' : undefined}
-                postType='discussion'
               />
               {form.formState.errors.othersPhoto &&
                 typeof form.formState.errors.othersPhoto.message ===
