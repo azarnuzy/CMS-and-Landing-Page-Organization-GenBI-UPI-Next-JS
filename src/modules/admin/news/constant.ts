@@ -9,65 +9,70 @@ export const breadcrumbNewsData = [
   },
 ];
 
-export const filterData = [
+type TFilterData = {
+  id: string;
+  name: string;
+};
+
+export const filterData: TFilterData[] = [
   {
-    value: 'all-data',
-    label: 'All Data',
+    id: 'all-data',
+    name: 'All Data',
   },
   {
-    value: 'press-release',
-    label: 'Press Release',
+    id: 'press-release',
+    name: 'Press Release',
   },
   {
-    value: 'article',
-    label: 'Article',
+    id: 'article',
+    name: 'Article',
   },
 ];
 
 export const departmentData = [
   {
-    value: 'all-department',
-    label: 'All Department',
+    id: 'all-department',
+    name: 'All Department',
   },
   {
-    value: 'bank-indonesia',
-    label: 'Bank Indonesia',
+    id: 'bank-indonesia',
+    name: 'Bank Indonesia',
   },
   {
-    value: 'bank-indonesia-jabar',
-    label: 'Bank Indonesia Jabar',
+    id: 'bank-indonesia-jabar',
+    name: 'Bank Indonesia Jabar',
   },
   {
-    value: 'economic',
-    label: 'Economic',
+    id: 'economic',
+    name: 'Economic',
   },
   {
-    value: 'education',
-    label: 'Education',
+    id: 'education',
+    name: 'Education',
   },
   {
-    value: 'executive',
-    label: 'Executive',
+    id: 'executive',
+    name: 'Executive',
   },
   {
-    value: 'healthcare',
-    label: 'Healthcare',
+    id: 'healthcare',
+    name: 'Healthcare',
   },
   {
-    value: 'human-resources',
-    label: 'Human Resources',
+    id: 'human-resources',
+    name: 'Human Resources',
   },
   {
-    value: 'marketing',
-    label: 'Marketing',
+    id: 'marketing',
+    name: 'Marketing',
   },
   {
-    value: 'public-relation',
-    label: 'Public Relation',
+    id: 'public-relation',
+    name: 'Public Relation',
   },
   {
-    value: 'social-environtment',
-    label: 'Social Environtment',
+    id: 'social-environtment',
+    name: 'Social Environtment',
   },
 ];
 
