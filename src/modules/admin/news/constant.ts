@@ -11,68 +11,68 @@ export const breadcrumbNewsData = [
 
 export const filterData = [
   {
-    id: 'all-data',
-    name: 'All Data',
+    value: 'all-data',
+    label: 'All Data',
   },
   {
-    id: 'press-release',
-    name: 'Press Release',
+    value: 'press-release',
+    label: 'Press Release',
   },
   {
-    id: 'article',
-    name: 'Article',
+    value: 'article',
+    label: 'Article',
   },
 ];
 
 export const departmentData = [
   {
-    id: 'all-department',
-    name: 'All Department',
+    value: 'all-department',
+    label: 'All Department',
   },
   {
-    id: 'bank-indonesia',
-    name: 'Bank Indonesia',
+    value: 'bank-indonesia',
+    label: 'Bank Indonesia',
   },
   {
-    id: 'bank-indonesia-jabar',
-    name: 'Bank Indonesia Jabar',
+    value: 'bank-indonesia-jabar',
+    label: 'Bank Indonesia Jabar',
   },
   {
-    id: 'economic',
-    name: 'Economic',
+    value: 'economic',
+    label: 'Economic',
   },
   {
-    id: 'education',
-    name: 'Education',
+    value: 'education',
+    label: 'Education',
   },
   {
-    id: 'executive',
-    name: 'Executive',
+    value: 'executive',
+    label: 'Executive',
   },
   {
-    id: 'healthcare',
-    name: 'Healthcare',
+    value: 'healthcare',
+    label: 'Healthcare',
   },
   {
-    id: 'human-resources',
-    name: 'Human Resources',
+    value: 'human-resources',
+    label: 'Human Resources',
   },
   {
-    id: 'marketing',
-    name: 'Marketing',
+    value: 'marketing',
+    label: 'Marketing',
   },
   {
-    id: 'public-relation',
-    name: 'Public Relation',
+    value: 'public-relation',
+    label: 'Public Relation',
   },
   {
-    id: 'social-environtment',
-    name: 'Social Environtment',
+    value: 'social-environtment',
+    label: 'Social Environtment',
   },
 ];
 
 type TNewsData = {
-  id: number;
+  value: number;
   title: string;
   type: 'press-release' | 'article' | 'all-data' | 'default';
   department:
@@ -92,7 +92,7 @@ type TNewsData = {
 
 export const newsData: TNewsData[] = [
   {
-    id: 1,
+    value: 1,
     title:
       'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Consequatur, placeat.',
     type: 'press-release',
@@ -101,63 +101,63 @@ export const newsData: TNewsData[] = [
   // create more data
 
   {
-    id: 2,
+    value: 2,
     title:
       'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Consequatur, placeat.',
     type: 'article',
     department: 'healthcare',
   },
   {
-    id: 3,
+    value: 3,
     title:
       'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Consequatur, placeat.',
     type: 'press-release',
     department: 'marketing',
   },
   {
-    id: 4,
+    value: 4,
     title:
       'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Consequatur, placeat.',
     type: 'article',
     department: 'marketing',
   },
   {
-    id: 5,
+    value: 5,
     title:
       'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Consequatur, placeat.',
     type: 'press-release',
     department: 'economic',
   },
   {
-    id: 6,
+    value: 6,
     title:
       'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Consequatur, placeat.',
     type: 'article',
     department: 'education',
   },
   {
-    id: 7,
+    value: 7,
     title:
       'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Consequatur, placeat.',
     type: 'press-release',
     department: 'executive',
   },
   {
-    id: 8,
+    value: 8,
     title:
       'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Consequatur, placeat.',
     type: 'article',
     department: 'healthcare',
   },
   {
-    id: 9,
+    value: 9,
     title:
       'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Consequatur, placeat.',
     type: 'press-release',
     department: 'healthcare',
   },
   {
-    id: 10,
+    value: 10,
     title:
       'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Consequatur, placeat.',
     type: 'article',

@@ -5,7 +5,7 @@ import { convertToRaw, EditorState } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
-import React, { Fragment, useState } from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useRecoilState } from 'recoil';
 import { toast } from 'sonner';
@@ -15,6 +15,7 @@ import logger from '@/lib/logger';
 import { ValidationSchemaAddNewsForm } from '@/lib/validations/news';
 
 import { DraggableImageInput } from '@/components/input/draggable-input';
+import { SelectField } from '@/components/input/select';
 import InputTag from '@/components/input/tag';
 import { UploadField } from '@/components/input/upload-file';
 import { Button } from '@/components/ui/button';
@@ -29,13 +30,6 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
 
 import { departmentData } from '@/modules/admin/news/constant';
 import { inputTagState, inputUploadState } from '@/recoils/admin/atom';
@@ -147,7 +141,6 @@ const FormAddNewsSection = () => {
                     <FormControl>
                       <RadioGroup
                         onValueChange={field.onChange}
-                        defaultValue={field.value}
                         className='flex gap-2 items-center'
                       >
                         <FormItem className='flex items-center space-x-3 space-y-0'>
@@ -172,7 +165,7 @@ const FormAddNewsSection = () => {
               />
             </div>
             <div className='col-span-2 lg:col-span-1'>
-              <FormField
+              {/* <FormField
                 control={form.control}
                 name='department'
                 render={({ field }) => (
@@ -198,6 +191,17 @@ const FormAddNewsSection = () => {
                     <FormMessage />
                   </FormItem>
                 )}
+              /> */}
+              <SelectField
+                error={form.formState.errors.department?.message}
+                variant='md'
+                control={form.control}
+                options={departmentData}
+                name='department'
+                label='Department'
+                required
+                placeholder='Select Department'
+                styletext='!text-black text-[10px]'
               />
             </div>
 
@@ -220,7 +224,7 @@ const FormAddNewsSection = () => {
               />
             </div>
             <div className='col-span-2 lg:col-span-1'>
-              <FormField
+              {/* <FormField
                 control={form.control}
                 name='event'
                 render={({ field }) => (
@@ -244,6 +248,17 @@ const FormAddNewsSection = () => {
                     <FormMessage />
                   </FormItem>
                 )}
+              /> */}
+              <SelectField
+                error={form.formState.errors.event?.message}
+                variant='md'
+                control={form.control}
+                options={departmentData}
+                name='event'
+                label='Select Event'
+                required
+                placeholder=' Select Event'
+                styletext='!text-black text-[10px]'
               />
             </div>
             <div className='w-full col-span-2 lg:col-span-1'>
