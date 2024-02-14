@@ -10,5 +10,6 @@ export type TBadgeVariantProps =
   | 'healthcare'
   | 'education'
   | 'economic'
+  | 'press release'
   | null
   | undefined;

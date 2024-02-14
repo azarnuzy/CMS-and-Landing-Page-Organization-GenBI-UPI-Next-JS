@@ -2,6 +2,10 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { IoArrowForwardOutline } from 'react-icons/io5';
 
+import { badgeColor } from '@/lib/utils/badge-color';
+
+import { TBadgeVariantProps } from '@/types/components/badge';
+
 export const ArticleCard = ({
   image,
   title,
@@ -45,22 +49,33 @@ export const ArticleCard = ({
         className='opacity-0 group-hover:opacity-100 absolute -left-5 -bottom-5 transition-all duration-500 ease-in-out '
       />
       <div className='flex gap-3 items-center flex-nowrap overflow-x-auto group-hover:-translate-y-[40px] transition-all duration-500 ease-in-out transform scrollbar-thin'>
-        {tags.map((tag, i) => (
-          <div
-            key={i}
-            className='px-4 py-1 text-warning-500 whitespace-nowrap  bg-warning-100 rounded-3xl border border-warning-300 '
-          >
-            {tag}
-          </div>
-        ))}
+        {tags.map((tag, i) => {
+          // split tag that contain space and join with '-'
+          const val = tag
+            .split(' ')
+            .join('-')
+            .toLowerCase() as TBadgeVariantProps;
+
+          return (
+            <div
+              className={`py-1.5 px-4 ${badgeColor(
+                (val as string) || ''
+              )} rounded-full whitespace-nowrap border text-xs`}
+              key={i}
+            >
+              {tag}
+            </div>
+          );
+        })}
       </div>
       <h4 className=' group-hover:-translate-y-[40px] transition-all duration-500 ease-in-out transform'>
         {title}
       </h4>
-      <p className=' group-hover:-translate-y-[40px] transition-all duration-500 ease-in-out transform '>
-        {/* max length description 50 character */}
-        {descriptionTrimmed}
-      </p>
+      <div
+        className='group-hover:-translate-y-[40px] transition-all duration-500 ease-in-out transform '
+        dangerouslySetInnerHTML={{ __html: descriptionTrimmed }}
+      ></div>
+
       <p className='translate-y-[calc(100%+40px)] group-hover:translate-y-[calc(100%-40px)] transition-all duration-500 ease-in-out transform  flex gap-2 text-primary-main font-bold items-center justify-end'>
         <span> Lihat Selengkapnya </span>
         <IoArrowForwardOutline />
