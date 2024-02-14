@@ -5,8 +5,9 @@ import { LuPlus } from 'react-icons/lu';
 import { MdDelete } from 'react-icons/md';
 import { TbEdit } from 'react-icons/tb';
 
+import { badgeColor } from '@/lib/utils/badge-color';
+
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
   Pagination,
@@ -26,8 +27,6 @@ import {
 } from '@/components/ui/table';
 
 import { newsData } from '@/modules/admin/news/constant';
-
-import { TBadgeVariantProps } from '@/types/components/badge';
 
 const ContentNewsManagementSection = () => {
   return (
@@ -56,36 +55,48 @@ const ContentNewsManagementSection = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {newsData.map((news, index) => (
-            <TableRow key={index}>
-              <TableCell>{index + 1}</TableCell>
-              <TableCell className='text-ellipsis max-w-[150px]'>
-                {news.title}
-              </TableCell>
-              <TableCell>
-                <Badge variant={news.type as TBadgeVariantProps}>
-                  {news.type}
-                </Badge>
-              </TableCell>
-              <TableCell>
-                <Badge variant={news.department as TBadgeVariantProps}>
-                  {news.department}
-                </Badge>
-              </TableCell>
-              <TableCell>
-                <Avatar className='w-10 h-10'>
-                  <AvatarImage src='/images/avatar.jpeg' />
-                  <AvatarFallback>CN</AvatarFallback>
-                </Avatar>
-              </TableCell>
-              <TableCell>120</TableCell>
-              <TableCell className='flex gap-2 h-full '>
-                <TbEdit className='text-warning-main text-2xl' />
-                <MdDelete className='text-error-main text-2xl' />
-                <BiLinkExternal className='text-primary-main text-2xl' />
-              </TableCell>
-            </TableRow>
-          ))}
+          {newsData.map((news, index) => {
+            const tag1 = news.type.split(' ').join('-').toLowerCase();
+            const tag2 = news.department.split(' ').join('-').toLowerCase();
+            return (
+              <TableRow key={index}>
+                <TableCell>{index + 1}</TableCell>
+                <TableCell className='text-ellipsis max-w-[150px]'>
+                  {news.title}
+                </TableCell>
+                <TableCell>
+                  <div
+                    className={`px-2.5 py-0.5 ${badgeColor(
+                      (tag1 as string) || ''
+                    )} rounded-full whitespace-nowrap border text-xs`}
+                  >
+                    {news.type}
+                  </div>
+                </TableCell>
+                <TableCell>
+                  <div
+                    className={`px-2.5 py-0.5 ${badgeColor(
+                      (tag2 as string) || ''
+                    )} rounded-full whitespace-nowrap border text-xs`}
+                  >
+                    {news.department}
+                  </div>
+                </TableCell>
+                <TableCell>
+                  <Avatar className='w-10 h-10'>
+                    <AvatarImage src='/images/avatar.jpeg' />
+                    <AvatarFallback>CN</AvatarFallback>
+                  </Avatar>
+                </TableCell>
+                <TableCell>120</TableCell>
+                <TableCell className='flex gap-2 h-full '>
+                  <TbEdit className='text-warning-main text-2xl' />
+                  <MdDelete className='text-error-main text-2xl' />
+                  <BiLinkExternal className='text-primary-main text-2xl' />
+                </TableCell>
+              </TableRow>
+            );
+          })}
         </TableBody>
       </Table>
       <div className='flex justify-between items-center py-2'>
