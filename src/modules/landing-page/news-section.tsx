@@ -5,6 +5,13 @@ import { ArticleCard } from '@/components/card/article';
 import BaseLayout from '@/components/layouts/base';
 
 const NewsSection = () => {
+  // const { data } = getAllPost({
+  //   sort: 'created_at',
+  //   type: 'asc',
+  //   limit: 10,
+  //   page,
+  // });
+
   return (
     <div
       className='w-full min-h-[60vh] py-14'
