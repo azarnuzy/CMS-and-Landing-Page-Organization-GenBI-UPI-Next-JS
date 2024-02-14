@@ -7,6 +7,16 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
 
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'ik.imagekit.io',
+        pathname: '**',
+      },
+    ],
+  },
+
   // Uncoment to add domain whitelist
   // images: {
   //   domains: [

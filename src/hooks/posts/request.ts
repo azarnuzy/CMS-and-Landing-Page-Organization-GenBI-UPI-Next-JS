@@ -1,14 +1,16 @@
 import { api } from '@/lib/api';
 
-import { TPostDetailData, TPostsData } from '@/types/posts';
+import {
+  TDataGetAllPostResponse,
+  TGetAllPostParams,
+  TPostDetailData,
+} from '@/types/posts';
 
 export const getAllPost = async (
-  sort: string,
-  type: string,
-  limit: number,
-  page: number,
-  filter?: string
-): Promise<TPostsData> => {
+  params: TGetAllPostParams
+): Promise<TDataGetAllPostResponse> => {
+  const { sort, type, limit, page, filter } = params;
+
   const { data } = await api.get(`v1/posts`, {
     params: {
       sort,

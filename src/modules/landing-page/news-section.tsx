@@ -1,16 +1,18 @@
 import React from 'react';
 import { IoArrowForwardOutline } from 'react-icons/io5';
 
+import { useGetAllPost } from '@/hooks/posts/hook';
+
 import { ArticleCard } from '@/components/card/article';
 import BaseLayout from '@/components/layouts/base';
 
 const NewsSection = () => {
-  // const { data } = getAllPost({
-  //   sort: 'created_at',
-  //   type: 'asc',
-  //   limit: 10,
-  //   page,
-  // });
+  const { data } = useGetAllPost({
+    sort: 'created_at',
+    type: 'asc',
+    limit: 10,
+    page: 1,
+  });
 
   return (
     <div
@@ -33,7 +35,19 @@ const NewsSection = () => {
           </div>
           <div className='grid grid-cols-2 gap-16'>
             <div className='col-span-2 md:col-span-1 flex flex-col gap-16 md:pt-16'>
-              <ArticleCard
+              {data?.data
+                ?.filter((_, i) => i < 2)
+                .map((post) => (
+                  <ArticleCard
+                    key={post.id}
+                    image={post.image_cover.file_url}
+                    title={post.title}
+                    tags={[post.type]}
+                    description={post.content}
+                    link={`/berita/${post.id}`}
+                  />
+                ))}
+              {/* <ArticleCard
                 image='/images/article-temp-2.webp'
                 title='Lorem ipsum dolor sit amet.'
                 tags={['Press Release', 'Social Environment']}
@@ -46,10 +60,22 @@ const NewsSection = () => {
                 tags={['Press Release', 'Social Environment']}
                 description='lorem ipsum dolor sit amet consectetur adipisicing elit. Vel provident ipsa aut iure veritatis sapiente nulla distinctio aliquam et cumque?'
                 link='/berita/1'
-              />
+              /> */}
             </div>
             <div className='col-span-2 md:col-span-1 flex flex-col gap-16 md:pb-16'>
-              <ArticleCard
+              {data?.data
+                ?.filter((_, i) => i > 1 && i < 4)
+                .map((post) => (
+                  <ArticleCard
+                    key={post.id}
+                    image={post.image_cover.file_url}
+                    title={post.title}
+                    tags={[post.type]}
+                    description={post.content}
+                    link={`/berita/${post.id}`}
+                  />
+                ))}
+              {/* <ArticleCard
                 image='/images/article-temp-1.webp'
                 title='Lorem ipsum dolor sit amet.'
                 tags={[
@@ -66,7 +92,7 @@ const NewsSection = () => {
                 tags={['Press Release', 'Social Environment']}
                 description='lorem ipsum dolor sit amet consectetur adipisicing elit. Vel provident ipsa aut iure veritatis sapiente nulla distinctio aliquam et cumque?'
                 link='/berita/1'
-              />
+              /> */}
             </div>
           </div>
         </div>

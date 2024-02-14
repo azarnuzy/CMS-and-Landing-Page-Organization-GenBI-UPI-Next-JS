@@ -1,3 +1,5 @@
+import { TMetaResponse } from '@/types';
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export interface TPostsData {
   id: number;
@@ -65,3 +67,45 @@ export interface SimilarPost {
   department_name: string;
   tags: string[];
 }
+
+export interface TCommentData {
+  id: number;
+  post_id: number;
+  comment_id: any;
+  level: number;
+  commenter?: string;
+  content: string;
+  created_at: string;
+  updated_at: string;
+  _links: LinksReply;
+  replies: Reply2[];
+}
+
+export interface LinksReply {
+  reply: Reply;
+}
+
+export interface Reply {
+  href: string;
+}
+
+export interface Reply2 {
+  id: number;
+  post_id: number;
+  comment_id: number;
+  level: number;
+  commenter?: string;
+  content: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface TGetAllPostParams {
+  sort: string;
+  type: string;
+  limit: number;
+  page: number;
+  filter?: string;
+}
+
+export type TDataGetAllPostResponse = TMetaResponse<TPostsData>;

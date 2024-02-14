@@ -3,7 +3,7 @@ import { useQuery, UseQueryResult } from '@tanstack/react-query';
 import { getAllPost } from '@/hooks/posts/request';
 
 import { TMetaErrorResponse } from '@/types';
-import { TPostsData } from '@/types/posts';
+import { TDataGetAllPostResponse } from '@/types/posts';
 
 export const useGetAllPost = ({
   sort,
@@ -17,8 +17,8 @@ export const useGetAllPost = ({
   limit: number;
   page: number;
   filter?: string;
-}): UseQueryResult<TPostsData, TMetaErrorResponse> =>
+}): UseQueryResult<TDataGetAllPostResponse, TMetaErrorResponse> =>
   useQuery({
     queryKey: ['all-post', sort, type, limit, page, filter],
-    queryFn: async () => await getAllPost(sort, type, limit, page, filter),
+    queryFn: async () => await getAllPost({ sort, type, limit, page, filter }),
   });
