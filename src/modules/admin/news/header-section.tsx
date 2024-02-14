@@ -61,12 +61,12 @@ const HeaderNewsSection = () => {
                 <RadioGroup defaultValue='all-data'>
                   {filterData.map((item, i) => (
                     <div key={i} className=' flex items-center space-x-2 px-4'>
-                      <RadioGroupItem value={item.id} id={item.id} />
+                      <RadioGroupItem value={item.value} id={item.value} />
                       <Label
                         className='text-base text-neutral-800'
-                        htmlFor={item.id}
+                        htmlFor={item.value}
                       >
-                        {item.name}
+                        {item.label}
                       </Label>
                     </div>
                   ))}
@@ -86,12 +86,12 @@ const HeaderNewsSection = () => {
                           key={i}
                           className=' flex items-center space-x-2 px-4'
                         >
-                          <RadioGroupItem value={item.id} id={item.id} />
+                          <RadioGroupItem value={item.value} id={item.value} />
                           <Label
                             className='text-base text-neutral-800'
-                            htmlFor={item.id}
+                            htmlFor={item.value}
                           >
-                            {item.name}
+                            {item.label}
                           </Label>
                         </div>
                       ))}
