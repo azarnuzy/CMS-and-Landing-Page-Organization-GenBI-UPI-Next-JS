@@ -145,13 +145,19 @@ const FormAddNewsSection = () => {
                       >
                         <FormItem className='flex items-center space-x-3 space-y-0'>
                           <FormControl>
-                            <RadioGroupItem value='artikel' />
+                            <RadioGroupItem
+                              value='artikel'
+                              checked={field.value === 'artikel'}
+                            />
                           </FormControl>
                           <FormLabel className='font-normal'>Artikel</FormLabel>
                         </FormItem>
                         <FormItem className='flex items-center space-x-3 space-y-0'>
                           <FormControl>
-                            <RadioGroupItem value='press-release' />
+                            <RadioGroupItem
+                              value='press-release'
+                              checked={field.value === 'press-release'}
+                            />
                           </FormControl>
                           <FormLabel className='font-normal'>
                             Press Release
@@ -165,33 +171,6 @@ const FormAddNewsSection = () => {
               />
             </div>
             <div className='col-span-2 lg:col-span-1'>
-              {/* <FormField
-                control={form.control}
-                name='department'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>
-                      Department <span className='text-error-main'>*</span>
-                    </FormLabel>
-                    <Select onValueChange={field.onChange}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder='Select Departement' />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {departmentData?.map((item) => (
-                          <Fragment key={item.id}>
-                            <SelectItem value={item.id}>{item.name}</SelectItem>
-                          </Fragment>
-                        ))}
-                      </SelectContent>
-                    </Select>
-
-                    <FormMessage />
-                  </FormItem>
-                )}
-              /> */}
               <SelectField
                 error={form.formState.errors.department?.message}
                 variant='md'
@@ -224,31 +203,6 @@ const FormAddNewsSection = () => {
               />
             </div>
             <div className='col-span-2 lg:col-span-1'>
-              {/* <FormField
-                control={form.control}
-                name='event'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Event</FormLabel>
-                    <Select onValueChange={field.onChange}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder='Select Event' />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {departmentData?.map((item) => (
-                          <SelectItem key={item.id} value={item.id}>
-                            {item.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-
-                    <FormMessage />
-                  </FormItem>
-                )}
-              /> */}
               <SelectField
                 error={form.formState.errors.event?.message}
                 variant='md'
