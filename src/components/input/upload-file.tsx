@@ -1,7 +1,10 @@
 'use client';
 
-import { ReactElement, useState } from 'react';
+import { ReactElement } from 'react';
 import { FieldValues, useController } from 'react-hook-form';
+import { useRecoilState } from 'recoil';
+
+import { inputUploadState } from '@/recoils/admin/atom';
 
 import { TUploadFieldProps } from '@/types/components/upload-file';
 
@@ -9,7 +12,9 @@ export const UploadField = <T extends FieldValues>(
   props: TUploadFieldProps<T>
 ): ReactElement => {
   const { field } = useController(props);
-  const [getName, setName] = useState('');
+  // const [getName, setName] = useState('');
+
+  const [getName, setName] = useRecoilState(inputUploadState);
   return (
     <section className='flex flex-col w-auto my-1 gap-y-2 '>
       {props.label && (

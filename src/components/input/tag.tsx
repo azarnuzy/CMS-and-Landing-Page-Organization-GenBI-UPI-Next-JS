@@ -1,27 +1,29 @@
 // InputTag.tsx
-import { useEffect, useState } from 'react';
-import { FieldValues, useFormContext } from 'react-hook-form';
+import { useState } from 'react';
+import { FieldValues, useController } from 'react-hook-form';
+import { useRecoilState } from 'recoil';
 
-interface InputTagProps {
-  name: string;
-}
+import { FormLabel } from '@/components/ui/form';
 
-const InputTag: React.FC<InputTagProps> = ({ name }) => {
-  const { register, setValue, watch } = useFormContext<FieldValues>();
-  const [tags, setTags] = useState<string[]>([]);
-  const inputValue = watch(name);
+import { inputTagState } from '@/recoils/admin/atom';
 
-  useEffect(() => {
-    register(name);
-  }, [register, name]);
+import { TTagInputProps } from '@/types/components/tag';
+
+const InputTag = <T extends FieldValues>(props: TTagInputProps<T>) => {
+  const { field } = useController(props);
+  // const [tags, setTags] = useState<string[]>([]);
+  const [tags, setTags] = useRecoilState(inputTagState);
+
+  const [valueTag, setValueTag] = useState('');
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' || e.key === ',') {
       e.preventDefault();
-      const newTag = inputValue.trim();
+      const newTag = valueTag.trim();
       if (newTag) {
         setTags([...tags, newTag]);
-        setValue(name, '');
+        field.onChange([...tags, newTag]);
+        setValueTag('');
       }
     }
   };
@@ -30,10 +32,14 @@ const InputTag: React.FC<InputTagProps> = ({ name }) => {
     const updatedTags = [...tags];
     updatedTags.splice(index, 1);
     setTags(updatedTags);
+    field.onChange(updatedTags);
   };
 
   return (
     <>
+      <FormLabel className={`${props.message ? 'text-red-500' : 'text-black'}`}>
+        {props.label} <span className='text-error-main'>*</span>
+      </FormLabel>
       <div className='flex flex-wrap'>
         {tags.map((tag, index) => (
           <div
@@ -53,11 +59,18 @@ const InputTag: React.FC<InputTagProps> = ({ name }) => {
       </div>
       <input
         type='text'
-        {...register(name)}
+        // {...register(name)}
+        value={valueTag}
+        onChange={(e) => setValueTag(e.target.value)}
         onKeyDown={handleKeyDown}
         placeholder='Type and press Enter or comma to add a hashtag'
         className='mt-2 flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50'
       />
+      {props.message && (
+        <p className='text-red-500 text-sm font-semibold mt-1'>
+          {props.message}
+        </p>
+      )}
     </>
   );
 };

@@ -32,16 +32,23 @@ export const ValidationSchemaAddNewsForm = z.object({
     .refine((value) => value.trim() !== '<p></p>', {
       message: 'Content should be filled with minimum 5 character',
     }),
+  //create a new schema for the hashtag that is array of string and can accept only 3 hashtag
   hashtag: z
-    .string({
-      required_error: 'Hashtag should be filled',
-    })
-    .min(1, 'Hashtag should be filled'),
+    .array(
+      z
+        .string({
+          required_error: 'Hashtag should be filled',
+        })
+        .min(1, 'Hashtag should be filled')
+    )
+    .nonempty('Hashtag should be filled')
+    .max(3, 'Maximum hashtag is 3'),
+
   event: z
     .string({
-      required_error: 'Hashtag should be filled',
+      required_error: 'Event should be filled',
     })
-    .min(1, 'Hashtag should be filled'),
+    .min(1, 'Event should be filled'),
   thumbnail: z
     .any()
     .refine(

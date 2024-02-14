@@ -5,8 +5,9 @@ import { convertToRaw, EditorState } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
-import React, { useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useRecoilState } from 'recoil';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
@@ -37,6 +38,7 @@ import {
 } from '@/components/ui/select';
 
 import { departmentData } from '@/modules/admin/news/constant';
+import { inputTagState, inputUploadState } from '@/recoils/admin/atom';
 
 const DraftEditor = dynamic(() => import('@/components/text-editor'), {
   ssr: false,
@@ -50,7 +52,8 @@ const FormAddNewsSection = () => {
       content: '<p></p>\n',
       department: '',
       type: '',
-      hashtag: '',
+      event: '',
+      hashtag: [''],
       thumbnail: undefined,
       othersPhoto: undefined,
       caption_othersPhoto_1: '',
@@ -64,6 +67,9 @@ const FormAddNewsSection = () => {
   const [editorState, setEditorState] = useState<EditorState>(
     EditorState.createEmpty()
   );
+
+  const [, setTags] = useRecoilState(inputTagState);
+  const [, setNameUpload] = useRecoilState(inputUploadState);
 
   const handleEditorChange = (editorState: EditorState) => {
     setEditorState(editorState);
@@ -80,11 +86,28 @@ const FormAddNewsSection = () => {
 
   const othersPhotoLength = form.watch('othersPhoto')?.length;
 
-  logger(othersPhotoLength);
-
   const onSubmit = (data: z.infer<typeof ValidationSchemaAddNewsForm>) => {
     toast.success(`Berhasil menambahkan berita ${data.title}`);
     logger(data);
+    setTags([]);
+    setNameUpload('');
+    setEditorState(EditorState.createEmpty());
+    form.clearErrors();
+    form.reset();
+    form.setValue('title', '');
+    form.setValue('content', '<p></p>\n');
+    form.setValue('department', '');
+    form.setValue('type', '');
+    form.setValue('event', '');
+
+    form.setValue('hashtag', ['']);
+    form.setValue('thumbnail', undefined);
+    form.setValue('othersPhoto', undefined);
+    form.setValue('caption_othersPhoto_1', '');
+    form.setValue('caption_othersPhoto_2', '');
+    form.setValue('caption_othersPhoto_3', '');
+    form.setValue('caption_othersPhoto_4', '');
+    form.setValue('caption_othersPhoto_5', '');
   };
 
   return (
@@ -157,10 +180,7 @@ const FormAddNewsSection = () => {
                     <FormLabel>
                       Department <span className='text-error-main'>*</span>
                     </FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
+                    <Select onValueChange={field.onChange}>
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder='Select Departement' />
@@ -168,9 +188,9 @@ const FormAddNewsSection = () => {
                       </FormControl>
                       <SelectContent>
                         {departmentData?.map((item) => (
-                          <SelectItem key={item.id} value={item.id}>
-                            {item.name}
-                          </SelectItem>
+                          <Fragment key={item.id}>
+                            <SelectItem value={item.id}>{item.name}</SelectItem>
+                          </Fragment>
                         ))}
                       </SelectContent>
                     </Select>
@@ -192,42 +212,12 @@ const FormAddNewsSection = () => {
               />
             </div>
             <div className='col-span-2 lg:col-span-1'>
-              {' '}
-              {/* <FormField
+              <InputTag
                 control={form.control}
                 name='hashtag'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <InputBadge
-                        label='Hashtag'
-                        required={false}
-                        placeholder='ex: #tags'
-                        {...field}
-                      />
-                      
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              /> */}
-              <div className=''>
-                <FormLabel
-                  className={`${
-                    form.formState?.errors?.hashtag
-                      ? 'text-red-500'
-                      : 'text-black'
-                  }`}
-                >
-                  Hashtag <span className='text-error-main'>*</span>
-                </FormLabel>
-                <InputTag name='hashtag' />
-                {form.formState?.errors?.hashtag && (
-                  <p className='text-red-500 font-medium mt-1 text-sm'>
-                    Hashtag is required
-                  </p>
-                )}
-              </div>
+                label='Hashtag'
+                message={form.formState.errors.hashtag?.[0]?.message}
+              />
             </div>
             <div className='col-span-2 lg:col-span-1'>
               <FormField
@@ -236,10 +226,7 @@ const FormAddNewsSection = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Event</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
+                    <Select onValueChange={field.onChange}>
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder='Select Event' />

@@ -165,6 +165,7 @@
 .rdw-dropdown-wrapper {
   border: none !important;
   background-color: transparent !important;
+  z-index: 5 !important;
 }
 
 .rdw-option-wrapper {
