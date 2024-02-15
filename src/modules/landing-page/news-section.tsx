@@ -8,9 +8,9 @@ import BaseLayout from '@/components/layouts/base';
 
 const NewsSection = () => {
   const { data } = useGetAllPost({
-    sort: 'created_at',
-    type: 'asc',
-    limit: 10,
+    sort: 'visitor',
+    type: 'desc',
+    limit: 4,
     page: 1,
   });
 

@@ -7,10 +7,12 @@ import { useRecoilState } from 'recoil';
 
 import { contentTrimmed } from '@/lib/utils/general-function';
 
+import BadgeTag from '@/components/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 
+import { dataFilter } from '@/modules/news/constant';
 import { postDetailDataState } from '@/recoils/news/detail/atom';
 
 const SideContentSection = () => {
@@ -39,27 +41,17 @@ const SideContentSection = () => {
       </div>
       <h4>Rekomendasi Topik</h4>
       <div className='flex gap-2 flex-wrap'>
-        <Badge className='py-2.5 px-4' variant='outline'>
-          Executive
-        </Badge>
-        <Badge className='py-2.5 px-4' variant='outline'>
-          Humans Relations
-        </Badge>
-        <Badge className='py-2.5 px-4' variant='outline'>
-          Education
-        </Badge>
-        <Badge className='py-2.5 px-4' variant='outline'>
-          Bank Indonesia
-        </Badge>
-        <Badge className='py-2.5 px-4' variant='outline'>
-          Healthcare
-        </Badge>
-        <Badge className='py-2.5 px-4' variant='outline'>
-          Marketing
-        </Badge>
-        <Badge className='py-2.5 px-4' variant='outline'>
-          Social & Environment
-        </Badge>
+        {dataFilter.map((item, i) => (
+          <Link
+            href={`/berita?page=1&filter=${item.value}`}
+            className='cursor-pointer'
+            key={i}
+          >
+            <Badge className='py-2.5 px-4' variant='outline'>
+              {item.name}
+            </Badge>
+          </Link>
+        ))}
       </div>
       <h4>Berita Serupa</h4>
       {dataPost?.similarPosts.map((item, i) => (
@@ -80,13 +72,15 @@ const SideContentSection = () => {
             </Button>
           </div>
           <div className='flex flex-wrap gap-[5px]'>
-            <Badge variant='destructive'>Executive</Badge>
-            <Badge
-              variant='default'
-              className='bg-purple-100 text-purple-500 border-purple-300'
-            >
-              Economic
-            </Badge>
+            <div className='flex flex-col  lg:flex-row items-start lg:items-center lg:justify-between gap-y-2 '>
+              <div className='flex gap-2 items-center flex-wrap'>
+                <BadgeTag title={item?.type || 'Article'} size='sm' />
+                <BadgeTag
+                  title={item?.department_name || 'Marketing'}
+                  size='sm'
+                />
+              </div>
+            </div>
           </div>
           <h4>{item?.title || 'Lorem Ipsum Dolor Ismet Lorem'}</h4>
           <div

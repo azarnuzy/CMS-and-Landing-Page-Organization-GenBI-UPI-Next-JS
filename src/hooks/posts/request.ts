@@ -51,3 +51,11 @@ export const getComments = async (
 
   return data;
 };
+
+export const getSearchPost = async (
+  keyword: string
+): Promise<TDataGetAllPostResponse> => {
+  const { data } = await api.get(`v1/posts/search?keyword=${keyword}`);
+
+  return data;
+};

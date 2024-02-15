@@ -4,6 +4,7 @@ import {
   getAllPost,
   getComments,
   getDetailPost,
+  getSearchPost,
   updateVisitorPost,
 } from '@/hooks/posts/request';
 
@@ -61,4 +62,14 @@ export const useGetCommentPost = ({
   useQuery({
     queryKey: ['get-comment-post', id],
     queryFn: async () => await getComments(id),
+  });
+
+export const useGetSearchPost = ({
+  keyword,
+}: {
+  keyword: string;
+}): UseQueryResult<TDataGetAllPostResponse, TMetaErrorResponse> =>
+  useQuery({
+    queryKey: ['get-search-post', keyword],
+    queryFn: async () => await getSearchPost(keyword),
   });

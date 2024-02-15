@@ -7,7 +7,7 @@ import { useRecoilState } from 'recoil';
 import './index.css';
 
 import { badgeColor } from '@/lib/utils/badge-color';
-import { splitAndJoinWithDash } from '@/lib/utils/general-function';
+import { formatDate, splitAndJoinWithDash } from '@/lib/utils/general-function';
 import {
   useAddVisitorPost,
   useGetCommentPost,
@@ -96,7 +96,11 @@ const ContentSection = ({ id }: { id: number }) => {
                 width={24}
                 height={24}
               />
-              <p>4 Desember, 2024</p>
+              <p>
+                {formatDate(
+                  data?.data?.post?.created_at || '2024-02-13T05:20:22.754Z'
+                )}
+              </p>
             </div>
             <div className='flex gap-1.5 items-center text-neutral-main'>
               <Image src='/svg/eye.svg' alt='eye' width={24} height={24} />

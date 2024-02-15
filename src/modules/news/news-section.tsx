@@ -2,11 +2,12 @@
 
 import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { IoSearch } from 'react-icons/io5';
 import { useRecoilState } from 'recoil';
 
-import { useGetAllPost } from '@/hooks/posts/hook';
+import logger from '@/lib/logger';
+import { useGetAllPost, useGetSearchPost } from '@/hooks/posts/hook';
 
 import BadgeTag from '@/components/badge';
 import { ArticleCard } from '@/components/card/article';
@@ -28,22 +29,37 @@ const NewsArticleSection = () => {
     page: Number(searchParams.get('page')) || 1,
     filter: searchParams.get('filter') || '',
   });
+  const { data: dataSearchPost, refetch: refetchSearchPost } = useGetSearchPost(
+    { keyword: searchParams.get('search') || '' }
+  );
 
   const [dataPost, setDataPost] = useRecoilState(postsDataState);
 
+  const [inputSearch, setInputSearch] = useState('');
+  const [dataStatus, setDataStatus] = useState('data');
+
   const handlePageChange = async (page: number) => {
-    await refetch();
+    if (dataStatus === 'search') {
+      await refetchSearchPost();
+    } else if (dataStatus === 'data') {
+      await refetch();
+    }
 
     let filter = '';
+    let search = '';
     if (searchParams.get('filter')) {
       filter = `&filter=${searchParams.get('filter')}`;
     }
 
-    router.replace(`/berita?page=${page}${filter}`, { scroll: false });
+    if (searchParams.get('search')) {
+      search = `&search=${searchParams.get('search')}`;
+    }
 
     if (parentRef.current) {
       parentRef.current.scrollIntoView({ behavior: 'smooth' });
     }
+
+    router.replace(`/berita?page=${page}${filter}${search}`, { scroll: false });
   };
 
   const handleFilterChange = async (filter: string) => {
@@ -53,18 +69,38 @@ const NewsArticleSection = () => {
     if (filter.length > 0) {
       tempFilter = `&filter=${filter}`;
     }
-    router.replace(`/berita?page=1${tempFilter}`, { scroll: false });
-
     if (parentRef.current) {
       parentRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+    router.replace(`/berita?page=1${tempFilter}`, { scroll: false });
+  };
+
+  const handleKeyDownSearch = async (
+    e: React.KeyboardEvent<HTMLInputElement>
+  ) => {
+    if (e.key === 'Enter') {
+      setDataStatus('search');
+      refetchSearchPost();
+      if (parentRef.current) {
+        parentRef.current.scrollIntoView({ behavior: 'smooth' });
+      }
+      router.replace(`/berita?page=1&search=${inputSearch}`, {
+        scroll: false,
+      });
     }
   };
 
   useEffect(() => {
-    if (data) {
+    if (data && dataStatus === 'data') {
       setDataPost(data?.data);
     }
-  }, [data, setDataPost]);
+
+    if (dataSearchPost && dataStatus === 'search') {
+      setDataPost(dataSearchPost?.data);
+    }
+
+    logger(dataSearchPost);
+  }, [data, dataSearchPost, dataStatus, setDataPost]);
 
   return (
     <div ref={parentRef} className='relative w-full min-h-[40vh] py-10'>
@@ -91,6 +127,9 @@ const NewsArticleSection = () => {
             <input
               type='text'
               id='search'
+              value={inputSearch}
+              onChange={(e) => setInputSearch(e.target.value)}
+              onKeyDown={handleKeyDownSearch}
               placeholder='Cari Berita...'
               className='w-full bg-transparent outline-none'
             />
@@ -127,8 +166,16 @@ const NewsArticleSection = () => {
               ))}
           </div>
           <Pagination
-            currentPage={Number(data?.pagination?.currentPage) || 1}
-            totalPages={Number(data?.pagination?.totalPages) || 1}
+            currentPage={
+              dataStatus === 'data'
+                ? Number(data?.pagination?.currentPage)
+                : Number(dataSearchPost?.pagination?.currentPage) || 1
+            }
+            totalPages={
+              dataStatus === 'search'
+                ? Number(dataSearchPost?.pagination?.totalPages)
+                : Number(data?.pagination?.totalPages) || 1
+            }
             onPageChange={handlePageChange}
           />
         </div>
