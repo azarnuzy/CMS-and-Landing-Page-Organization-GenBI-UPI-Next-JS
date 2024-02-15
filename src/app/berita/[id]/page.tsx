@@ -1,4 +1,3 @@
-import { useParams } from 'next/navigation';
 import React from 'react';
 
 import BaseLayout from '@/components/layouts/base';
@@ -6,8 +5,7 @@ import BaseLayout from '@/components/layouts/base';
 import ContentSection from '@/modules/news/detail/content-section';
 import SideContentSection from '@/modules/news/detail/side-content-section';
 
-const DetailNewsPage = () => {
-  const params = useParams();
+const DetailNewsPage = ({ params }: { params: { id: string } }) => {
   const { id } = params;
   return (
     <main>

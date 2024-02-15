@@ -4,6 +4,8 @@ import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 
+import './index.css';
+
 import { badgeColor } from '@/lib/utils/badge-color';
 import { splitAndJoinWithDash } from '@/lib/utils/general-function';
 import {
@@ -17,14 +19,6 @@ import { Badge } from '@/components/ui/badge';
 
 import { postDetailDataState } from '@/recoils/news/detail/hook';
 
-const images = [
-  { src: '/images/peran-1.webp' },
-  { src: '/images/gallery-1.webp' },
-  { src: '/images/peran-3.webp' },
-  // { src: '/images/gallery-2.jpeg' },
-  // { src: '/images/peran-3.webp' },
-];
-
 const ContentSection = ({ id }: { id: number }) => {
   useAddVisitorPost({ id });
   const { data } = useGetDetailPost({ id });
@@ -32,12 +26,24 @@ const ContentSection = ({ id }: { id: number }) => {
 
   const [type, setType] = useState('Article');
   const [department, setDepartment] = useState('Marketing');
+  const [images, setImages] = useState([
+    {
+      src: '/images/no-photo-available.png',
+    },
+  ]);
   const [, setDetailPost] = useRecoilState(postDetailDataState);
 
   useEffect(() => {
     if (data) {
+      const tempImages = data.data.post.images
+        .filter((item) => item.category === 'post_other_image')
+        .map((item) => ({
+          src: item.file_url,
+        }));
+
       setType(data.data.post.type);
       setDepartment(data.data.post.department_name);
+      setImages(tempImages);
       setDetailPost(data.data);
     }
   }, [data, setDetailPost]);
@@ -73,8 +79,6 @@ const ContentSection = ({ id }: { id: number }) => {
             >
               {type}
             </div>
-          </div>
-          <div className='flex gap-4 items-center'>
             <div
               className={`py-1.5 px-4 ${badgeColor(
                 (splitAndJoinWithDash(department) as string) || ''
@@ -83,6 +87,7 @@ const ContentSection = ({ id }: { id: number }) => {
               {department}
             </div>
           </div>
+          <div className='flex gap-4 items-center'></div>
           <div className='flex items-center gap-4'>
             <div className='flex gap-1.5 items-center text-neutral-main'>
               <Image
@@ -116,11 +121,13 @@ const ContentSection = ({ id }: { id: number }) => {
             </div>
           </div>
         </div>
+        <h3>{data?.data?.post?.title}</h3>
         <div
-          className='flex flex-col gap-2'
+          className='flex flex-col gap-2 news-content'
           dangerouslySetInnerHTML={{ __html: data?.data?.post?.content || '' }}
         ></div>
-        <GalleryComponent images={images} />
+        {data && <GalleryComponent images={images} />}
+
         <div className='flex gap-2 items-center flex-wrap'>
           {data?.data?.post?.tags.map((item, i) => (
             <Badge

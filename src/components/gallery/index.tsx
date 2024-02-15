@@ -61,7 +61,7 @@ const GalleryComponent = ({
             <DialogTrigger className='h-full'>
               <Image
                 key={index}
-                src={image.src}
+                src={image.src || '/images/no-photo-available.png'}
                 width={0}
                 height={0}
                 sizes='60vw'
@@ -72,7 +72,7 @@ const GalleryComponent = ({
             <DialogContent className='bg-transparent border-none p-10 shadow-none text-neutral-100 max-w-4xl'>
               <Image
                 key={index}
-                src={image.src}
+                src={image.src || '/images/no-photo-available.png'}
                 width={0}
                 height={0}
                 sizes='60vw'
