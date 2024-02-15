@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import Link from 'next/link';
 import React from 'react';
 import { BsTrophy } from 'react-icons/bs';
 import { GrAnnounce } from 'react-icons/gr';
@@ -69,14 +70,20 @@ const AboutSection = () => {
                 kesehatan, dan sosial lingkungan.
               </p>
               <div className='flex flex-col sm:flex-row items-start sm:items-center gap-6'>
-                <button className='bg-primary-main text-white px-6 py-2 rounded-full border border-transparent flex gap-3 items-center hover:bg-primary-600 hover:border-primary-main  duration-300 transition-all ease-in-out'>
+                <Link
+                  href='/tentang-genbi/upi'
+                  className='bg-primary-main text-white px-6 py-2 rounded-full border border-transparent flex gap-3 items-center hover:bg-primary-600 hover:border-primary-main  duration-300 transition-all ease-in-out'
+                >
                   <span>Tentang GenBI UPI</span>
                   <IoArrowForwardOutline className='text-xl' />{' '}
-                </button>
-                <button className='bg-neutral-100 border border-primary-main text-primary-main px-6 py-2 rounded-full flex gap-3 items-center hover:bg-primary-600 duration-300 transition-all ease-in-out hover:text-neutral-100'>
+                </Link>
+                <Link
+                  href='/tentang-genbi'
+                  className='bg-neutral-100 border border-primary-main text-primary-main px-6 py-2 rounded-full flex gap-3 items-center hover:bg-primary-600 duration-300 transition-all ease-in-out hover:text-neutral-100'
+                >
                   <span>Tentang Generasi Baru Indonesia</span>
                   <IoArrowForwardOutline className='text-xl' />{' '}
-                </button>
+                </Link>
               </div>
             </div>
             <div className='flex flex-col sm:flex-row gap-6'>

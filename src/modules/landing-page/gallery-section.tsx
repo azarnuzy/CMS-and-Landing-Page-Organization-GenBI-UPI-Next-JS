@@ -33,7 +33,7 @@ const GallerySection = () => {
             ))}
           </div>
           <Link
-            href='/'
+            href='/gallery'
             className='text-white px-4 py-2 bg-transparent flex gap-1 border items-center border-neutral-100 w-fit rounded-full hover:bg-neutral-100 hover:text-primary-main transition-all duration-300 ease-in-out font-medium'
           >
             <span>View GenBI Gallery</span> <IoArrowForwardOutline />{' '}
