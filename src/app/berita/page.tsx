@@ -1,14 +1,18 @@
-import React from 'react';
+import React, { Suspense } from 'react';
+
+import { LoadingSpinner } from '@/components/loading-spinner';
 
 import HiglightSection from '@/modules/news/highlight-section';
 import NewsSection from '@/modules/news/news-section';
 
 const NewsPage = () => {
   return (
-    <main>
-      <HiglightSection />
-      <NewsSection />
-    </main>
+    <Suspense fallback={<LoadingSpinner />}>
+      <main>
+        <HiglightSection />
+        <NewsSection />
+      </main>
+    </Suspense>
   );
 };
 
