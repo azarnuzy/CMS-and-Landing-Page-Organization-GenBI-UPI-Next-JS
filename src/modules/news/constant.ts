@@ -12,6 +12,14 @@ export const dataFilter = [
     value: 'Article',
   },
   {
+    name: 'Bank Indonesia',
+    value: 'Bank Indonesia',
+  },
+  {
+    name: 'Bank Indonesia Jabar',
+    value: 'Bank Indonesia Jabar',
+  },
+  {
     name: 'Executive',
     value: 'Executive',
   },

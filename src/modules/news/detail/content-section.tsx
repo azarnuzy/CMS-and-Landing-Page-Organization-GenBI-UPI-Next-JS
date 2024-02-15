@@ -55,7 +55,7 @@ const ContentSection = ({ id }: { id: number }) => {
           <div className='w-full h-[492px] rounded-2xl'>
             <Image
               src={
-                data?.data?.post?.images?.[0]?.file_url ||
+                data?.data?.post?.image_cover?.file_url ||
                 '/images/no-photo-available.png'
               }
               alt='article'
@@ -66,7 +66,7 @@ const ContentSection = ({ id }: { id: number }) => {
             />
           </div>
           <p className='text-end italic text-sm text-neutral-600'>
-            {data?.data?.post?.images?.[0]?.caption ||
+            {data?.data?.post?.image_cover?.caption ||
               'lorem ipsum dolor sit amet'}
           </p>
         </div>

@@ -47,7 +47,7 @@ export const updateVisitorPost = async (
 export const getComments = async (
   id: number
 ): Promise<TDataCommentPostResponse> => {
-  const { data } = await api.get(`v1/${id}/comments`);
+  const { data } = await api.get(`v1/posts/${id}/comments`);
 
   return data;
 };

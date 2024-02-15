@@ -21,14 +21,19 @@ const SideContentSection = () => {
       <div className='mb-3 flex gap-3 items-center'>
         <div className='w-[64px] h-[64px]'>
           <Avatar>
-            <AvatarImage src='/images/profile-no-photo.png' />
+            <AvatarImage
+              src={
+                dataPost?.post?.author?.photo.file_url ||
+                '/images/profile-no-photo.png'
+              }
+            />
             <AvatarFallback>AN</AvatarFallback>
           </Avatar>
         </div>
         <div className='flex flex-col gap-[5px]'>
           <p className='text-cm text-neutral-600'>Diunggah oleh</p>
           <p className='font-semibold text-primary-main'>
-            {dataPost?.post?.author || 'Admin'}
+            {dataPost?.post?.author.name || 'Admin'}
           </p>
         </div>
       </div>

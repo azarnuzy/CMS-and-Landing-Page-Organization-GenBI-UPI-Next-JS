@@ -44,11 +44,32 @@ export interface Post {
   tags: string[];
   department_id: number;
   department_name: string;
-  author: string;
-  event: any | string;
+  event: any;
+  author: Author;
+  image_cover: ImageCoverDetail;
   images: Image[];
   created_at: string;
   updated_at: string;
+  attachments: any[];
+}
+
+export interface Author {
+  name: string;
+  photo: Photo;
+}
+
+export interface Photo {
+  id: number;
+  alt: string;
+  file_url: string;
+}
+
+export interface ImageCoverDetail {
+  id: number;
+  category: string;
+  alt: string;
+  file_url: string;
+  caption: string;
 }
 
 export interface Image {
