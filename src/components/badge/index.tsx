@@ -1,8 +1,17 @@
 import React from 'react';
 
 import { badgeColor } from '@/lib/utils/badge-color';
+import { splitAndJoinWithDash } from '@/lib/utils/general-function';
 
-const BadgeTag = ({ title, size }: { title: string; size: string }) => {
+const BadgeTag = ({
+  title,
+  size,
+  className,
+}: {
+  title: string;
+  size: string;
+  className?: string;
+}) => {
   const badgeSize = (paramSize: string) => {
     switch (paramSize) {
       case 'sm':
@@ -19,8 +28,8 @@ const BadgeTag = ({ title, size }: { title: string; size: string }) => {
   return (
     <div
       className={`${badgeSize(size)} ${badgeColor(
-        title || 'lorem'
-      )} rounded-full whitespace-nowrap border text-xs`}
+        splitAndJoinWithDash(title) || 'lorem'
+      )} rounded-full whitespace-nowrap border text-xs ${className}`}
     >
       {title || 'Lorem'}
     </div>

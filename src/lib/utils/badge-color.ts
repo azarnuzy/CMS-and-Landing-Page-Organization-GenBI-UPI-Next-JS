@@ -14,7 +14,15 @@ export function badgeColor(tag: string) {
       return 'bg-warning-800 text-warning-100 border-warning-900 hover:bg-secondary-900';
     case 'economic':
       return 'text-purple-main bg-purple-100 border-purple-300 hover:bg-purple-200';
-    default:
+    case 'social-&-environment':
       return 'bg-primary-100 text-primary-500 hover:bg-primary/80 border-primary-300';
+    case 'public-relation':
+      return 'bg-blue-100 text-blue-500 hover:bg-blue/80 border-blue-300';
+    case 'human-resources':
+      return 'bg-orange-100 text-orange-500 hover:bg-orange/80 border-orange-300';
+    case 'semua':
+      return 'bg-warning-main text-warning-900 rounded-full hover:bg-warning-500 border border-warning-600 ';
+    default:
+      return 'text-neutral-600 border-neutral-300';
   }
 }

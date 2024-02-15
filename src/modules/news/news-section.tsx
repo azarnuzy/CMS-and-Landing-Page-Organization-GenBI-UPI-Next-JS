@@ -6,25 +6,27 @@ import React, { useEffect, useRef } from 'react';
 import { IoSearch } from 'react-icons/io5';
 import { useRecoilState } from 'recoil';
 
-import logger from '@/lib/logger';
 import { useGetAllPost } from '@/hooks/posts/hook';
 
+import BadgeTag from '@/components/badge';
 import { ArticleCard } from '@/components/card/article';
 import BaseLayout from '@/components/layouts/base';
 import Pagination from '@/components/pagination';
-import { Button } from '@/components/ui/button';
 
+import { dataFilter } from '@/modules/news/constant';
 import { postsDataState } from '@/recoils/news/atom';
 
 const NewsArticleSection = () => {
   const parentRef = useRef<HTMLDivElement>(null);
   const searchParams = useSearchParams();
   const router = useRouter();
+
   const { data, refetch } = useGetAllPost({
     sort: 'created_at',
     type: 'desc',
     limit: 4,
     page: Number(searchParams.get('page')) || 1,
+    filter: searchParams.get('filter') || '',
   });
 
   const [dataPost, setDataPost] = useRecoilState(postsDataState);
@@ -44,9 +46,22 @@ const NewsArticleSection = () => {
     }
   };
 
+  const handleFilterChange = async (filter: string) => {
+    await refetch();
+    let tempFilter = '';
+
+    if (filter.length > 0) {
+      tempFilter = `&filter=${filter}`;
+    }
+    router.replace(`/berita?page=1${tempFilter}`, { scroll: false });
+
+    if (parentRef.current) {
+      parentRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   useEffect(() => {
     if (data) {
-      logger(data);
       setDataPost(data?.data);
     }
   }, [data, setDataPost]);
@@ -81,39 +96,21 @@ const NewsArticleSection = () => {
             />
           </div>
           <div className='flex overflow-x-auto flex-nowrap items-center gap-4 pb-2   scrollbar-thin scrollbar-track-slate-100 scrollbar-thumb-slate-300 scrollbar-thumb-rounded'>
-            <Button className='bg-warning-main text-warning-900 rounded-full hover:bg-warning-500 border border-warning-600 '>
-              Semua
-            </Button>
-            <Button className='bg-warning-100 text-warning-900 rounded-full hover:bg-warning-200 border border-warning-500 '>
-              Press Release
-            </Button>
-            <Button className='bg-error-100 text-error-700 rounded-full hover:bg-error-200 border border-error-400 '>
-              Semua
-            </Button>
-            <Button
-              variant='outline'
-              className='text-neutral-main rounded-full'
-            >
-              Bank Indonesia
-            </Button>
-            <Button
-              variant='outline'
-              className='text-neutral-main rounded-full'
-            >
-              Bank Indonesia Jabar
-            </Button>
-            <Button
-              variant='outline'
-              className='text-neutral-main rounded-full'
-            >
-              Executive
-            </Button>
-            <Button
-              variant='outline'
-              className='text-neutral-main rounded-full'
-            >
-              Marketing
-            </Button>
+            {dataFilter.map((item, i) => (
+              <div
+                className='cursor-pointer'
+                onClick={() => {
+                  handleFilterChange(item.value);
+                }}
+                key={i}
+              >
+                <BadgeTag
+                  size='lg'
+                  title={item.name}
+                  className='cursor-pointer'
+                />
+              </div>
+            ))}
           </div>
           <div className='grid grid-cols-2 gap-5'>
             {data &&
@@ -122,7 +119,7 @@ const NewsArticleSection = () => {
                   <ArticleCard
                     image={item.image_cover.file_url}
                     title={item.title}
-                    tags={[item.type]}
+                    tags={[item.type, item.department_name]}
                     description={item.content}
                     link={`/berita/${item.id}`}
                   />
@@ -130,8 +127,8 @@ const NewsArticleSection = () => {
               ))}
           </div>
           <Pagination
-            currentPage={Number(data?.pagination?.currentPage)}
-            totalPages={Number(data?.pagination?.totalPages)}
+            currentPage={Number(data?.pagination?.currentPage) || 1}
+            totalPages={Number(data?.pagination?.totalPages) || 1}
             onPageChange={handlePageChange}
           />
         </div>
