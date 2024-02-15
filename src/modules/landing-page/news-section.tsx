@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import React from 'react';
 import { IoArrowForwardOutline } from 'react-icons/io5';
 
@@ -8,7 +9,7 @@ import BaseLayout from '@/components/layouts/base';
 
 const NewsSection = () => {
   const { data } = useGetAllPost({
-    sort: 'visitor',
+    sort: 'created_at',
     type: 'desc',
     limit: 4,
     page: 1,
@@ -28,10 +29,13 @@ const NewsSection = () => {
             <h1>
               Terbaru Dari <span className='text-primary-main'>GenBI UPI</span>
             </h1>
-            <button className='bg-neutral-100 border border-primary-main text-primary-main px-6 py-2 rounded-full flex gap-3 items-center hover:bg-primary-600 duration-500 transition-all ease-in-out hover:text-neutral-100'>
+            <Link
+              href='/berita'
+              className='bg-neutral-100 border border-primary-main text-primary-main px-6 py-2 rounded-full flex gap-3 items-center hover:bg-primary-600 duration-500 transition-all ease-in-out hover:text-neutral-100'
+            >
               <span className='whitespace-nowrap'>Lihat Selengkapnya</span>
               <IoArrowForwardOutline className='text-xl' />{' '}
-            </button>
+            </Link>
           </div>
           <div className='grid grid-cols-2 gap-16'>
             <div className='col-span-2 md:col-span-1 flex flex-col gap-16 md:pt-16'>
@@ -42,7 +46,7 @@ const NewsSection = () => {
                     key={post.id}
                     image={post.image_cover.file_url}
                     title={post.title}
-                    tags={[post.type]}
+                    tags={[post.type, post.department_name]}
                     description={post.content}
                     link={`/berita/${post.id}`}
                   />
@@ -56,7 +60,7 @@ const NewsSection = () => {
                     key={post.id}
                     image={post.image_cover.file_url}
                     title={post.title}
-                    tags={[post.type]}
+                    tags={[post.type, post.department_name]}
                     description={post.content}
                     link={`/berita/${post.id}`}
                   />
