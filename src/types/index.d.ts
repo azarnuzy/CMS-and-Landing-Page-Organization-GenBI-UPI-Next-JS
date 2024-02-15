@@ -12,7 +12,7 @@ export interface TPaginationMeta {
 export type TMetaItem = {
   status: string;
   message: string;
-  pagination?: TPagination;
+  pagination?: TPaginationMeta;
 };
 
 export type TMetaResponse<T> = {

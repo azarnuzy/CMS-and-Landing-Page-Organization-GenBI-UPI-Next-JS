@@ -1,44 +1,57 @@
 'use client';
 
 import Image from 'next/image';
+import { useRouter, useSearchParams } from 'next/navigation';
 import React, { useEffect } from 'react';
 import { IoSearch } from 'react-icons/io5';
 import { useRecoilState } from 'recoil';
 
+import logger from '@/lib/logger';
 import { useGetAllPost } from '@/hooks/posts/hook';
 
 import { ArticleCard } from '@/components/card/article';
 import BaseLayout from '@/components/layouts/base';
+import Pagination from '@/components/pagination';
 import { Button } from '@/components/ui/button';
-import {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from '@/components/ui/pagination';
 
 import { postsDataState } from '@/recoils/news/atom';
 
 const NewsArticleSection = () => {
-  const { data } = useGetAllPost({
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const { data, refetch } = useGetAllPost({
     sort: 'created_at',
     type: 'desc',
     limit: 4,
-    page: 1,
+    page: Number(searchParams.get('page')) || 1,
   });
 
-  const [, setDataPost] = useRecoilState(postsDataState);
+  const [dataPost, setDataPost] = useRecoilState(postsDataState);
+
+  const handlePageChange = async (page: number) => {
+    await refetch();
+    // Scroll to the parent <div> element
+    const parentDiv = document.getElementById('newsArticleSection');
+    if (parentDiv) {
+      parentDiv.scrollIntoView({ behavior: 'smooth' });
+    }
+    let filter = '';
+    if (searchParams.get('filter')) {
+      filter = `&filter=${searchParams.get('filter')}`;
+    }
+
+    router.replace(`/berita?page=${page}${filter}`);
+  };
 
   useEffect(() => {
     if (data) {
+      logger(data);
       setDataPost(data?.data);
     }
   }, [data, setDataPost]);
 
   return (
-    <div className='relative w-full min-h-[40vh] py-10'>
+    <div id='newsArticleSection' className='relative w-full min-h-[40vh] py-10'>
       <Image
         width={0}
         height={0}
@@ -103,7 +116,7 @@ const NewsArticleSection = () => {
           </div>
           <div className='grid grid-cols-2 gap-5'>
             {data &&
-              data?.data?.map((item, i) => (
+              dataPost?.map((item, i) => (
                 <div className='col-span-2 md:col-span-1' key={i}>
                   <ArticleCard
                     image={item.image_cover.file_url}
@@ -115,16 +128,11 @@ const NewsArticleSection = () => {
                 </div>
               ))}
           </div>
-          <Pagination>
-            <PaginationContent>
-              <PaginationPrevious href='#' />
-              <PaginationLink href='#'>1</PaginationLink>
-              <PaginationLink href='#'>2</PaginationLink>
-              <PaginationEllipsis />
-              <PaginationLink href='#'>10</PaginationLink>
-              <PaginationNext href='#' />
-            </PaginationContent>
-          </Pagination>
+          <Pagination
+            currentPage={Number(data?.pagination?.currentPage)}
+            totalPages={Number(data?.pagination?.totalPages)}
+            onPageChange={handlePageChange}
+          />
         </div>
       </BaseLayout>
     </div>

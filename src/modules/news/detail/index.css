@@ -1,0 +1,14 @@
+.news-content a {
+  color: blue;
+  text-decoration: underline;
+}
+
+.news-content ul {
+  padding-left: 1.5rem;
+  list-style: disc;
+}
+
+.news-content ol {
+  padding-left: 1.5rem;
+  list-style: decimal;
+}
