@@ -1,12 +1,24 @@
+'use client';
+
 import { ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 import React from 'react';
 
+import { formatDate } from '@/lib/utils/general-function';
+import { useGetAllPost } from '@/hooks/posts/hook';
+
+import BadgeTag from '@/components/badge';
 import BaseLayout from '@/components/layouts/base';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 
 const HiglightSection = () => {
+  const { data } = useGetAllPost({
+    sort: 'created_at',
+    type: 'desc',
+    limit: 10,
+    page: 1,
+  });
+
   return (
     <div
       className='w-full h-full min-h-[40vh] pt-12 pb-56 relative'
@@ -27,26 +39,32 @@ const HiglightSection = () => {
           <div
             className='col-span-2 md:col-span-1 rounded-3xl w-full px-6 py-4 flex flex-col justify-between h-[480px] border shadow-sm hover:bg-[#011739D6] transition-all duration-300 ease-in-out relative group'
             style={{
-              background:
-                "linear-gradient(180deg, rgba(0, 0, 0, 0.00) 0%, #0A1E3C 100%), url('/images/peran-1.webp') center/cover no-repeat, lightgray 50%",
+              background: `linear-gradient(180deg, rgba(0, 0, 0, 0.00) 0%, #0A1E3C 100%), url(${
+                data?.data?.[0]?.image_cover?.file_url ||
+                'images/no-photo-available.png'
+              }) center/cover no-repeat, lightgray 50%`,
             }}
           >
             <div className='flex flex-col  lg:flex-row items-start lg:items-center lg:justify-between gap-y-2 '>
               <div className='flex gap-2 items-center flex-wrap'>
-                <Badge
-                  variant='outline'
-                  className='bg-warning-100 border border-warning-300 text-warning-600 '
-                >
-                  Press Release
-                </Badge>
-                <Badge variant='outline' className='bg-neutral-100'>
-                  Education
-                </Badge>
+                <BadgeTag
+                  title={data?.data?.[0]?.type || 'Article'}
+                  size='sm'
+                />
+                <BadgeTag
+                  title={data?.data?.[0]?.department_name || 'Marketing'}
+                  size='sm'
+                />
               </div>
-              <p className='font-semibold text-neutral-100'>4 Desember, 2024</p>
+              <p className='font-semibold text-neutral-100'>
+                {formatDate(
+                  data?.data?.[0]?.created_at || '2024-02-13T05:20:22.754Z'
+                )}
+              </p>
             </div>
             <h2 className='text-balance text-white'>
-              Lorem ipsum dolor sit amet consectetur.
+              {data?.data?.[0]?.title ||
+                'Lorem ipsum dolor sit amet consectetur'}
             </h2>
             <div className='absolute top-0 left-0 w-full h-[480px] hover:bg-[#011739D6] transition-all duration-300 ease-in-out flex justify-center items-center hover:z-[10] hover:opacity-100 rounded-3xl hover:backdrop-blur-sm'>
               <Button
@@ -54,7 +72,7 @@ const HiglightSection = () => {
                 variant='ghost'
                 asChild
               >
-                <Link href='/'>
+                <Link href={`berita/${data?.data?.[0]?.id}`}>
                   <p className='text-sm'>Selengkapnya</p>
                   <ArrowRight className='text-sm' />
                 </Link>
@@ -62,34 +80,36 @@ const HiglightSection = () => {
             </div>
           </div>
           <div className='col-span-2 md:col-span-1 flex flex-col justify-between gap-y-5'>
-            {Array(4)
-              .fill('_')
-              .map((_, i) => (
-                <div
-                  className='bg-neutral-100 rounded-3xl p-4 flex flex-col gap-2.5 relative group'
-                  key={i}
-                >
-                  <div className='absolute top-0 left-0 w-full h-full hover:bg-[#011739D6] transition-all duration-300 ease-in-out flex justify-center items-center hover:z-[10] opacity-0 hover:opacity-100 rounded-3xl hover:backdrop-blur-sm'>
-                    <Button
-                      className='border border-neutral-100 rounded-3xl text-neutral-100 hover:bg-neutral-100 hover:text-balance transition-all duration-300 ease-in-out group-hover:flex gap-1 items-center py-1 text-sm hidden '
-                      variant='ghost'
-                      asChild
-                    >
-                      <Link href='/'>
-                        <p className='text-sm'>Selengkapnya</p>
-                        <ArrowRight className='text-sm' />
-                      </Link>
-                    </Button>
+            {data &&
+              data?.data?.length > 1 &&
+              data?.data
+                ?.filter((_, i) => i > 0 && i <= 4)
+                .map((item, i) => (
+                  <div
+                    className='bg-neutral-100 rounded-3xl p-4 flex flex-col gap-2.5 relative group'
+                    key={i}
+                  >
+                    <div className='absolute top-0 left-0 w-full h-full hover:bg-[#011739D6] transition-all duration-300 ease-in-out flex justify-center items-center hover:z-[10] opacity-0 hover:opacity-100 rounded-3xl hover:backdrop-blur-sm'>
+                      <Button
+                        className='border border-neutral-100 rounded-3xl text-neutral-100 hover:bg-neutral-100 hover:text-balance transition-all duration-300 ease-in-out group-hover:flex gap-1 items-center py-1 text-sm hidden '
+                        variant='ghost'
+                        asChild
+                      >
+                        <Link href={`berita/${item?.id}`}>
+                          <p className='text-sm'>Selengkapnya</p>
+                          <ArrowRight className='text-sm' />
+                        </Link>
+                      </Button>
+                    </div>
+                    <div className='flex justify-between items-center'>
+                      <BadgeTag title={item.department_name} size='sm' />
+                      <p className='text-sm text-neutral-main'>
+                        {formatDate(item.created_at)}
+                      </p>
+                    </div>
+                    <h4>{item.title}</h4>
                   </div>
-                  <div className='flex justify-between items-center'>
-                    <Badge variant='destructive'>Executive</Badge>
-                    <p className='text-sm text-neutral-main'>
-                      4 December, 2024
-                    </p>
-                  </div>
-                  <h4>Lorem ipsum dolor sit amet.</h4>
-                </div>
-              ))}
+                ))}
           </div>
         </div>
       </BaseLayout>

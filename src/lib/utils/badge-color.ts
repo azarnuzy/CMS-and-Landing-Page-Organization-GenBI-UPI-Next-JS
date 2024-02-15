@@ -15,6 +15,6 @@ export function badgeColor(tag: string) {
     case 'economic':
       return 'text-purple-main bg-purple-100 border-purple-300 hover:bg-purple-200';
     default:
-      return 'bg-primary text-primary-foreground hover:bg-primary/80';
+      return 'bg-primary-100 text-primary-500 hover:bg-primary/80 border-primary-300';
   }
 }

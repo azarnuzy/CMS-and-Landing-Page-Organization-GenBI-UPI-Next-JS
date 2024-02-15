@@ -47,6 +47,8 @@ export interface Post {
   author: string;
   event: any | string;
   images: Image[];
+  created_at: string;
+  updated_at: string;
 }
 
 export interface Image {

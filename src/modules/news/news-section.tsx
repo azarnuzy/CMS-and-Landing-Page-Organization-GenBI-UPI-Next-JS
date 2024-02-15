@@ -1,6 +1,11 @@
+'use client';
+
 import Image from 'next/image';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { IoSearch } from 'react-icons/io5';
+import { useRecoilState } from 'recoil';
+
+import { useGetAllPost } from '@/hooks/posts/hook';
 
 import { ArticleCard } from '@/components/card/article';
 import BaseLayout from '@/components/layouts/base';
@@ -14,42 +19,24 @@ import {
   PaginationPrevious,
 } from '@/components/ui/pagination';
 
-const data = [
-  {
-    image: '/images/article-temp-2.webp',
-    title: 'Lorem ipsum dolor sit amet.',
-    tags: ['Press Release', 'Social Environment'],
-    description:
-      'lorem ipsum dolor sit amet consectetur adipisicing elit. Vel provident ipsa aut iure veritatis sapiente nulla distinctio aliquam et cumque?',
-    link: '/berita/1',
-  },
-  {
-    image: '/images/article-temp-1.webp',
-    title: 'Lorem ipsum dolor sit amet.',
-    tags: ['Press Release', 'Social Environment'],
-    description:
-      'lorem ipsum dolor sit amet consectetur adipisicing elit. Vel provident ipsa aut iure veritatis sapiente nulla distinctio aliquam et cumque?',
-    link: '/berita/1',
-  },
-  {
-    image: '/images/article-temp-2.webp',
-    title: 'Lorem ipsum dolor sit amet.',
-    tags: ['Press Release', 'Social Environment'],
-    description:
-      'lorem ipsum dolor sit amet consectetur adipisicing elit. Vel provident ipsa aut iure veritatis sapiente nulla distinctio aliquam et cumque?',
-    link: '/berita/1',
-  },
-  {
-    image: '/images/article-temp-1.webp',
-    title: 'Lorem ipsum dolor sit amet.',
-    tags: ['Press Release', 'Social Environment'],
-    description:
-      'lorem ipsum dolor sit amet consectetur adipisicing elit. Vel provident ipsa aut iure veritatis sapiente nulla distinctio aliquam et cumque?',
-    link: '/berita/1',
-  },
-];
+import { postsDataState } from '@/recoils/news/atom';
 
 const NewsArticleSection = () => {
+  const { data } = useGetAllPost({
+    sort: 'created_at',
+    type: 'desc',
+    limit: 4,
+    page: 1,
+  });
+
+  const [, setDataPost] = useRecoilState(postsDataState);
+
+  useEffect(() => {
+    if (data) {
+      setDataPost(data?.data);
+    }
+  }, [data, setDataPost]);
+
   return (
     <div className='relative w-full min-h-[40vh] py-10'>
       <Image
@@ -115,11 +102,18 @@ const NewsArticleSection = () => {
             </Button>
           </div>
           <div className='grid grid-cols-2 gap-5'>
-            {data.map((item, i) => (
-              <div className='col-span-2 md:col-span-1' key={i}>
-                <ArticleCard {...item} />
-              </div>
-            ))}
+            {data &&
+              data?.data?.map((item, i) => (
+                <div className='col-span-2 md:col-span-1' key={i}>
+                  <ArticleCard
+                    image={item.image_cover.file_url}
+                    title={item.title}
+                    tags={[item.type]}
+                    description={item.content}
+                    link={`/berita/${item.id}`}
+                  />
+                </div>
+              ))}
           </div>
           <Pagination>
             <PaginationContent>

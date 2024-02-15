@@ -17,7 +17,7 @@ import {
 import GalleryComponent from '@/components/gallery';
 import { Badge } from '@/components/ui/badge';
 
-import { postDetailDataState } from '@/recoils/news/detail/hook';
+import { postDetailDataState } from '@/recoils/news/detail/atom';
 
 const ContentSection = ({ id }: { id: number }) => {
   useAddVisitorPost({ id });

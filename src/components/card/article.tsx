@@ -26,7 +26,7 @@ export const ArticleCard = ({
       className='w-full shadow-xl border rounded-3xl p-4 flex flex-col gap-3 group overflow-hidden relative'
     >
       <Image
-        src={image}
+        src={image || '/images/no-photo-available.png'}
         alt='article'
         width={0}
         height={0}

@@ -11,7 +11,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 
-import { postDetailDataState } from '@/recoils/news/detail/hook';
+import { postDetailDataState } from '@/recoils/news/detail/atom';
 
 const SideContentSection = () => {
   const [dataPost] = useRecoilState(postDetailDataState);
