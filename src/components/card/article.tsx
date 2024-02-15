@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { IoArrowForwardOutline } from 'react-icons/io5';
 
 import { badgeColor } from '@/lib/utils/badge-color';
+import { contentTrimmed } from '@/lib/utils/general-function';
 
 import { TBadgeVariantProps } from '@/types/components/badge';
 
@@ -19,15 +20,6 @@ export const ArticleCard = ({
   description: string;
   link?: string;
 }) => {
-  /* func to create max length desc 50 character  */
-  const maxLength = 100;
-  const trimmedString = description.substr(0, maxLength);
-  const descriptionTrimmed =
-    trimmedString.substr(
-      0,
-      Math.min(trimmedString.length, trimmedString.lastIndexOf(' '))
-    ) + '...';
-
   return (
     <Link
       href={link}
@@ -73,7 +65,7 @@ export const ArticleCard = ({
       </h4>
       <div
         className='group-hover:-translate-y-[40px] transition-all duration-500 ease-in-out transform '
-        dangerouslySetInnerHTML={{ __html: descriptionTrimmed }}
+        dangerouslySetInnerHTML={{ __html: contentTrimmed(description) }}
       ></div>
 
       <p className='translate-y-[calc(100%+40px)] group-hover:translate-y-[calc(100%-40px)] transition-all duration-500 ease-in-out transform  flex gap-2 text-primary-main font-bold items-center justify-end'>

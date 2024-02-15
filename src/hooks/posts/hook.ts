@@ -1,9 +1,19 @@
 import { useQuery, UseQueryResult } from '@tanstack/react-query';
 
-import { getAllPost } from '@/hooks/posts/request';
+import {
+  getAllPost,
+  getComments,
+  getDetailPost,
+  updateVisitorPost,
+} from '@/hooks/posts/request';
 
 import { TMetaErrorResponse } from '@/types';
-import { TDataGetAllPostResponse } from '@/types/posts';
+import {
+  TDataCommentPostResponse,
+  TDataGetAllPostResponse,
+  TDataGetDetailPostResponse,
+  TDataVisitorPostResponse,
+} from '@/types/posts';
 
 export const useGetAllPost = ({
   sort,
@@ -21,4 +31,34 @@ export const useGetAllPost = ({
   useQuery({
     queryKey: ['all-post', sort, type, limit, page, filter],
     queryFn: async () => await getAllPost({ sort, type, limit, page, filter }),
+  });
+
+export const useAddVisitorPost = ({
+  id,
+}: {
+  id: number;
+}): UseQueryResult<TDataVisitorPostResponse, TMetaErrorResponse> =>
+  useQuery({
+    queryKey: ['add-visitor-post', id],
+    queryFn: async () => await updateVisitorPost(id),
+  });
+
+export const useGetDetailPost = ({
+  id,
+}: {
+  id: number;
+}): UseQueryResult<TDataGetDetailPostResponse, TMetaErrorResponse> =>
+  useQuery({
+    queryKey: ['get-detail-post', id],
+    queryFn: async () => await getDetailPost(id),
+  });
+
+export const useGetCommentPost = ({
+  id,
+}: {
+  id: number;
+}): UseQueryResult<TDataCommentPostResponse, TMetaErrorResponse> =>
+  useQuery({
+    queryKey: ['get-comment-post', id],
+    queryFn: async () => await getComments(id),
   });

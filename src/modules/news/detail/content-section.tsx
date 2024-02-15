@@ -1,10 +1,21 @@
+'use client';
+
 import Image from 'next/image';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useRecoilState } from 'recoil';
+
+import { badgeColor } from '@/lib/utils/badge-color';
+import { splitAndJoinWithDash } from '@/lib/utils/general-function';
+import {
+  useAddVisitorPost,
+  useGetCommentPost,
+  useGetDetailPost,
+} from '@/hooks/posts/hook';
 
 import GalleryComponent from '@/components/gallery';
 import { Badge } from '@/components/ui/badge';
 
-import { contentHtml } from '@/modules/news/detail/constant';
+import { postDetailDataState } from '@/recoils/news/detail/hook';
 
 const images = [
   { src: '/images/peran-1.webp' },
@@ -14,14 +25,33 @@ const images = [
   // { src: '/images/peran-3.webp' },
 ];
 
-const ContentSection = () => {
+const ContentSection = ({ id }: { id: number }) => {
+  useAddVisitorPost({ id });
+  const { data } = useGetDetailPost({ id });
+  const { data: comments } = useGetCommentPost({ id });
+
+  const [type, setType] = useState('Article');
+  const [department, setDepartment] = useState('Marketing');
+  const [, setDetailPost] = useRecoilState(postDetailDataState);
+
+  useEffect(() => {
+    if (data) {
+      setType(data.data.post.type);
+      setDepartment(data.data.post.department_name);
+      setDetailPost(data.data);
+    }
+  }, [data, setDetailPost]);
+
   return (
     <div className='md:col-span-4 col-span-6'>
       <div className='flex flex-col gap-6'>
         <div className='flex flex-col gap-3'>
           <div className='w-full h-[492px] rounded-2xl'>
             <Image
-              src='/images/article-temp-1.webp'
+              src={
+                data?.data?.post?.images?.[0]?.file_url ||
+                '/images/no-photo-available.png'
+              }
               alt='article'
               className='rounded-2xl object-cover object-center w-full h-full'
               width={0}
@@ -30,20 +60,28 @@ const ContentSection = () => {
             />
           </div>
           <p className='text-end italic text-sm text-neutral-600'>
-            Kegiatan GenBI Lorem Ipsum dolor sit amet{' '}
+            {data?.data?.post?.images?.[0]?.caption ||
+              'lorem ipsum dolor sit amet'}
           </p>
         </div>
         <div className='flex items-start sm:justify-between flex-col sm:flex-row gap-2'>
           <div className='flex gap-4 items-center'>
-            <Badge
-              variant='outline'
-              className='bg-warning-100 border py-1.5 px-3 border-warning-300 text-warning-600 '
+            <div
+              className={`py-1.5 px-4 ${badgeColor(
+                (splitAndJoinWithDash(type) as string) || ''
+              )} rounded-full whitespace-nowrap border text-xs`}
             >
-              Press Release
-            </Badge>
-            <Badge variant='outline' className='bg-neutral-100 py-1.5 px-3'>
-              Education
-            </Badge>
+              {type}
+            </div>
+          </div>
+          <div className='flex gap-4 items-center'>
+            <div
+              className={`py-1.5 px-4 ${badgeColor(
+                (splitAndJoinWithDash(department) as string) || ''
+              )} rounded-full whitespace-nowrap border text-xs`}
+            >
+              {department}
+            </div>
           </div>
           <div className='flex items-center gap-4'>
             <div className='flex gap-1.5 items-center text-neutral-main'>
@@ -57,7 +95,7 @@ const ContentSection = () => {
             </div>
             <div className='flex gap-1.5 items-center text-neutral-main'>
               <Image src='/svg/eye.svg' alt='eye' width={24} height={24} />
-              <p>232</p>
+              <p>{data?.data?.post?.visitors || 45}</p>
             </div>
             <div className='flex gap-1.5 items-center text-neutral-main'>
               <Image
@@ -66,7 +104,7 @@ const ContentSection = () => {
                 width={24}
                 height={24}
               />
-              <p>5</p>
+              <p>{comments?.pagination?.totalRows || 0}</p>
             </div>
             <div className='flex gap-1.5 items-center text-neutral-main'>
               <Image
@@ -80,21 +118,19 @@ const ContentSection = () => {
         </div>
         <div
           className='flex flex-col gap-2'
-          dangerouslySetInnerHTML={{ __html: contentHtml() }}
+          dangerouslySetInnerHTML={{ __html: data?.data?.post?.content || '' }}
         ></div>
         <GalleryComponent images={images} />
         <div className='flex gap-2 items-center flex-wrap'>
-          {Array(4)
-            .fill('_')
-            .map((_, i) => (
-              <Badge
-                variant='outline'
-                key={i}
-                className='text-neutral-600 py-2 px-4'
-              >
-                #tagline
-              </Badge>
-            ))}
+          {data?.data?.post?.tags.map((item, i) => (
+            <Badge
+              variant='outline'
+              key={i}
+              className='text-neutral-600 py-2 px-4'
+            >
+              {item}
+            </Badge>
+          )) || ''}
         </div>
       </div>
     </div>

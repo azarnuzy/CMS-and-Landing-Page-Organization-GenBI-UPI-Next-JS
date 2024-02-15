@@ -47,20 +47,6 @@ const NewsSection = () => {
                     link={`/berita/${post.id}`}
                   />
                 ))}
-              {/* <ArticleCard
-                image='/images/article-temp-2.webp'
-                title='Lorem ipsum dolor sit amet.'
-                tags={['Press Release', 'Social Environment']}
-                description='lorem ipsum dolor sit amet consectetur adipisicing elit. Vel provident ipsa aut iure veritatis sapiente nulla distinctio aliquam et cumque?'
-                link='/berita/1'
-              />
-              <ArticleCard
-                image='/images/article-temp-1.webp'
-                title='Lorem ipsum dolor sit amet.'
-                tags={['Press Release', 'Social Environment']}
-                description='lorem ipsum dolor sit amet consectetur adipisicing elit. Vel provident ipsa aut iure veritatis sapiente nulla distinctio aliquam et cumque?'
-                link='/berita/1'
-              /> */}
             </div>
             <div className='col-span-2 md:col-span-1 flex flex-col gap-16 md:pb-16'>
               {data?.data
@@ -75,24 +61,6 @@ const NewsSection = () => {
                     link={`/berita/${post.id}`}
                   />
                 ))}
-              {/* <ArticleCard
-                image='/images/article-temp-1.webp'
-                title='Lorem ipsum dolor sit amet.'
-                tags={[
-                  'Press Release',
-                  'Social Environment',
-                  'Social Environment',
-                ]}
-                description='lorem ipsum dolor sit amet consectetur adipisicing elit. Vel provident ipsa aut iure veritatis sapiente nulla distinctio aliquam et cumque?'
-                link='/berita/1'
-              />
-              <ArticleCard
-                image='/images/article-temp-2.webp'
-                title='Lorem ipsum dolor sit amet.'
-                tags={['Press Release', 'Social Environment']}
-                description='lorem ipsum dolor sit amet consectetur adipisicing elit. Vel provident ipsa aut iure veritatis sapiente nulla distinctio aliquam et cumque?'
-                link='/berita/1'
-              /> */}
             </div>
           </div>
         </div>

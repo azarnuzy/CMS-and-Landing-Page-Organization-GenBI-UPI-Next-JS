@@ -1,9 +1,11 @@
 import { api } from '@/lib/api';
 
 import {
+  TDataCommentPostResponse,
   TDataGetAllPostResponse,
+  TDataGetDetailPostResponse,
+  TDataVisitorPostResponse,
   TGetAllPostParams,
-  TPostDetailData,
 } from '@/types/posts';
 
 export const getAllPost = async (
@@ -24,27 +26,28 @@ export const getAllPost = async (
   return data;
 };
 
-export const getDetailPost = async (id: number): Promise<TPostDetailData> => {
+export const getDetailPost = async (
+  id: number
+): Promise<TDataGetDetailPostResponse> => {
   const { data } = await api.get(`v1/posts/${id}`);
 
   return data;
 };
 
-// export const updateVisitorPost = async (
-//   payload: TPostVisitorPayload
-// ): Promise<TPostVisitorDataResponse> => {
-//   const { data } = await api.post<TPostVisitorDataResponse>(
-//     `v1/posts/visitors/add`,
-//     payload
-//   );
+export const updateVisitorPost = async (
+  id: number
+): Promise<TDataVisitorPostResponse> => {
+  const { data } = await api.get<TDataVisitorPostResponse>(
+    `v1/posts/${id}/visitors/add`
+  );
 
-//   return data;
-// };
+  return data;
+};
 
-// export const getComments = async (
-//   id: number
-// ): Promise<TCommentDataResponse> => {
-//   const { data } = await api.get(`v1/${id}/comments`);
+export const getComments = async (
+  id: number
+): Promise<TDataCommentPostResponse> => {
+  const { data } = await api.get(`v1/${id}/comments`);
 
-//   return data;
-// };
+  return data;
+};

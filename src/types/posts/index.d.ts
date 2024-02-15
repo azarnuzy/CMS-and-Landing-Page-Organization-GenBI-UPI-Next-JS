@@ -1,4 +1,4 @@
-import { TMetaResponse } from '@/types';
+import { TMetaResponse, TMetaResponseSingle } from '@/types';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export interface TPostsData {
@@ -108,4 +108,12 @@ export interface TGetAllPostParams {
   filter?: string;
 }
 
+export interface TVisitorPostData {
+  id: number;
+  visitors: number;
+}
+
 export type TDataGetAllPostResponse = TMetaResponse<TPostsData>;
+export type TDataVisitorPostResponse = TMetaResponseSingle<TVisitorPostData>;
+export type TDataGetDetailPostResponse = TMetaResponseSingle<TPostDetailData>;
+export type TDataCommentPostResponse = TMetaResponse<TCommentData>;
