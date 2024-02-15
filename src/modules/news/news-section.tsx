@@ -62,6 +62,7 @@ const NewsArticleSection = () => {
   };
 
   const handleFilterChange = async (filter: string) => {
+    setDataStatus('data');
     await refetch();
     let tempFilter = '';
 
