@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { IoSearch } from 'react-icons/io5';
 import { useRecoilState } from 'recoil';
 
@@ -17,6 +17,7 @@ import { Button } from '@/components/ui/button';
 import { postsDataState } from '@/recoils/news/atom';
 
 const NewsArticleSection = () => {
+  const parentRef = useRef<HTMLDivElement>(null);
   const searchParams = useSearchParams();
   const router = useRouter();
   const { data, refetch } = useGetAllPost({
@@ -30,17 +31,17 @@ const NewsArticleSection = () => {
 
   const handlePageChange = async (page: number) => {
     await refetch();
-    // Scroll to the parent <div> element
-    const parentDiv = document.getElementById('newsArticleSection');
-    if (parentDiv) {
-      parentDiv.scrollIntoView({ behavior: 'smooth' });
-    }
+
     let filter = '';
     if (searchParams.get('filter')) {
       filter = `&filter=${searchParams.get('filter')}`;
     }
 
-    router.replace(`/berita?page=${page}${filter}`);
+    router.replace(`/berita?page=${page}${filter}`, { scroll: false });
+
+    if (parentRef.current) {
+      parentRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
   };
 
   useEffect(() => {
@@ -51,7 +52,7 @@ const NewsArticleSection = () => {
   }, [data, setDataPost]);
 
   return (
-    <div id='newsArticleSection' className='relative w-full min-h-[40vh] py-10'>
+    <div ref={parentRef} className='relative w-full min-h-[40vh] py-10'>
       <Image
         width={0}
         height={0}
