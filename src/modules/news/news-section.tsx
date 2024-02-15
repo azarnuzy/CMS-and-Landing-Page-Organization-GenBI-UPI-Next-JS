@@ -6,7 +6,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import { IoSearch } from 'react-icons/io5';
 import { useRecoilState } from 'recoil';
 
-import logger from '@/lib/logger';
 import { useGetAllPost, useGetSearchPost } from '@/hooks/posts/hook';
 
 import BadgeTag from '@/components/badge';
@@ -98,8 +97,6 @@ const NewsArticleSection = () => {
     if (dataSearchPost && dataStatus === 'search') {
       setDataPost(dataSearchPost?.data);
     }
-
-    logger(dataSearchPost);
   }, [data, dataSearchPost, dataStatus, setDataPost]);
 
   return (
