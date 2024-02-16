@@ -15,12 +15,12 @@ const SimillarEventSection = () => {
       <BaseLayout>
         <>
           <h4 className='text-neutral-main mb-3'>
-            Rekomendasi <span className='text-warning-main'>Berita</span>
+            Postingan <span className='text-warning-main'>Terkait</span>
           </h4>
           <div className='grid grid-cols-3 gap-6 justify-center'>
             {relatedPost &&
               relatedPost.event.related_posts.map((item, index) => (
-                <div className='grid-cols-3 md:grid-cols-1' key={index}>
+                <div className='col-span-3 md:col-span-1' key={index}>
                   <ArticleCard
                     image={item?.image_cover?.file_url}
                     description={item?.content}
