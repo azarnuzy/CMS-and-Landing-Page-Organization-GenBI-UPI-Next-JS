@@ -12,6 +12,8 @@ import 'swiper/css/effect-fade';
 // Import Swiper styles
 import './index.css';
 
+import { useGetFeaturedPhotos } from '@/hooks/landing-page/hook';
+
 import Button from '@/components/buttons/Button';
 import BaseLayout from '@/components/layouts/base';
 
@@ -37,7 +39,7 @@ const CustomPagination = ({
       ></div>
       <div className='w-full flex justify-between'>
         <span className='text-xl font-semibold'>01</span>
-        <span className='text-xl font-semibold'>04</span>
+        <span className='text-xl font-semibold'>05</span>
       </div>
     </div>
   );
@@ -46,6 +48,8 @@ const CustomPagination = ({
 const HeaderSection = () => {
   const [swiper, setSwiper] = useState<Swiper | null>(null);
   const [activeIndex, setActiveIndex] = useState(0);
+
+  const { data } = useGetFeaturedPhotos();
 
   const pagination = {
     el: '.custom-pagination',
@@ -150,19 +154,18 @@ const HeaderSection = () => {
                     modules={[Pagination, Autoplay, EffectFade]}
                     className='mySwiper w-full h-full'
                   >
-                    {Array(4)
-                      .fill('_')
-                      .map((_, i) => {
+                    {data &&
+                      data?.data?.map((item, i) => {
                         return (
                           <div key={i}>
                             <SwiperSlide key={i}>
                               <Image
-                                src={`/images/hero-${i + 1}.webp`}
+                                src={`${item?.file_url}`}
                                 width={0}
                                 height={0}
                                 sizes='50vw'
                                 className='w-full h-full object-cover rounded-3xl'
-                                alt='hero-1'
+                                alt={item?.alt || 'image header'}
                               />
                             </SwiperSlide>
                           </div>

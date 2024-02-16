@@ -6,6 +6,7 @@ import {
 } from '@tanstack/react-query';
 
 import {
+  getFeaturedPhotos,
   getHomeSummaryRequest,
   postContactUs,
 } from '@/hooks/landing-page/request';
@@ -14,6 +15,7 @@ import { TMetaErrorResponse } from '@/types';
 import {
   TContactUsDataResponse,
   TContactUsPayload,
+  TDataHeaderPhotosResponse,
   THomeSummaryDataResponse,
 } from '@/types/landing-page/index.';
 
@@ -37,3 +39,12 @@ export const usePostContactUs = (): UseMutationResult<
       await postContactUs(payload),
   });
 };
+
+export const useGetFeaturedPhotos = (): UseQueryResult<
+  TDataHeaderPhotosResponse,
+  TMetaErrorResponse
+> =>
+  useQuery({
+    queryKey: ['featured-photos'],
+    queryFn: async () => await getFeaturedPhotos(),
+  });

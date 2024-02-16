@@ -3,6 +3,7 @@ import { api } from '@/lib/api';
 import {
   TContactUsDataResponse,
   TContactUsPayload,
+  TDataHeaderPhotosResponse,
   THomeSummaryDataResponse,
 } from '@/types/landing-page/index.';
 
@@ -23,3 +24,10 @@ export const postContactUs = async (
 
   return data;
 };
+
+export const getFeaturedPhotos =
+  async (): Promise<TDataHeaderPhotosResponse> => {
+    const { data } = await api.get(`v1/photos/featured`);
+
+    return data;
+  };
