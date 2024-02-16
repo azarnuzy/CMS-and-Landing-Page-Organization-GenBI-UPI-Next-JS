@@ -1,30 +1,34 @@
-import React from 'react';
+'use client';
 
-import AcaraCard from '@/components/card/acara';
+import React from 'react';
+import { useRecoilState } from 'recoil';
+
+import { ArticleCard } from '@/components/card/article';
 import BaseLayout from '@/components/layouts/base';
 
-import { dataEvents } from '@/modules/acara/constant';
+import { eventsDetailDataState } from '@/recoils/events/atom';
 
 const SimillarEventSection = () => {
+  const [relatedPost] = useRecoilState(eventsDetailDataState);
   return (
     <div className='py-10'>
       <BaseLayout>
         <>
           <h4 className='text-neutral-main mb-3'>
-            Rekomendasi <span className='text-warning-main'>Acara Serupa</span>
+            Rekomendasi <span className='text-warning-main'>Berita</span>
           </h4>
-          <div className='flex flex-wrap gap-6 justify-center'>
-            {dataEvents
-              .filter((_, index) => index < 4)
-              .map((event, index) => (
-                <AcaraCard
-                  key={index}
-                  image={event.image}
-                  title={event.title}
-                  description={event.description}
-                  link={event.link}
-                  status={event.status}
-                />
+          <div className='grid grid-cols-3 gap-6 justify-center'>
+            {relatedPost &&
+              relatedPost.event.related_posts.map((item, index) => (
+                <div className='grid-cols-3 md:grid-cols-1' key={index}>
+                  <ArticleCard
+                    image={item?.image_cover?.file_url}
+                    description={item?.content}
+                    tags={[item?.type, item?.department_name]}
+                    title={item?.title}
+                    link={`/berita/${item?.id}`}
+                  />
+                </div>
               ))}
           </div>
         </>

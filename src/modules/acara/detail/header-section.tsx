@@ -1,16 +1,36 @@
+'use client';
+
 import Image from 'next/image';
-import React from 'react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import React, { useEffect } from 'react';
 import { LuCalendarCheck } from 'react-icons/lu';
 import { RiMapPinLine } from 'react-icons/ri';
 import { RiLinkM } from 'react-icons/ri';
-import { TbUsers } from 'react-icons/tb';
+import { useRecoilState } from 'recoil';
+
+import { formatDate } from '@/lib/utils/general-function';
+import { translateStatusEvent } from '@/lib/utils/translate-function';
+import { useGetDetailEvent } from '@/hooks/events/hook';
 
 import { BreadCrumb } from '@/components/breadcrumbs';
 import BaseLayout from '@/components/layouts/base';
-import { Badge } from '@/components/ui/badge';
 
 import { breadCrumbGenBIBanggaData } from '@/modules/acara/detail/constant';
-const HeaderDetailAcaraSection = () => {
+import { eventsDetailDataState } from '@/recoils/events/atom';
+const HeaderDetailAcaraSection = ({ id }: { id: string }) => {
+  const router = useRouter();
+
+  const { data } = useGetDetailEvent({ id: Number(id) });
+
+  const [, setDetailEvent] = useRecoilState(eventsDetailDataState);
+
+  useEffect(() => {
+    if (data) {
+      setDetailEvent(data.data);
+    }
+  }, [data, setDetailEvent]);
+
   return (
     <div className='relative py-10'>
       <Image
@@ -28,96 +48,116 @@ const HeaderDetailAcaraSection = () => {
             textColor='text-neutral-main'
           />
           <Image
-            src='/images/marketing.png'
+            src={
+              data?.data?.event?.banner?.file_url ||
+              '/images/no-photo-available.png'
+            }
             width={0}
             height={0}
-            alt='banner'
+            alt={data?.data?.event?.banner?.alt || 'banner'}
             className='object-cover h-[320px] w-full rounded-3xl'
             sizes='100vw'
           />
           <div className='flex flex-col sm:flex-row gap-6 pt-10'>
-            <div className='flex flex-col gap-2 w-fit'>
-              <h4>Pelatihan Desain Grafis Untuk Sosial Media</h4>
-              <p>
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                Architecto earum qui facilis maxime dignissimos delectus ab aut,
-                voluptates exercitationem aliquid, culpa sunt harum ea
-                necessitatibus expedita similique, blanditiis eius nemo nam.
-                Blanditiis quae repellendus dolorem enim quas amet, quidem
-                deserunt quod ullam maiores eveniet quo neque, incidunt optio
-                soluta iste assumenda animi expedita repellat voluptate. Earum
-                tempora veniam aut totam, iusto voluptatem nulla quisquam fugiat
-                eius quas eaque
-              </p>
-              <p>
-                perferendis, dolore corporis voluptas commodi sit quae
-                accusantium possimus consequuntur perspiciatis ea. Repudiandae
-                sequi incidunt, explicabo quasi qui corrupti ad soluta, aut
-                maiores optio maxime! Nesciunt laboriosam iste libero ipsam, nam
-                quidem impedit quia obcaecati. Accusamus libero, iure hic est
-                quia debitis. Vero perspiciatis incidunt ex expedita numquam
-                ipsa et quae magni dolor eveniet aut, explicabo dolorem dolore?
-                Dolor aliquid ratione dolorum, velit deserunt repellat, a
-                tenetur{' '}
-              </p>
-              <p>
-                perspiciatis consequuntur harum blanditiis perferendis qui ex
-                eius libero recusandae quod dignissimos earum quaerat minus
-                aspernatur at pariatur maiores! Dolores commodi est consequuntur
-                assumenda recusandae libero, rerum cumque ea nesciunt tempora
-                excepturi eligendi, similique voluptatum sapiente a ipsam
-                consectetur sunt quia exercitationem animi, autem veniam
-                laudantium culpa. Ut voluptatem, dolorem, laboriosam quidem
-                minus voluptas nemo amet, cum corrupti adipisci ratione
-                blanditiis? Ipsam ullam debitis a.
-              </p>
+            <div className='flex flex-col gap-2 w-full'>
+              <h4>{data?.data?.event?.title}</h4>
+              <div
+                dangerouslySetInnerHTML={{
+                  __html:
+                    data?.data?.event?.description ||
+                    `<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas, dolores.</p>`,
+                }}
+              ></div>
             </div>
-            <div className='min-w-[270px] flex flex-col gap-6 '>
+            <div className=' min-w-[300px] flex flex-col gap-6 '>
               <div className='w-full flex flex-col rounded-3xl border gap-6 shadow-md bg-neutral-100 '>
                 <Image
-                  src='/images/marketing.png'
+                  src={
+                    data?.data?.event?.poster?.file_url ||
+                    '/images/no-photo-available.png'
+                  }
                   width={0}
                   height={0}
-                  alt='banner'
-                  className='object-cover h-full sm:h-[179px] w-full rounded-t-3xl object-right'
+                  alt={data?.data?.event?.poster?.alt || 'poster'}
+                  className='object-cover h-full sm:h-[200px] w-full rounded-t-3xl object-right'
                   sizes='100vw'
                 />
                 <div className='flex flex-col gap-6 px-6 text-neutral-main pb-6 h-fit'>
                   <div className='flex flex-col gap-3'>
-                    <Badge
-                      variant='default'
-                      className='text-warning-900 bg-warning-100 border-warning-600 rounded-full w-fit py-1'
+                    <div
+                      className={`px-4 py-1 w-fit text-sm whitespace-nowrap   rounded-3xl border  ${translateStatusEvent(
+                        data?.data?.event?.status || 'Finished'
+                      )}`}
                     >
-                      Open Registration
-                    </Badge>
+                      {data?.data?.event?.status || 'Finished'}
+                    </div>
                     <div className='flex gap-2'>
                       <LuCalendarCheck className='text-neutral-main text-lg' />
-                      <p className='text-sm '>13 April 2024</p>
+                      <p className='text-sm '>
+                        {formatDate(
+                          data?.data?.event?.start_date ||
+                            '1970-10-10T05:20:22.754Z'
+                        )}
+                      </p>
                     </div>
                     <div className='flex gap-2'>
                       <RiMapPinLine className='text-neutral-main text-lg' />
-                      <p className='text-sm '>Online, YouTube GenBI UPI</p>
+                      <p className='text-sm '>{data?.data?.event?.location}</p>
                     </div>
-                    <div className='flex gap-2'>
+                    <Link
+                      href={data?.data?.event?.location_url || '#'}
+                      className='flex gap-2'
+                    >
                       <RiLinkM className='text-neutral-main text-lg' />
-                      <p className='text-sm '>www.linkstream.com</p>
-                    </div>
+                      <p className='text-sm '>
+                        {data?.data?.event?.location_url}
+                      </p>
+                    </Link>
                   </div>
                   <div>
                     <p className='text-[10px] text-blue-600'>Open Registrasi</p>
-                    <p className='text-sm'>8 - 12 April 2024</p>
+                    <p className='text-sm'>
+                      {formatDate(
+                        data?.data?.event?.start_reg_date ||
+                          '2024-02-13T05:20:22.754Z'
+                      )}{' '}
+                      -{' '}
+                      {formatDate(
+                        data?.data?.event?.end_reg_date ||
+                          '2024-02-13T05:20:22.754Z'
+                      )}{' '}
+                    </p>
                   </div>
                   <div className='flex flex-col gap-2'>
-                    <button className='bg-primary-main text-white px-6 py-2 rounded-full border border-transparent  hover:bg-primary-600 hover:border-primary-main  duration-300 transition-all ease-in-out font-semibold text-sm'>
+                    <button
+                      disabled={
+                        // check if the date is already passed
+                        new Date(
+                          data?.data?.event?.end_reg_date ||
+                            '2024-02-13T05:20:22.754Z'
+                        ) < new Date()
+                      }
+                      onClick={() => {
+                        if (data?.data?.event?.registration_link !== null) {
+                          router.push(
+                            data?.data?.event?.registration_link || '#'
+                          );
+                        }
+                      }}
+                      className='bg-primary-main text-white px-6 py-2 rounded-full border border-transparent  hover:bg-primary-600 hover:border-primary-main  duration-300 transition-all ease-in-out font-semibold text-sm disabled:bg-neutral-300 disabled:hover:border-neutral-300'
+                    >
                       <span>Daftar Sekarang</span>
                     </button>
-                    <button className='bg-neutral-100 border border-primary-main text-primary-main px-6 py-2 rounded-full  hover:bg-primary-600 duration-300 transition-all ease-in-out hover:text-neutral-100 font-semibold text-sm'>
+                    <Link
+                      href={data?.data?.event?.contact || '#'}
+                      className='bg-neutral-100 border border-primary-main text-center text-primary-main px-6 py-2 rounded-full  hover:bg-primary-600 duration-300 transition-all ease-in-out hover:text-neutral-100 font-semibold text-sm'
+                    >
                       <span>Narahubung</span>
-                    </button>
+                    </Link>
                   </div>
                 </div>
               </div>
-              <div className=' bg-neutral-100 w-full flex flex-col rounded-3xl border gap-2 px-4 py-6 shadow-md'>
+              {/* <div className=' bg-neutral-100 w-full flex flex-col rounded-3xl border gap-2 px-4 py-6 shadow-md'>
                 <p className='text-neutral-main font-semibold'>
                   Total Participant
                 </p>
@@ -125,10 +165,10 @@ const HeaderDetailAcaraSection = () => {
                   <h2 className='text-neutral-main'>15</h2>
                   <TbUsers className='text-neutral-600 text-2xl' />
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
-          <div className='flex gap-2 items-center flex-wrap  pt-10 sm:pt-5'>
+          {/* <div className='flex gap-2 items-center flex-wrap  pt-10 sm:pt-5'>
             {Array(4)
               .fill('_')
               .map((_, i) => (
@@ -140,7 +180,7 @@ const HeaderDetailAcaraSection = () => {
                   #design
                 </Badge>
               ))}
-          </div>
+          </div> */}
         </div>
       </BaseLayout>
     </div>

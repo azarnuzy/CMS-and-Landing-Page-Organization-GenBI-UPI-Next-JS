@@ -58,7 +58,7 @@ const HiglightSection = () => {
               </div>
               <p className='font-semibold text-neutral-100'>
                 {formatDate(
-                  data?.data?.[0]?.created_at || '2024-02-13T05:20:22.754Z'
+                  data?.data?.[0]?.created_at || '1970-10-10T05:20:22.754Z'
                 )}
               </p>
             </div>

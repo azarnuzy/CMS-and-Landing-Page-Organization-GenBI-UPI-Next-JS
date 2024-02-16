@@ -98,7 +98,7 @@ const ContentSection = ({ id }: { id: number }) => {
               />
               <p>
                 {formatDate(
-                  data?.data?.post?.created_at || '2024-02-13T05:20:22.754Z'
+                  data?.data?.post?.created_at || '1970-10-10T05:20:22.754Z'
                 )}
               </p>
             </div>

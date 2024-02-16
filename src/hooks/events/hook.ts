@@ -1,9 +1,16 @@
 import { useQuery, UseQueryResult } from '@tanstack/react-query';
 
-import { getAllEvents, getSearchEvent } from '@/hooks/events/request';
+import {
+  getAllEvents,
+  getDetailEvent,
+  getSearchEvent,
+} from '@/hooks/events/request';
 
 import { TMetaErrorResponse } from '@/types';
-import { TDataGetAllEventResponse } from '@/types/events';
+import {
+  TDataGetAllEventResponse,
+  TDataGetDetailEventResponse,
+} from '@/types/events';
 
 export const useGetAllEvent = ({
   sort,
@@ -32,4 +39,14 @@ export const useGetSearchEvent = ({
   useQuery({
     queryKey: ['search-event', keyword],
     queryFn: async () => await getSearchEvent(keyword),
+  });
+
+export const useGetDetailEvent = ({
+  id,
+}: {
+  id: number;
+}): UseQueryResult<TDataGetDetailEventResponse, TMetaErrorResponse> =>
+  useQuery({
+    queryKey: ['get-detail-post', id],
+    queryFn: async () => await getDetailEvent(id),
   });
