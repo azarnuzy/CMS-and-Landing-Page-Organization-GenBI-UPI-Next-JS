@@ -48,3 +48,30 @@ export const dataEvents = [
     status: 'Ongoing',
   },
 ];
+
+export const dataFilterEvent = [
+  {
+    title: 'Semua',
+    value: '',
+  },
+  {
+    title: 'Coming Soon',
+    value: 'Coming Soon',
+  },
+  {
+    title: 'Open Registration',
+    value: 'Open Registration',
+  },
+  {
+    title: 'Ongoing',
+    value: 'Ongoing',
+  },
+  {
+    title: 'Close Registration',
+    value: 'Close Registration',
+  },
+  {
+    title: 'Finished',
+    value: 'finished',
+  },
+];

@@ -128,7 +128,7 @@ const NewsArticleSection = () => {
               value={inputSearch}
               onChange={(e) => setInputSearch(e.target.value)}
               onKeyDown={handleKeyDownSearch}
-              placeholder='Cari Berita...'
+              placeholder='Cari Berita dan Tekan Enter'
               className='w-full bg-transparent outline-none'
             />
           </div>

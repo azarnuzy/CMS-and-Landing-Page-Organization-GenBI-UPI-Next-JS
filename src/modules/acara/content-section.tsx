@@ -1,23 +1,110 @@
-import Image from 'next/image';
-import React from 'react';
-import { IoSearch } from 'react-icons/io5';
+'use client';
 
+import Image from 'next/image';
+import { useRouter, useSearchParams } from 'next/navigation';
+import React, { useEffect, useRef, useState } from 'react';
+import { IoSearch } from 'react-icons/io5';
+import { useRecoilState } from 'recoil';
+
+import { useGetAllEvent, useGetSearchEvent } from '@/hooks/events/hook';
+
+import BadgeTag from '@/components/badge';
 import AcaraCard from '@/components/card/acara';
 import BaseLayout from '@/components/layouts/base';
-import { Button } from '@/components/ui/button';
-import {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from '@/components/ui/pagination';
+import Pagination from '@/components/pagination';
 
-import { dataEvents } from '@/modules/acara/constant';
+import { dataFilterEvent } from '@/modules/acara/constant';
+import { eventsDataState } from '@/recoils/events/atom';
 const ContentEventSection = () => {
+  const searchParams = useSearchParams();
+  const parentRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
+
+  const { data, refetch } = useGetAllEvent({
+    sort: 'created_at',
+    type: 'desc',
+    limit: 4,
+    page: Number(searchParams.get('page')) || 1,
+    filter: searchParams.get('filter') || '',
+  });
+
+  const { data: dataSearchEvent, refetch: refetchSearchEvent } =
+    useGetSearchEvent({
+      keyword: searchParams.get('search') || '',
+    });
+
+  const [dataEvent, setDataEvent] = useRecoilState(eventsDataState);
+
+  const [inputSearch, setInputSearch] = useState('');
+  const [dataStatus, setDataStatus] = useState('data');
+
+  const handlePageChange = async (page: number) => {
+    if (dataStatus === 'search') {
+      await refetchSearchEvent();
+    } else if (dataStatus === 'data') {
+      await refetch();
+    }
+
+    let filter = '';
+    let search = '';
+    if (searchParams.get('filter')) {
+      filter = `&filter=${searchParams.get('filter')}`;
+    }
+
+    if (searchParams.get('search')) {
+      search = `&search=${searchParams.get('search')}`;
+    }
+
+    if (parentRef.current) {
+      parentRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    router.replace(`/acara?page=${page}${filter}${search}`, { scroll: false });
+  };
+
+  const handleFilterChange = async (filter: string) => {
+    setDataStatus('data');
+    await refetch();
+    let tempFilter = '';
+
+    if (filter.length > 0) {
+      tempFilter = `&filter=${filter}`;
+    }
+    if (parentRef.current) {
+      parentRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    router.replace(`/acara?page=1${tempFilter}`, { scroll: false });
+  };
+
+  const handleKeyDownSearch = async (
+    e: React.KeyboardEvent<HTMLInputElement>
+  ) => {
+    if (e.key === 'Enter') {
+      setDataStatus('search');
+      await refetchSearchEvent();
+      if (parentRef.current) {
+        parentRef.current.scrollIntoView({ behavior: 'smooth' });
+      }
+      router.replace(`/acara?search=${inputSearch}`, { scroll: false });
+    }
+  };
+
+  useEffect(() => {
+    if (data && dataStatus === 'data') {
+      setDataEvent(data?.data);
+    }
+
+    if (dataSearchEvent && dataStatus === 'search') {
+      setDataEvent(dataSearchEvent?.data);
+    }
+  }, [data, dataSearchEvent, dataStatus, setDataEvent]);
+
   return (
-    <div className='relative w-full min-h-[40vh] py-10 bg-neutral-100'>
+    <div
+      ref={parentRef}
+      className='relative w-full min-h-[40vh] py-10 bg-neutral-100'
+    >
       <Image
         width={0}
         height={0}
@@ -41,60 +128,56 @@ const ContentEventSection = () => {
             <input
               type='text'
               id='search'
-              placeholder='Cari Acara GenBI UPI...'
+              placeholder='Cari Acara GenBI UPI dan Tekan Enter'
+              value={inputSearch}
+              onChange={(e) => setInputSearch(e.target.value)}
+              onKeyDown={handleKeyDownSearch}
               className='w-full bg-transparent outline-none'
             />
           </div>
           <div className='flex overflow-x-auto flex-nowrap items-center gap-4 pb-2   scrollbar-thin scrollbar-track-slate-100 scrollbar-thumb-slate-300 scrollbar-thumb-rounded'>
-            <Button className='bg-warning-main text-warning-900 rounded-full hover:bg-warning-500 border border-warning-600 '>
-              Semua
-            </Button>
-            <Button
-              variant='outline'
-              className='text-neutral-main rounded-full'
-            >
-              Coming Soon
-            </Button>
-            <Button
-              variant='outline'
-              className='text-neutral-main rounded-full'
-            >
-              Open Registration
-            </Button>
-            <Button
-              variant='outline'
-              className='text-neutral-main rounded-full'
-            >
-              Ongoing
-            </Button>
-            <Button
-              variant='outline'
-              className='text-neutral-main rounded-full'
-            >
-              Close Registration
-            </Button>
-            <Button
-              variant='outline'
-              className='text-neutral-main rounded-full'
-            >
-              Finished
-            </Button>
-          </div>
-          <div className=' flex-wrap flex justify-center gap-10'>
-            {dataEvents.map((item, i) => (
-              <AcaraCard key={i} {...item} />
+            {dataFilterEvent.map((item, i) => (
+              <div
+                className='cursor-pointer'
+                onClick={() => {
+                  handleFilterChange(item.value);
+                }}
+                key={i}
+              >
+                <BadgeTag
+                  size='lg'
+                  title={item.title}
+                  className='cursor-pointer'
+                />
+              </div>
             ))}
           </div>
-          <Pagination>
-            <PaginationContent>
-              <PaginationPrevious href='#' />
-              <PaginationLink href='#'>1</PaginationLink>
-              <PaginationLink href='#'>2</PaginationLink>
-              <PaginationEllipsis />
-              <PaginationLink href='#'>10</PaginationLink>
-              <PaginationNext href='#' />
-            </PaginationContent>
-          </Pagination>
+          <div className=' flex-wrap flex justify-center gap-10'>
+            {data &&
+              dataEvent.map((item, i) => (
+                <AcaraCard
+                  key={i}
+                  description={item?.description}
+                  image={item?.poster?.file_url}
+                  link={`/acara/${item?.id}`}
+                  status={item?.status}
+                  title={item?.title}
+                />
+              ))}
+          </div>
+          <Pagination
+            currentPage={
+              dataStatus === 'data'
+                ? Number(data?.pagination?.currentPage)
+                : Number(dataSearchEvent?.pagination?.currentPage) || 1
+            }
+            totalPages={
+              dataStatus === 'search'
+                ? Number(dataSearchEvent?.pagination?.totalPages)
+                : Number(data?.pagination?.totalPages) || 1
+            }
+            onPageChange={handlePageChange}
+          />
         </div>
       </BaseLayout>
     </div>
