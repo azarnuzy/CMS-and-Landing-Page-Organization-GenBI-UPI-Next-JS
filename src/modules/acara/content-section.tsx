@@ -152,17 +152,19 @@ const ContentEventSection = () => {
               </div>
             ))}
           </div>
-          <div className=' flex-wrap flex justify-center gap-10'>
+          <div className=' grid grid-cols-3 justify-start gap-10'>
             {data &&
               dataEvent.map((item, i) => (
-                <AcaraCard
-                  key={i}
-                  description={item?.description}
-                  image={item?.poster?.file_url}
-                  link={`/acara/${item?.id}`}
-                  status={item?.status}
-                  title={item?.title}
-                />
+                <div key={i} className='col-span-3 md:col-span-1'>
+                  <AcaraCard
+                    key={i}
+                    description={item?.description}
+                    image={item?.thumbnail?.file_url}
+                    link={`/acara/${item?.id}`}
+                    status={item?.status}
+                    title={item?.title}
+                  />
+                </div>
               ))}
           </div>
           <Pagination

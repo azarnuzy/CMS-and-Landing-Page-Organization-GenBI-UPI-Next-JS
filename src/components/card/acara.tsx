@@ -2,6 +2,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 
+import { contentTrimmed } from '@/lib/utils/general-function';
+
 interface AcaraCardProps {
   image: string;
   title: string;
@@ -35,14 +37,14 @@ const AcaraCard = ({
   return (
     <Link
       href={link}
-      className='w-full sm:w-[270px] h-full p-4 flex flex-col gap-3 bg-neutral-100 shadow-md border rounded-3xl'
+      className='w-full  h-full p-4 flex flex-col gap-3 bg-neutral-100 shadow-md border rounded-3xl'
     >
       <Image
-        src={image}
+        src={image || '/images/no-photo-available.png'}
         alt='bg-shape-header-about'
         width={0}
         height={0}
-        className='mx-auto w-[270px] h-[337px] object-cover'
+        className='w-full  h-[265px] lg:h-[337px] object-cover rounded-3xl  group-hover:pb-[40px]  transition-all duration-500 ease-in-out'
         sizes='50vw'
       />
       <div
@@ -54,7 +56,10 @@ const AcaraCard = ({
       </div>
       <h4>{title}</h4>
 
-      <p>{description}</p>
+      <div
+        className='group-hover:-translate-y-[40px] transition-all duration-500 ease-in-out transform '
+        dangerouslySetInnerHTML={{ __html: contentTrimmed(description, 200) }}
+      ></div>
     </Link>
   );
 };
