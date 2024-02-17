@@ -1,20 +1,30 @@
 'use client';
 
 import Image from 'next/image';
-import { useParams } from 'next/navigation';
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useRecoilState } from 'recoil';
+
+import logger from '@/lib/logger';
+import { useGetDepartmentById } from '@/hooks/departments/hook';
 
 import { BreadCrumb } from '@/components/breadcrumbs';
 import BaseLayout from '@/components/layouts/base';
 
-import {
-  BreadcrumbDepartmentData,
-  translateImage,
-  translateTitleDepartment,
-} from '@/modules/about-genbi/upi/department/constant';
+import { BreadcrumbDepartmentData } from '@/modules/about-genbi/upi/department/constant';
+import { departmentDataState } from '@/recoils/departments/atom';
 
-const HeaderDepartmentSection = () => {
-  const { department } = useParams();
+const HeaderDepartmentSection = ({ id }: { id: string }) => {
+  logger(id);
+  const { data } = useGetDepartmentById({ id });
+
+  const [departmentData, setDepartmentData] =
+    useRecoilState(departmentDataState);
+
+  useEffect(() => {
+    if (data) {
+      setDepartmentData(data?.data);
+    }
+  }, [data, setDepartmentData]);
 
   return (
     <div
@@ -25,8 +35,10 @@ const HeaderDepartmentSection = () => {
       }}
     >
       <Image
-        src={`/images/${translateImage(department as string)}`}
-        alt='bg-shape-header-about'
+        src={
+          departmentData?.department?.cover?.file_url || '/images/marketing.png'
+        }
+        alt={departmentData?.department?.cover?.alt || 'bg-shape-header-about'}
         width={0}
         height={0}
         className='absolute top-0 right-0 object-cover object-right-bottom w-full h-full -z-[1] transform scale-x-110 blur'
@@ -35,12 +47,14 @@ const HeaderDepartmentSection = () => {
       <BaseLayout>
         <div className='relative z-[1]'>
           <BreadCrumb
-            items={BreadcrumbDepartmentData(department as string)}
+            items={BreadcrumbDepartmentData(
+              departmentData?.department?.name || 'Marketing'
+            )}
             textColor='text-neutral-100'
           />
           <h1 className='text-neutral-100'>
             <span className='text-warning-main'>
-              {translateTitleDepartment(department as string)}
+              {departmentData?.department?.name || 'Marketing'}
             </span>{' '}
             Department
           </h1>

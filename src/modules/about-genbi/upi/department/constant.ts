@@ -47,7 +47,7 @@ export const BreadcrumbDepartmentData = (name: string) => {
       link: '/tentang-genbi/upi',
     },
     {
-      name: translateTitleDepartment(name),
+      name: name,
       link: `/tentang-genbi/upi/${name}`,
     },
   ];
