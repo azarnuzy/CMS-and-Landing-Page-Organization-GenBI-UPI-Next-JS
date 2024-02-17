@@ -6,6 +6,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { IoSearch } from 'react-icons/io5';
 import { useRecoilState } from 'recoil';
 
+import { useGetDepartmentsTags } from '@/hooks/departments/hook';
 import { useGetAllPost, useGetSearchPost } from '@/hooks/posts/hook';
 
 import BadgeTag from '@/components/badge';
@@ -13,7 +14,6 @@ import { ArticleCard } from '@/components/card/article';
 import BaseLayout from '@/components/layouts/base';
 import Pagination from '@/components/pagination';
 
-import { dataFilter } from '@/modules/news/constant';
 import { postsDataState } from '@/recoils/news/atom';
 
 const NewsArticleSection = () => {
@@ -31,6 +31,7 @@ const NewsArticleSection = () => {
   const { data: dataSearchPost, refetch: refetchSearchPost } = useGetSearchPost(
     { keyword: searchParams.get('search') || '' }
   );
+  const { data: dataTags } = useGetDepartmentsTags();
 
   const [dataPost, setDataPost] = useRecoilState(postsDataState);
 
@@ -133,21 +134,22 @@ const NewsArticleSection = () => {
             />
           </div>
           <div className='flex overflow-x-auto flex-nowrap items-center gap-4 pb-2   scrollbar-thin scrollbar-track-slate-100 scrollbar-thumb-slate-300 scrollbar-thumb-rounded'>
-            {dataFilter.map((item, i) => (
-              <div
-                className='cursor-pointer'
-                onClick={() => {
-                  handleFilterChange(item.value);
-                }}
-                key={i}
-              >
-                <BadgeTag
-                  size='lg'
-                  title={item.name}
+            {dataTags &&
+              ['', ...(dataTags?.data || [])].map((item, i) => (
+                <div
                   className='cursor-pointer'
-                />
-              </div>
-            ))}
+                  onClick={() => {
+                    handleFilterChange(item);
+                  }}
+                  key={i}
+                >
+                  <BadgeTag
+                    size='lg'
+                    title={item === '' ? 'Semua' : item}
+                    className='cursor-pointer'
+                  />
+                </div>
+              ))}
           </div>
           <div className='grid grid-cols-2 gap-5'>
             {data &&
