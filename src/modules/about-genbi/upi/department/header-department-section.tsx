@@ -4,7 +4,6 @@ import Image from 'next/image';
 import React, { useEffect } from 'react';
 import { useRecoilState } from 'recoil';
 
-import logger from '@/lib/logger';
 import { useGetDepartmentById } from '@/hooks/departments/hook';
 
 import { BreadCrumb } from '@/components/breadcrumbs';
@@ -14,7 +13,6 @@ import { BreadcrumbDepartmentData } from '@/modules/about-genbi/upi/department/c
 import { departmentDataState } from '@/recoils/departments/atom';
 
 const HeaderDepartmentSection = ({ id }: { id: string }) => {
-  logger(id);
   const { data } = useGetDepartmentById({ id });
 
   const [departmentData, setDepartmentData] =
