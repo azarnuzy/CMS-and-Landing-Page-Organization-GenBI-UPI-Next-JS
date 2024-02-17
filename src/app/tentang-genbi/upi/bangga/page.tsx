@@ -1,14 +1,18 @@
-import React from 'react';
+import React, { Suspense } from 'react';
+
+import { LoadingSpinner } from '@/components/loading-spinner';
 
 import ContentGenBIBanggaSection from '@/modules/about-genbi/upi/bangga/content-section';
 import HeaderGenBIBanggaSection from '@/modules/about-genbi/upi/bangga/header-upi-section';
 
 const GenbiBanggaPage = () => {
   return (
-    <main>
-      <HeaderGenBIBanggaSection />
-      <ContentGenBIBanggaSection />
-    </main>
+    <Suspense fallback={<LoadingSpinner />}>
+      <main>
+        <HeaderGenBIBanggaSection />
+        <ContentGenBIBanggaSection />
+      </main>
+    </Suspense>
   );
 };
 
