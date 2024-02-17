@@ -18,3 +18,11 @@ export const getOptionManagementsRequest =
 
     return data;
   };
+
+export const getManagementByIdRequest = async (
+  id: number
+): Promise<TDataGetActiveManagementsResponse> => {
+  const { data } = await api.get(`/v1/managements/${id}`);
+
+  return data;
+};

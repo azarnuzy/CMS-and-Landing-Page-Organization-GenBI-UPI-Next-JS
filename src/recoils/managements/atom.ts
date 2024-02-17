@@ -93,3 +93,8 @@ export const activeManagementsState = atom<TActiveManagementsData>({
     },
   },
 });
+
+export const statusManagementsState = atom<string>({
+  key: 'statusManagementsState',
+  default: 'data',
+});

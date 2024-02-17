@@ -2,6 +2,7 @@ import { useQuery, UseQueryResult } from '@tanstack/react-query';
 
 import {
   getActiveManagementsRequest,
+  getManagementByIdRequest,
   getOptionManagementsRequest,
 } from '@/hooks/managements/request';
 
@@ -32,4 +33,14 @@ export const useGetOptionManagements = (): UseQueryResult<
   useQuery({
     queryKey: ['get-option-managements'],
     queryFn: async () => await getOptionManagementsRequest(),
+  });
+
+export const useGetManagementsById = ({
+  id,
+}: {
+  id: number;
+}): UseQueryResult<TDataGetActiveManagementsResponse, TMetaErrorResponse> =>
+  useQuery({
+    queryKey: ['get-management-by-id', id],
+    queryFn: async () => await getManagementByIdRequest(id),
   });

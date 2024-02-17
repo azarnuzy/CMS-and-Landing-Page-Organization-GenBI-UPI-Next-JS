@@ -1,12 +1,16 @@
 'use client';
 
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
-import React from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import React, { useEffect } from 'react';
 import { useRecoilState } from 'recoil';
 
 import logger from '@/lib/logger';
-import { useGetOptionManagements } from '@/hooks/managements/hook';
+import {
+  useGetActiveManagements,
+  useGetManagementsById,
+  useGetOptionManagements,
+} from '@/hooks/managements/hook';
 
 import BaseLayout from '@/components/layouts/base';
 import {
@@ -17,20 +21,42 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 
-import { selectedOptionManagementState } from '@/recoils/managements/atom';
+import {
+  activeManagementsState,
+  selectedOptionManagementState,
+} from '@/recoils/managements/atom';
 
 const DivisorSection = () => {
+  const searchParams = useSearchParams();
   const router = useRouter();
 
   const { data } = useGetOptionManagements();
 
+  const { data: dataActiveManagements } = useGetActiveManagements();
+  const { data: dataById, refetch } = useGetManagementsById({
+    id: Number(searchParams.get('period')) || 5,
+  });
+
   const [, setSelectedOption] = useRecoilState(selectedOptionManagementState);
+
+  const [, setActiveManagements] = useRecoilState(activeManagementsState);
 
   const handleChange = (e: string) => {
     logger(e);
     setSelectedOption(Number(e));
     router.replace(`/tentang-genbi/upi?period=${e}`, { scroll: false });
+    refetch();
   };
+
+  useEffect(() => {
+    if (dataActiveManagements && dataById) {
+      if (searchParams.get('period')) {
+        setActiveManagements(dataById?.data);
+      } else {
+        setActiveManagements(dataActiveManagements?.data);
+      }
+    }
+  }, [dataActiveManagements, dataById, searchParams, setActiveManagements]);
 
   return (
     <div
