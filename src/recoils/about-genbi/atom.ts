@@ -1,8 +1,8 @@
-import { atom } from 'recoil';
+// import { atom } from 'recoil';
 
-import { TDataManagement } from '@/types/managements';
+// import { TDataManagement } from '@/types/managements';
 
-export const activeManagementState = atom<TDataManagement | null>({
-  key: 'activeManagementState',
-  default: null,
-});
+// export const activeManagementState = atom<TDataManagement | null>({
+//   key: 'activeManagementState',
+//   default: null,
+// });
