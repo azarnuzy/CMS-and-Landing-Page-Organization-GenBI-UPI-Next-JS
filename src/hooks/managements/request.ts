@@ -1,18 +1,19 @@
 import { api } from '@/lib/api';
 
-import { TDataGetOptionManagement } from '@/types/managements';
+import {
+  TDataGetActiveManagementsResponse,
+  TDataGetOptionManagementResponse,
+} from '@/types/managements';
 
-// import { TManagementDataResponse } from '@/types/managements';
+export const getActiveManagementsRequest =
+  async (): Promise<TDataGetActiveManagementsResponse> => {
+    const { data } = await api.get(`/v1/managements/active`);
 
-// export const getManagementRequest = async (
-//   year: string
-// ): Promise<TManagementDataResponse> => {
-//   const { data } = await api.get(`/v1/managements/active?year=${year}`);
+    return data;
+  };
 
-//   return data;
-// };
-export const getOptionManagements =
-  async (): Promise<TDataGetOptionManagement> => {
+export const getOptionManagementsRequest =
+  async (): Promise<TDataGetOptionManagementResponse> => {
     const { data } = await api.get(`/v1/managements?options=true`);
 
     return data;

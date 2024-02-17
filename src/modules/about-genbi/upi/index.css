@@ -1,0 +1,14 @@
+.content-about a {
+  color: blue;
+  text-decoration: underline;
+}
+
+.content-about ul {
+  padding-left: 1.5rem;
+  list-style: disc;
+}
+
+.content-about ol {
+  padding-left: 1.5rem;
+  list-style: decimal;
+}

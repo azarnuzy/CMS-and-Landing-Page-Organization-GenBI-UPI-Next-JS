@@ -84,7 +84,7 @@ const SideContentSection = () => {
           </div>
           <h4>{item?.title || 'Lorem Ipsum Dolor Ismet Lorem'}</h4>
           <div
-            className='text-neutral-600'
+            className='text-neutral-600 content-dangerously'
             dangerouslySetInnerHTML={{ __html: contentTrimmed(item?.content) }}
           ></div>
         </div>

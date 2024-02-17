@@ -127,7 +127,7 @@ const ContentSection = ({ id }: { id: number }) => {
         </div>
         <h3>{data?.data?.post?.title}</h3>
         <div
-          className='flex flex-col gap-2 news-content'
+          className='flex flex-col gap-2 content-dangerously'
           dangerouslySetInnerHTML={{ __html: data?.data?.post?.content || '' }}
         ></div>
         {data && <GalleryComponent images={images} />}

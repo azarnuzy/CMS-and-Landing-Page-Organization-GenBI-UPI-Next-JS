@@ -196,3 +196,18 @@
   position: absolute !important;
   width: 60px !important;
 }
+
+.content-dangerously a {
+  color: blue;
+  text-decoration: underline;
+}
+
+.content-dangerously ul {
+  padding-left: 1.5rem;
+  list-style: disc;
+}
+
+.content-dangerously ol {
+  padding-left: 1.5rem;
+  list-style: decimal;
+}

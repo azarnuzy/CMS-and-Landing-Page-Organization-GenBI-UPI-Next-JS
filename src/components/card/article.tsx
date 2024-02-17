@@ -64,7 +64,7 @@ export const ArticleCard = ({
         {title}
       </h4>
       <div
-        className='group-hover:-translate-y-[40px] transition-all duration-500 ease-in-out transform '
+        className='group-hover:-translate-y-[40px] transition-all duration-500 ease-in-out transform content-dangerously'
         dangerouslySetInnerHTML={{ __html: contentTrimmed(description) }}
       ></div>
 

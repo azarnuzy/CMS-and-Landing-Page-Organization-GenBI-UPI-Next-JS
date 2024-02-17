@@ -1,13 +1,30 @@
 'use client';
 
 import Image from 'next/image';
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useRecoilState } from 'recoil';
+
+import './index.css';
+
+import { useGetActiveManagements } from '@/hooks/managements/hook';
 
 import BaseLayout from '@/components/layouts/base';
 
-import { misiData } from '@/modules/landing-page/about-section';
+import { activeManagementsState } from '@/recoils/managements/atom';
 
 const ContentSection = () => {
+  const { data } = useGetActiveManagements();
+
+  const [activeManagements, setActiveManagements] = useRecoilState(
+    activeManagementsState
+  );
+
+  useEffect(() => {
+    if (data) {
+      setActiveManagements(data?.data);
+    }
+  }, [data, setActiveManagements]);
+
   return (
     <div className='py-10 relative'>
       <Image
@@ -21,35 +38,24 @@ const ContentSection = () => {
       <BaseLayout>
         <div className='flex flex-none flex-col sm:flex-row gap-4  sm:gap-14'>
           <div className='relative w-fit h-full bg-neutral-100 shadow-md border p-4 rounded-3xl'>
-            <Image
-              src='/images/video-genbi-upi.png'
-              alt='video genbi upi'
-              width={0}
-              height={0}
-              sizes='50vw'
+            <video
+              src={activeManagements?.management?.video?.file_url}
+              loop
+              controls
               className='w-[390px] rounded-3xl h-full'
-            />
+            ></video>
           </div>
           <div className='flex flex-col gap-14 w-fit'>
             <div className='flex flex-col gap-6'>
               <h1 className='text-neutral-main'>
                 Kenali <span className='text-primary-main'>GenBI UPI</span>
               </h1>
-              <p className='text-neutral-600'>
-                Pada tanggal ............. didirikan Komunitas Generasi Baru
-                Indonesia (GenBI) UPI, sebuah organisasi yang diperuntukkan bagi
-                mahasiswa yang menerima beasiswa dari Bank Indonesia di
-                Universitas Pendidikan Indonesia. GenBI berperan sebagai
-                platform untuk mengembangkan potensi intelektual, bakat,
-                kepemimpinan, serta keterampilan presentasi dan penulisan.{' '}
-                <br />
-                <br /> GenBI memberikan peluang magang di Bank Indonesia dan
-                berbagai perusahaan serta perusahaan multinasional. Selain itu,
-                GenBI berfungsi sebagai tempat bagi anggotanya untuk
-                berkontribusi dalam pengabdian masyarakat, baik melalui kegiatan
-                sosial maupun melalui keterlibatan langsung dengan Bank
-                Indonesia.
-              </p>
+              <div
+                className='text-neutral-600 content-dangerously'
+                dangerouslySetInnerHTML={{
+                  __html: activeManagements?.management?.description || '',
+                }}
+              ></div>
             </div>
             <div className='flex flex-col gap-6'>
               <h1 className='text-end text-neutral-main'>Visi & Misi</h1>
@@ -63,24 +69,28 @@ const ContentSection = () => {
                 />
                 <div className='flex flex-col gap-2 w-fit'>
                   <h2>Visi</h2>
-                  <p>
-                    GenBI sebagai wadah eksplorasi diri serta menjadi mediator
-                    BI untuk menyebarkan kebermanfaatan kepada masyarakat.
-                  </p>
+                  <div
+                    className='content-dangerously'
+                    dangerouslySetInnerHTML={{
+                      __html: activeManagements?.management?.vision || '',
+                    }}
+                  ></div>
                 </div>
               </div>
               <div className='rounded-3xl p-6 flex flex-col gap-4 justify-center bg-neutral-100 text-neutral-600 shadow-md border'>
                 <h2 className='text-start'>Misi</h2>
                 <div className='flex flex-col gap-4 w-full'>
-                  {misiData.map((item, index) => (
+                  {activeManagements?.management?.mission.map((item, index) => (
                     <div
                       className='rounded-2xl bg-neutral-100 border border-neutral-300 p-4 flex gap-4 items-center w-full'
                       key={index}
                     >
-                      <div className={`p-1.5 ${item.color} rounded-md`}>
-                        {item.icon}
-                      </div>
-                      <p className='text-neutral-600'>{item.description}</p>
+                      <div
+                        className='content-dangerously'
+                        dangerouslySetInnerHTML={{
+                          __html: item || '',
+                        }}
+                      ></div>
                     </div>
                   ))}
                 </div>

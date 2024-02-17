@@ -1,9 +1,11 @@
 'use client';
 
 import Image from 'next/image';
-import React, { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import React from 'react';
 import { useRecoilState } from 'recoil';
 
+import logger from '@/lib/logger';
 import { useGetOptionManagements } from '@/hooks/managements/hook';
 
 import BaseLayout from '@/components/layouts/base';
@@ -15,26 +17,20 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 
-import {
-  optionManagementState,
-  selectedOptionManagementState,
-} from '@/recoils/managements/atom';
+import { selectedOptionManagementState } from '@/recoils/managements/atom';
 
 const DivisorSection = () => {
+  const router = useRouter();
+
   const { data } = useGetOptionManagements();
 
-  const [options, setOptions] = useRecoilState(optionManagementState);
-  const [selectedOption, setSelectedOption] = useRecoilState(
-    selectedOptionManagementState
-  );
+  const [, setSelectedOption] = useRecoilState(selectedOptionManagementState);
 
-  useEffect(() => {
-    if (data) {
-      const length = data?.data?.length;
-      setOptions(data?.data);
-      setSelectedOption(data?.data[length - 1].period_year);
-    }
-  }, [data, setOptions, setSelectedOption]);
+  const handleChange = (e: string) => {
+    logger(e);
+    setSelectedOption(Number(e));
+    router.replace(`/tentang-genbi/upi?period=${e}`, { scroll: false });
+  };
 
   return (
     <div
@@ -67,17 +63,16 @@ const DivisorSection = () => {
           <h1 className='text-warning-main'>GenBI UPI</h1>
           <div className='mt-2'>
             <Select
-              value={selectedOption}
               onValueChange={(e) => {
-                setSelectedOption(e);
+                handleChange(e);
               }}
             >
               <SelectTrigger className='w-[320px] bg-primary-main text-neutral-100 border-primary-main focus:outline-none focus:ring-0'>
                 <SelectValue placeholder='Select Period' />
               </SelectTrigger>
               <SelectContent>
-                {options.map((item) => (
-                  <SelectItem key={item.id} value={item.period_year}>
+                {data?.data?.map((item, i) => (
+                  <SelectItem key={i} value={String(item.id)}>
                     {item.name}
                   </SelectItem>
                 ))}

@@ -1,28 +1,35 @@
 import { useQuery, UseQueryResult } from '@tanstack/react-query';
 
-import { getOptionManagements } from '@/hooks/managements/request';
+import {
+  getActiveManagementsRequest,
+  getOptionManagementsRequest,
+} from '@/hooks/managements/request';
 
 import { TMetaErrorResponse } from '@/types';
-import { TDataGetOptionManagement } from '@/types/managements';
+import {
+  TDataGetActiveManagementsResponse,
+  TDataGetOptionManagementResponse,
+} from '@/types/managements';
 
 // import { getManagementRequest } from '@/hooks/managements/request';
 
 // import { TMetaErrorResponse } from '@/types';
 // import { TManagementDataResponse } from '@/types/managements';
 
-// export const useGetManagement = (
-//   year: string
-// ): UseQueryResult<TManagementDataResponse, TMetaErrorResponse> =>
-//   useQuery({
-//     queryKey: ['management', year],
-//     queryFn: async () => await getManagementRequest(year),
-//   });
+export const useGetActiveManagements = (): UseQueryResult<
+  TDataGetActiveManagementsResponse,
+  TMetaErrorResponse
+> =>
+  useQuery({
+    queryKey: ['active-management'],
+    queryFn: async () => await getActiveManagementsRequest(),
+  });
 
 export const useGetOptionManagements = (): UseQueryResult<
-  TDataGetOptionManagement,
+  TDataGetOptionManagementResponse,
   TMetaErrorResponse
 > =>
   useQuery({
     queryKey: ['get-option-managements'],
-    queryFn: async () => await getOptionManagements(),
+    queryFn: async () => await getOptionManagementsRequest(),
   });

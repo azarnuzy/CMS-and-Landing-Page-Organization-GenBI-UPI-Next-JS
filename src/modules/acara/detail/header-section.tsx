@@ -62,6 +62,7 @@ const HeaderDetailAcaraSection = ({ id }: { id: string }) => {
             <div className='flex flex-col gap-2 w-full'>
               <h4>{data?.data?.event?.title}</h4>
               <div
+                className='content-dangerously'
                 dangerouslySetInnerHTML={{
                   __html:
                     data?.data?.event?.description ||

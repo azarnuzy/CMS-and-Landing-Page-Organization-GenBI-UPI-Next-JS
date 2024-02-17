@@ -43,6 +43,7 @@ const AcaraCard = ({
       <h4>{title}</h4>
 
       <div
+        className='content-dangerously'
         dangerouslySetInnerHTML={{ __html: contentTrimmed(description, 200) }}
       ></div>
     </Link>
