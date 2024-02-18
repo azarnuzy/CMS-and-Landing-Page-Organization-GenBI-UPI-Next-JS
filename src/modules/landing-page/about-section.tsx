@@ -121,11 +121,10 @@ const AboutSection = () => {
               </div>
               <div className='w-full sm:w-[calc(100%-160px-24px)] '>
                 <video
-                  src='/images/Golden_Lamian_2.mp4'
-                  autoPlay
+                  src='/images/genbi-video.mp4'
                   loop
                   playsInline
-                  muted
+                  controls
                   className='w-full rounded-lg sm:max-h-[550px] '
                 ></video>
               </div>
