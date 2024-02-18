@@ -51,7 +51,7 @@ const GalleryComponent = ({
       {images.map((image, index) => (
         <div
           key={index}
-          className={`w-full h-full object-cover rounded-md  ${
+          className={`w-full h-full max-h-[300px] object-cover rounded-md  ${
             index === 0
               ? spanFirstImage(images.length)
               : 'col-span-1 row-span-1'
@@ -69,7 +69,7 @@ const GalleryComponent = ({
                 className={`w-full h-full object-cover rounded-md `}
               />
             </DialogTrigger>
-            <DialogContent className='bg-transparent border-none p-10 shadow-none text-neutral-100 max-w-4xl'>
+            <DialogContent className='bg-transparent border-none p-10 shadow-none text-neutral-100 max-w-4xl max-h-[90vh] flex items-center'>
               <Image
                 key={index}
                 src={image.src || '/images/no-photo-available.png'}
@@ -77,7 +77,7 @@ const GalleryComponent = ({
                 height={0}
                 sizes='60vw'
                 alt={`Image ${index + 1}`}
-                className={`w-full h-full object-cover rounded-md  ${
+                className={`w-full h-full max-h-[90vh] object-contain rounded-md  ${
                   index === 0
                     ? spanFirstImage(images.length)
                     : 'col-span-1 row-span-1'

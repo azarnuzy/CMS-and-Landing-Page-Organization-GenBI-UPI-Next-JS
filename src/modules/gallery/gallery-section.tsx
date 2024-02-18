@@ -88,7 +88,7 @@ const GallerySection = () => {
                         <h4>{gallery?.caption}</h4>
                       </div>
                     </DialogTrigger>
-                    <DialogContent className='transform scale-105 md:scale-150 '>
+                    <DialogContent className='max-h-[90vh] flex items-center  '>
                       <DialogHeader>
                         <DialogTitle>{gallery.caption}</DialogTitle>
                         <DialogDescription>
@@ -98,7 +98,7 @@ const GallerySection = () => {
                             src={gallery.file_url}
                             alt={gallery.alt}
                             sizes='70vw'
-                            className='object-fill rounded-lg w-full h-full'
+                            className='object-contain max-h-[90vh] rounded-lg w-full h-full'
                           />
                         </DialogDescription>
                       </DialogHeader>
