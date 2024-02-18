@@ -1,69 +1,117 @@
 'use client';
 
-import React, { useState } from 'react';
-import { Gallery } from 'react-grid-gallery';
-import Lightbox from 'react-image-lightbox';
+import Image from 'next/image';
+import { useSearchParams } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
+import SwiperCore from 'swiper';
+// import required modules
+import { FreeMode, Navigation, Thumbs } from 'swiper/modules';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
+import 'swiper/css/free-mode';
+import 'swiper/css/navigation';
+import 'swiper/css/thumbs';
 
-import 'react-image-lightbox/style.css';
-import './index.css';
+import { useGetGalleries } from '@/hooks/galleries/hook';
 
 import BaseLayout from '@/components/layouts/base';
+import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 
-import { CustomImage, images as IMAGES } from '@/modules/gallery/constant';
-
-const images = IMAGES.map((image) => ({
-  ...image,
-  customOverlay: (
-    <div className='custom-overlay__caption'>
-      <div>{image.caption}</div>
-      {image.tags &&
-        image.tags.map((t, index) => (
-          <div key={index} className='custom-overlay__tag'>
-            {t.title}
-          </div>
-        ))}
-    </div>
-  ),
-}));
+import { TGalleriesData } from '@/types/galleries';
 
 const GallerySection = () => {
-  const [index, setIndex] = useState(-1);
+  const searchParams = useSearchParams();
 
-  const currentImage = images[index];
-  const nextIndex = (index + 1) % images.length;
-  const nextImage = images[nextIndex] || currentImage;
-  const prevIndex = (index + images.length - 1) % images.length;
-  const prevImage = images[prevIndex] || currentImage;
+  const [thumbsSwiper, setThumbsSwiper] = useState<SwiperCore>();
 
-  // eslint-disable-next-line unused-imports/no-unused-vars
-  const handleClick = (index: number, item: CustomImage) => setIndex(index);
-  const handleClose = () => setIndex(-1);
-  const handleMovePrev = () => setIndex(prevIndex);
-  const handleMoveNext = () => setIndex(nextIndex);
+  const [galleriesData, setGalleriesData] = useState<Array<TGalleriesData>>([
+    {
+      alt: '',
+      id: 0,
+      caption: '',
+      category: '',
+      created_at: '',
+      file_url: '',
+      mimetype: '',
+      post_id: 0,
+      updated_at: '',
+    },
+  ]);
+
+  const { data } = useGetGalleries({
+    limit: 9,
+    page: Number(searchParams.get('page')) || 1,
+    sort: 'created_at',
+    type: searchParams.get('type') || 'desc',
+  });
+
+  useEffect(() => {
+    if (data) {
+      setGalleriesData(data.data);
+    }
+  }, [data]);
+
   return (
     <div className='-mt-[50px] sm:-mt-[75px] lg:-mt-[200px]  pb-10'>
       <BaseLayout>
-        <>
-          <Gallery
-            images={images}
-            onClick={handleClick}
-            enableImageSelection={false}
-          />
-          {!!currentImage && (
-            <Lightbox
-              mainSrc={currentImage.original}
-              imageTitle={currentImage.caption}
-              mainSrcThumbnail={currentImage.src}
-              nextSrc={nextImage.original}
-              nextSrcThumbnail={nextImage.src}
-              prevSrc={prevImage.original}
-              prevSrcThumbnail={prevImage.src}
-              onCloseRequest={handleClose}
-              onMovePrevRequest={handleMovePrev}
-              onMoveNextRequest={handleMoveNext}
-            />
-          )}
-        </>
+        <Dialog>
+          <DialogTrigger>
+            {' '}
+            <Swiper
+              loop={true}
+              spaceBetween={10}
+              navigation={true}
+              thumbs={{ swiper: thumbsSwiper }}
+              modules={[FreeMode, Navigation, Thumbs]}
+              className='mySwiper2'
+              slidesPerView={3}
+            >
+              {galleriesData?.map((gallery, index) => {
+                return (
+                  <div className='object-cover rounded-lg w-full' key={index}>
+                    <SwiperSlide key={index}>
+                      <Image
+                        width={0}
+                        className='object-cover rounded-lg w-[200px] '
+                        height={0}
+                        src={gallery?.file_url}
+                        alt={gallery.alt}
+                        sizes='70vw'
+                      />
+                    </SwiperSlide>
+                  </div>
+                );
+              })}
+            </Swiper>
+          </DialogTrigger>
+          <DialogContent>
+            <Swiper
+              onSwiper={setThumbsSwiper}
+              loop={true}
+              spaceBetween={10}
+              slidesPerView={4}
+              freeMode={true}
+              watchSlidesProgress={true}
+              modules={[FreeMode, Navigation, Thumbs]}
+              className='mySwiper'
+            >
+              {galleriesData?.map((gallery, index) => (
+                <div key={index}>
+                  <SwiperSlide key={index}>
+                    <Image
+                      width={0}
+                      height={0}
+                      className='object-cover rounded-lg w-[200px] col-span-3 md:col-span-1'
+                      src={gallery?.file_url}
+                      alt={gallery.alt}
+                      sizes='70vw'
+                    />
+                  </SwiperSlide>
+                </div>
+              ))}
+            </Swiper>
+          </DialogContent>
+        </Dialog>
       </BaseLayout>
     </div>
   );
