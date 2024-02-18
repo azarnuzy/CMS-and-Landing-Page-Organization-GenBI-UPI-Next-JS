@@ -34,6 +34,7 @@ import {
 } from '@/components/ui/popover';
 
 import { siteConfig } from '@/constant/config';
+import CommentsSection from '@/modules/news/detail/comment-section';
 import { postDetailDataState } from '@/recoils/news/detail/atom';
 
 const ContentSection = ({ id }: { id: number }) => {
@@ -211,6 +212,7 @@ const ContentSection = ({ id }: { id: number }) => {
             </Badge>
           )) || ''}
         </div>
+        <CommentsSection />
       </div>
     </div>
   );

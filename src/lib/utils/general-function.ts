@@ -39,3 +39,33 @@ export function formatDate(dateString: string) {
 
   return `${day} ${month}, ${year}`;
 }
+
+export function getTimeDifference(dateString: string): string {
+  const date = new Date(dateString);
+  const currentDate = new Date();
+  const differenceInSeconds = Math.floor(
+    (currentDate.getTime() - date.getTime()) / 1000
+  );
+
+  // Define time intervals in seconds
+  const intervals: Record<string, number> = {
+    tahun: 31536000,
+    bulan: 2592000,
+    hari: 86400,
+    jam: 3600,
+    menit: 60,
+  };
+
+  // Iterate through intervals to find the largest one that fits the difference
+  for (const [unit, seconds] of Object.entries(intervals)) {
+    const differenceInUnit = Math.floor(differenceInSeconds / seconds);
+    if (differenceInUnit >= 1) {
+      return `${differenceInUnit} ${unit}${
+        differenceInUnit > 1 ? 'detik' : ''
+      } yang lalu`;
+    }
+  }
+
+  // If the difference is less than a minute, return "just now"
+  return 'baru saja';
+}

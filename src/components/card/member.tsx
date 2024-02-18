@@ -24,7 +24,8 @@ const AwardeeCard = ({
   // separate name first and last
   const splitName = name?.split(' ');
   const firstName = splitName?.slice(0, 1);
-  const lastName = splitName?.slice(1);
+  // join the array
+  const lastName = splitName.slice(1).join(' ');
   return (
     <div
       className={`shadow-md  w-[232px] h-[250px] relative rounded-[14px] p-6  group ${className} overflow-hidden`}

@@ -75,3 +75,22 @@ export const contentHtml = () => `
         commodi autem! Aperiam porro non odit.
       </li>
     </ol>`;
+
+export const defaultComment = [
+  {
+    _links: {
+      reply: {
+        href: '',
+      },
+    },
+    content: '',
+    comment_id: 0,
+    created_at: '',
+    id: 0,
+    level: 0,
+    post_id: 0,
+    replies: [],
+    updated_at: '',
+    commenter: '',
+  },
+];
