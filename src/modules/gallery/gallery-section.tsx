@@ -6,8 +6,6 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import React, { useEffect, useRef } from 'react';
 import { useRecoilState } from 'recoil';
 
-import 'react-image-lightbox/style.css';
-
 import { formatDate } from '@/lib/utils/general-function';
 import { useGetGalleries } from '@/hooks/galleries/hook';
 

@@ -1,7 +1,18 @@
 'use client';
 
 import Image from 'next/image';
+import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
+import {
+  FacebookIcon,
+  FacebookShareButton,
+  LinkedinIcon,
+  LinkedinShareButton,
+  TwitterIcon,
+  TwitterShareButton,
+  WhatsappIcon,
+  WhatsappShareButton,
+} from 'react-share';
 import { useRecoilState } from 'recoil';
 
 import './index.css';
@@ -16,7 +27,13 @@ import {
 
 import GalleryComponent from '@/components/gallery';
 import { Badge } from '@/components/ui/badge';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
 
+import { siteConfig } from '@/constant/config';
 import { postDetailDataState } from '@/recoils/news/detail/atom';
 
 const ContentSection = ({ id }: { id: number }) => {
@@ -104,7 +121,7 @@ const ContentSection = ({ id }: { id: number }) => {
             </div>
             <div className='flex gap-1.5 items-center text-neutral-main'>
               <Image src='/svg/eye.svg' alt='eye' width={24} height={24} />
-              <p>{data?.data?.post?.visitors || 45}</p>
+              <p>{data?.data?.post?.visitors || 0}</p>
             </div>
             <div className='flex gap-1.5 items-center text-neutral-main'>
               <Image
@@ -116,12 +133,45 @@ const ContentSection = ({ id }: { id: number }) => {
               <p>{comments?.pagination?.totalRows || 0}</p>
             </div>
             <div className='flex gap-1.5 items-center text-neutral-main'>
-              <Image
-                src='/svg/share.svg'
-                alt='message-chat'
-                width={24}
-                height={24}
-              />
+              <Popover>
+                <PopoverTrigger>
+                  {' '}
+                  <Image
+                    src='/svg/share.svg'
+                    alt='message-chat'
+                    width={24}
+                    height={24}
+                  />
+                </PopoverTrigger>
+                <PopoverContent className='w-fit rounded-xl pt-2 flex gap-2 items-center'>
+                  <WhatsappShareButton
+                    url={`https://${siteConfig.url}/berita/${data?.data?.post?.id}`}
+                    title={data?.data?.post?.title}
+                    separator=' - '
+                  >
+                    <WhatsappIcon size={32} round />
+                  </WhatsappShareButton>
+                  <FacebookShareButton
+                    url={`https://${siteConfig.url}/berita/${data?.data?.post?.id}`}
+                    title={data?.data?.post?.title}
+                  >
+                    <FacebookIcon size={32} round />
+                  </FacebookShareButton>
+                  <LinkedinShareButton
+                    title={data?.data?.post?.title}
+                    url={`https://${siteConfig.url}/berita/${data?.data?.post?.id}`}
+                  >
+                    <LinkedinIcon size={32} round />
+                  </LinkedinShareButton>
+                  <TwitterShareButton
+                    url={`https://${siteConfig.url}/berita/${data?.data?.post?.id}`}
+                    title={data?.data?.post?.title}
+                    hashtags={data?.data?.post?.tags}
+                  >
+                    <TwitterIcon size={32} round />
+                  </TwitterShareButton>
+                </PopoverContent>
+              </Popover>
             </div>
           </div>
         </div>
@@ -131,7 +181,25 @@ const ContentSection = ({ id }: { id: number }) => {
           dangerouslySetInnerHTML={{ __html: data?.data?.post?.content || '' }}
         ></div>
         {data && <GalleryComponent images={images} />}
-
+        {data && data?.data?.post?.attachments?.length > 0 && (
+          <div>
+            <h4>Attachments Files</h4>
+            <ul className='list-disc'>
+              {data?.data?.post?.attachments?.map((item, i) => (
+                <li key={i}>
+                  {' '}
+                  <Link
+                    target='_blank'
+                    href={item.file_url}
+                    className='underline text-blue-600'
+                  >
+                    {item.file_name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
         <div className='flex gap-2 items-center flex-wrap'>
           {data?.data?.post?.tags.map((item, i) => (
             <Badge

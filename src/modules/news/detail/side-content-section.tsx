@@ -53,42 +53,46 @@ const SideContentSection = () => {
           </Link>
         ))}
       </div>
-      <h4>Berita Serupa</h4>
-      {dataPost?.similarPosts.map((item, i) => (
-        <div
-          className='bg-neutral-100 shadow-md border rounded-3xl p-4 flex flex-col gap-2.5 relative group'
-          key={i}
-        >
-          <div className='absolute top-0 left-0 w-full h-full hover:bg-[#011739D6] transition-all duration-300 ease-in-out flex justify-center items-center hover:z-[10] opacity-0 hover:opacity-100 rounded-3xl hover:backdrop-blur-sm'>
-            <Button
-              className='border border-neutral-100 rounded-3xl text-neutral-100 hover:bg-neutral-100 hover:text-balance transition-all duration-300 ease-in-out group-hover:flex gap-1 items-center py-1 text-sm hidden '
-              variant='ghost'
-              asChild
-            >
-              <Link href={`/berita/${item?.id}`}>
-                <p className='text-sm'>Selengkapnya</p>
-                <ArrowRight className='text-sm' />
-              </Link>
-            </Button>
-          </div>
-          <div className='flex flex-wrap gap-[5px]'>
-            <div className='flex flex-col  lg:flex-row items-start lg:items-center lg:justify-between gap-y-2 '>
-              <div className='flex gap-2 items-center flex-wrap'>
-                <BadgeTag title={item?.type || 'Article'} size='sm' />
-                <BadgeTag
-                  title={item?.department_name || 'Marketing'}
-                  size='sm'
-                />
+      {dataPost?.similarPosts?.length > 0 && <h4>Berita Serupa</h4>}
+      {dataPost?.similarPosts
+        .filter((_, i) => i !== 5)
+        .map((item, i) => (
+          <div
+            className='bg-neutral-100 shadow-md border rounded-3xl p-4 flex flex-col gap-2.5 relative group'
+            key={i}
+          >
+            <div className='absolute top-0 left-0 w-full h-full hover:bg-[#011739D6] transition-all duration-300 ease-in-out flex justify-center items-center hover:z-[10] opacity-0 hover:opacity-100 rounded-3xl hover:backdrop-blur-sm'>
+              <Button
+                className='border border-neutral-100 rounded-3xl text-neutral-100 hover:bg-neutral-100 hover:text-balance transition-all duration-300 ease-in-out group-hover:flex gap-1 items-center py-1 text-sm hidden '
+                variant='ghost'
+                asChild
+              >
+                <Link href={`/berita/${item?.id}`}>
+                  <p className='text-sm'>Selengkapnya</p>
+                  <ArrowRight className='text-sm' />
+                </Link>
+              </Button>
+            </div>
+            <div className='flex flex-wrap gap-[5px]'>
+              <div className='flex flex-col  lg:flex-row items-start lg:items-center lg:justify-between gap-y-2 '>
+                <div className='flex gap-2 items-center flex-wrap'>
+                  <BadgeTag title={item?.type || 'Article'} size='sm' />
+                  <BadgeTag
+                    title={item?.department_name || 'Marketing'}
+                    size='sm'
+                  />
+                </div>
               </div>
             </div>
+            <h4>{item?.title || 'Lorem Ipsum Dolor Ismet Lorem'}</h4>
+            <div
+              className='text-neutral-600 content-dangerously'
+              dangerouslySetInnerHTML={{
+                __html: contentTrimmed(item?.content),
+              }}
+            ></div>
           </div>
-          <h4>{item?.title || 'Lorem Ipsum Dolor Ismet Lorem'}</h4>
-          <div
-            className='text-neutral-600 content-dangerously'
-            dangerouslySetInnerHTML={{ __html: contentTrimmed(item?.content) }}
-          ></div>
-        </div>
-      ))}
+        ))}
     </div>
   );
 };

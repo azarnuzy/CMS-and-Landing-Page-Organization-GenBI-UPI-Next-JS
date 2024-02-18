@@ -50,7 +50,14 @@ export interface Post {
   images: Image[];
   created_at: string;
   updated_at: string;
-  attachments: any[];
+  attachments: Attachments[];
+}
+
+export interface Attachments {
+  id: number;
+  category: string;
+  file_name: string;
+  file_url: string;
 }
 
 export interface Author {
