@@ -3,9 +3,17 @@ import Link from 'next/link';
 import React from 'react';
 import { IoArrowForwardOutline } from 'react-icons/io5';
 
+import { useGetGalleries } from '@/hooks/galleries/hook';
+
 import BaseLayout from '@/components/layouts/base';
 
 const GallerySection = () => {
+  const { data } = useGetGalleries({
+    limit: 8,
+    page: 1,
+    sort: 'created_at',
+    type: 'desc',
+  });
   return (
     <div
       className='w-full min-h-[40vh] py-14'
@@ -16,16 +24,16 @@ const GallerySection = () => {
       <BaseLayout>
         <div className='gap-6 flex flex-col justify-center items-center'>
           <div className='flex flex-nowrap gap-6 justify-center'>
-            {Array.from({ length: 8 }).map((_, i) => (
+            {data?.data?.map((item, i) => (
               <div
                 key={i}
                 className='w-[94px] h-[324px] rounded-xl bg-white shadow-md hover:w-[254px] transition-all duration-300 ease-in-out'
               >
                 <Image
-                  src={`/images/hero-${i + 1}.webp`}
+                  src={item?.file_url || '/images/no-photo-available.png'}
                   width={0}
                   height={0}
-                  alt='gallery-1'
+                  alt={item?.alt || 'no photo available'}
                   className='rounded-lg object-cover w-full h-full'
                   sizes='40vw'
                 />

@@ -39,7 +39,7 @@ const CustomPagination = ({
       ></div>
       <div className='w-full flex justify-between'>
         <span className='text-xl font-semibold'>01</span>
-        <span className='text-xl font-semibold'>05</span>
+        <span className='text-xl font-semibold'>{`0${totalSlides}`}</span>
       </div>
     </div>
   );
