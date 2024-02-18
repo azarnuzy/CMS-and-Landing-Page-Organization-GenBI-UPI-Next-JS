@@ -23,7 +23,7 @@ const ContentEventSection = () => {
   const { data, refetch } = useGetAllEvent({
     sort: 'created_at',
     type: 'desc',
-    limit: 4,
+    limit: 9,
     page: Number(searchParams.get('page')) || 1,
     filter: searchParams.get('filter') || '',
   });

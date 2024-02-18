@@ -83,10 +83,10 @@ const HeaderDetailAcaraSection = ({ id }: { id: string }) => {
                   className='object-cover h-full sm:h-[200px] w-full rounded-t-3xl object-right'
                   sizes='100vw'
                 />
-                <div className='flex flex-col gap-6 px-6 text-neutral-main pb-6 h-fit'>
+                <div className='flex flex-col gap-6 px-6 text-neutral-main pb-6 h-fit overflow-hidden max-w-full '>
                   <div className='flex flex-col gap-3'>
                     <div
-                      className={`px-4 py-1 w-fit text-sm whitespace-nowrap   rounded-3xl border  ${translateStatusEvent(
+                      className={`px-4 py-1 w-fit text-sm    rounded-3xl border  ${translateStatusEvent(
                         data?.data?.event?.status || 'Finished'
                       )}`}
                     >
@@ -102,16 +102,16 @@ const HeaderDetailAcaraSection = ({ id }: { id: string }) => {
                       </p>
                     </div>
                     <div className='flex gap-2'>
-                      <RiMapPinLine className='text-neutral-main text-lg' />
+                      <RiMapPinLine className='text-neutral-main text-lg ' />
                       <p className='text-sm '>{data?.data?.event?.location}</p>
                     </div>
                     <Link
                       href={data?.data?.event?.location_url || '#'}
-                      className='flex gap-2'
+                      className='flex gap-2 text-wrap '
                     >
-                      <RiLinkM className='text-neutral-main text-lg' />
+                      <RiLinkM className='text-neutral-main text-lg min-w-[18px]' />
                       <p className='text-sm '>
-                        {data?.data?.event?.location_url}
+                        {data?.data?.event?.location_url || ''}
                       </p>
                     </Link>
                   </div>

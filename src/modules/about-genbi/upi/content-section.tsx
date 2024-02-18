@@ -41,6 +41,8 @@ const ContentSection = () => {
             <video
               src={activeManagements?.management?.video?.file_url}
               loop
+              autoPlay
+              muted
               controls
               className='w-[390px] rounded-3xl h-full'
             ></video>

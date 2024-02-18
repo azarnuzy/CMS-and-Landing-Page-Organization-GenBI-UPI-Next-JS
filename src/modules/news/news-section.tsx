@@ -24,7 +24,7 @@ const NewsArticleSection = () => {
   const { data, refetch } = useGetAllPost({
     sort: 'created_at',
     type: 'desc',
-    limit: 4,
+    limit: 8,
     page: Number(searchParams.get('page')) || 1,
     filter: searchParams.get('filter') || '',
   });
