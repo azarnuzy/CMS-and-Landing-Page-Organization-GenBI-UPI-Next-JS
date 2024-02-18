@@ -1,28 +1,28 @@
 'use client';
 
+import { DialogDescription, DialogTitle } from '@radix-ui/react-dialog';
 import Image from 'next/image';
 import { useSearchParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
-import SwiperCore from 'swiper';
-// import required modules
-import { FreeMode, Navigation, Thumbs } from 'swiper/modules';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/css';
-import 'swiper/css/free-mode';
-import 'swiper/css/navigation';
-import 'swiper/css/thumbs';
 
+import 'react-image-lightbox/style.css';
+import './index.css';
+
+import { formatDate } from '@/lib/utils/general-function';
 import { useGetGalleries } from '@/hooks/galleries/hook';
 
 import BaseLayout from '@/components/layouts/base';
-import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTrigger,
+} from '@/components/ui/dialog';
 
 import { TGalleriesData } from '@/types/galleries';
 
 const GallerySection = () => {
   const searchParams = useSearchParams();
-
-  const [thumbsSwiper, setThumbsSwiper] = useState<SwiperCore>();
 
   const [galleriesData, setGalleriesData] = useState<Array<TGalleriesData>>([
     {
@@ -52,66 +52,52 @@ const GallerySection = () => {
   }, [data]);
 
   return (
-    <div className='-mt-[50px] sm:-mt-[75px] lg:-mt-[200px]  pb-10'>
+    <div className='-mt-[50px] sm:-mt-[75px] lg:-mt-[200px]  pb-10 relative z-10'>
       <BaseLayout>
-        <Dialog>
-          <DialogTrigger>
-            {' '}
-            <Swiper
-              loop={true}
-              spaceBetween={10}
-              navigation={true}
-              thumbs={{ swiper: thumbsSwiper }}
-              modules={[FreeMode, Navigation, Thumbs]}
-              className='mySwiper2'
-              slidesPerView={3}
+        <div className='grid grid-cols-3 gap-4 mx-auto'>
+          {galleriesData?.map((gallery, i) => (
+            <div
+              key={i}
+              className='min-h-[400px]  md:min-h-[250px] w-full col-span-3 md:col-span-1'
             >
-              {galleriesData?.map((gallery, index) => {
-                return (
-                  <div className='object-cover rounded-lg w-full' key={index}>
-                    <SwiperSlide key={index}>
-                      <Image
-                        width={0}
-                        className='object-cover rounded-lg w-[200px] '
-                        height={0}
-                        src={gallery?.file_url}
-                        alt={gallery.alt}
-                        sizes='70vw'
-                      />
-                    </SwiperSlide>
-                  </div>
-                );
-              })}
-            </Swiper>
-          </DialogTrigger>
-          <DialogContent>
-            <Swiper
-              onSwiper={setThumbsSwiper}
-              loop={true}
-              spaceBetween={10}
-              slidesPerView={4}
-              freeMode={true}
-              watchSlidesProgress={true}
-              modules={[FreeMode, Navigation, Thumbs]}
-              className='mySwiper'
-            >
-              {galleriesData?.map((gallery, index) => (
-                <div key={index}>
-                  <SwiperSlide key={index}>
+              <div className='flex justify-center w-full h-full'>
+                <Dialog>
+                  <DialogTrigger className='group relative overflow-hidden'>
                     <Image
                       width={0}
                       height={0}
-                      className='object-cover rounded-lg w-[200px] col-span-3 md:col-span-1'
-                      src={gallery?.file_url}
-                      alt={gallery.alt}
+                      src={gallery.file_url || '/images/no-photo-available.png'}
+                      alt={gallery.alt || 'no photo available'}
                       sizes='70vw'
+                      className='object-cover rounded-lg w-full h-full'
                     />
-                  </SwiperSlide>
-                </div>
-              ))}
-            </Swiper>
-          </DialogContent>
-        </Dialog>
+                    <div className='absolute transform translate-y-60 duration-300 ease-in-out transition-all group-hover:translate-y-0 bottom-0 bg-[#0C0505C7]  text-neutral-100 w-full p-4 text-start'>
+                      <p className='text-neutral-300'>
+                        {formatDate(gallery?.created_at)}
+                      </p>
+                      <h4>{gallery?.caption}</h4>
+                    </div>
+                  </DialogTrigger>
+                  <DialogContent className='transform scale-105 md:scale-150 '>
+                    <DialogHeader>
+                      <DialogTitle>{gallery.caption}</DialogTitle>
+                      <DialogDescription>
+                        <Image
+                          width={0}
+                          height={0}
+                          src={gallery.file_url}
+                          alt={gallery.alt}
+                          sizes='70vw'
+                          className='object-fill rounded-lg w-full h-full'
+                        />
+                      </DialogDescription>
+                    </DialogHeader>
+                  </DialogContent>
+                </Dialog>
+              </div>
+            </div>
+          ))}
+        </div>
       </BaseLayout>
     </div>
   );
