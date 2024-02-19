@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import React from 'react';
 
-import { apiConfig } from '@/lib/api';
+import { getDetailPost } from '@/hooks/posts/request';
 
 import BaseLayout from '@/components/layouts/base';
 
@@ -14,10 +14,9 @@ export async function generateMetadata({
   params: { id: string };
 }): Promise<Metadata> {
   try {
-    const response = await fetch(`${apiConfig.baseURL}/v1/events/${params.id}`);
-    const data = await response.json();
-
-    if (!response) {
+    const response = await getDetailPost(Number(params.id));
+    const data = response;
+    if (!data) {
       return {
         title: '404 Not Found',
         description: 'Halaman tidak ditemukan',
@@ -25,16 +24,17 @@ export async function generateMetadata({
     }
 
     return {
-      title: data.data.event.title,
+      title: data.data.post.title,
       openGraph: {
-        images: data.data.event.thumbnail.file_url,
-        title: data.data.event.title,
+        images: data.data.post.image_cover.file_url,
+        title: data.data.post.image_cover.caption,
       },
       twitter: {
         card: 'summary_large_image',
-        images: [data.data.event.thumbnail.file_url],
-        title: data.data.event.title,
+        images: [data.data.post.image_cover.file_url],
+        title: data.data.post.image_cover.caption,
       },
+      keywords: data.data.post.tags,
     };
   } catch (error) {
     return {

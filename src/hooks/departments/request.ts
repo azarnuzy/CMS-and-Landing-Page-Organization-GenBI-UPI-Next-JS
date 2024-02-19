@@ -1,6 +1,9 @@
 import { api } from '@/lib/api';
 
-import { TDataGetDepartmentsTagResponse } from '@/types/departments';
+import {
+  TDataGetDepartmentsByIdResponse,
+  TDataGetDepartmentsTagResponse,
+} from '@/types/departments';
 
 export const getDepartmentsTagsRequest =
   async (): Promise<TDataGetDepartmentsTagResponse> => {
@@ -11,7 +14,7 @@ export const getDepartmentsTagsRequest =
 
 export const getDepartmentByIdRequest = async (
   id: string
-): Promise<TDataGetDepartmentsTagResponse> => {
+): Promise<TDataGetDepartmentsByIdResponse> => {
   const { data } = await api.get(`v1/departments/${id}`);
 
   return data;

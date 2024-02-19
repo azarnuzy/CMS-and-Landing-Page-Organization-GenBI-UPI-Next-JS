@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import React from 'react';
 
-import { apiConfig } from '@/lib/api';
+import { getDepartmentByIdRequest } from '@/hooks/departments/request';
 
 import HeaderDepartmentSection from '@/modules/about-genbi/upi/department/header-department-section';
 import MemberSection from '@/modules/about-genbi/upi/department/member-section';
@@ -12,12 +12,10 @@ export async function generateMetadata({
   params: { id: string };
 }): Promise<Metadata> {
   try {
-    const response = await fetch(
-      `${apiConfig.baseURL}/v1/departments/${params.id}`
-    );
-    const data = await response.json();
+    const response = await getDepartmentByIdRequest(params.id);
+    const data = response;
 
-    if (!response) {
+    if (!data) {
       return {
         title: '404 Not Found',
         description: 'Halaman tidak ditemukan',
@@ -25,16 +23,16 @@ export async function generateMetadata({
     }
 
     return {
-      title: `Department ${data.data.departments.name}`,
-      description: data.data.departments.description,
+      title: `${data.data.department.name} Department `,
+      description: data.data.department.description,
       openGraph: {
-        images: data.data.departments.cover.file_url,
-        title: data.data.departments.cover.alt,
+        images: data.data.department.cover.file_url,
+        title: data.data.department.cover.alt,
       },
       twitter: {
         card: 'summary_large_image',
-        images: [data.data.departments.cover.file_url],
-        title: `Department ${data.data.departments.name}`,
+        images: [data.data.department.cover.file_url],
+        title: `${data.data.department.name} Department `,
       },
     };
   } catch (error) {

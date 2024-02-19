@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import React from 'react';
 
-import { apiConfig } from '@/lib/api';
+import { getDetailEvent } from '@/hooks/events/request';
 
 import HeaderDetailAcaraSection from '@/modules/acara/detail/header-section';
 import SimillarEventSection from '@/modules/acara/detail/simillar-event-section';
@@ -12,10 +12,10 @@ export async function generateMetadata({
   params: { id: string };
 }): Promise<Metadata> {
   try {
-    const response = await fetch(`${apiConfig.baseURL}/v1/events/${params.id}`);
-    const data = await response.json();
+    const response = await getDetailEvent(Number(params.id));
+    const data = response;
 
-    if (!response) {
+    if (!data) {
       return {
         title: '404 Not Found',
         description: 'Halaman tidak ditemukan',

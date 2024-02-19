@@ -21,7 +21,7 @@ const SimillarEventSection = () => {
           )}
           <div className='grid grid-cols-3 gap-6 justify-center'>
             {relatedPost &&
-              relatedPost.event.related_posts
+              relatedPost?.event?.related_posts
                 .filter((_, i) => i !== 5)
                 .map((item, index) => (
                   <div className='col-span-3 md:col-span-1' key={index}>
