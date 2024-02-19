@@ -17,6 +17,7 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 
 import './index.css';
 
+import logger from '@/lib/logger';
 import { badgeColor } from '@/lib/utils/badge-color';
 import { formatDate, splitAndJoinWithDash } from '@/lib/utils/general-function';
 import { useAddVisitorPost, useGetDetailPost } from '@/hooks/posts/hook';
@@ -50,6 +51,7 @@ const ContentSection = ({ id }: { id: number }) => {
   const [, setDetailPost] = useRecoilState(postDetailDataState);
 
   useEffect(() => {
+    logger(data);
     if (data) {
       const tempImages = data.data.post.images
         .filter((item) => item.category === 'post_other_image')

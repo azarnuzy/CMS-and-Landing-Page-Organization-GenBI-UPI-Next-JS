@@ -28,10 +28,14 @@ export const getAllPost = async (
 
 export const getDetailPost = async (
   id: number
-): Promise<TDataGetDetailPostResponse> => {
-  const { data } = await api.get(`v1/posts/${id}`);
+): Promise<TDataGetDetailPostResponse | undefined> => {
+  try {
+    const { data } = await api.get(`v1/posts/${id}`);
 
-  return data;
+    return data;
+  } catch (error) {
+    return undefined;
+  }
 };
 
 export const updateVisitorPost = async (

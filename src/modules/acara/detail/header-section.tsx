@@ -44,7 +44,9 @@ const HeaderDetailAcaraSection = ({ id }: { id: string }) => {
       <BaseLayout>
         <div className=''>
           <BreadCrumb
-            items={breadCrumbGenBIBanggaData}
+            items={breadCrumbGenBIBanggaData(
+              `${data?.data?.event?.id}/${data?.data?.event?.slug}`
+            )}
             textColor='text-neutral-main'
           />
           <Image

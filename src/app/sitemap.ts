@@ -44,10 +44,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: new Date().toISOString(),
     },
     {
-      url: `${siteConfig.url}/tentang-genbi/upi`,
-      lastModified: new Date().toISOString(),
-    },
-    {
       url: `${siteConfig.url}/gallery`,
       lastModified: new Date().toISOString(),
     },

@@ -160,7 +160,7 @@ const ContentEventSection = () => {
                     key={i}
                     description={item?.description}
                     image={item?.thumbnail?.file_url}
-                    link={`/acara/${item?.id}`}
+                    link={`/acara/${item?.id}/${item?.slug}`}
                     status={item?.status}
                     title={item?.title}
                   />

@@ -14,7 +14,7 @@ export async function generateMetadata({
   params: { id: string };
 }): Promise<Metadata> {
   try {
-    const response = await fetch(`${apiConfig.baseURL}/v1/posts/${params.id}`);
+    const response = await fetch(`${apiConfig.baseURL}/v1/events/${params.id}`);
     const data = await response.json();
 
     if (!response) {
@@ -25,17 +25,16 @@ export async function generateMetadata({
     }
 
     return {
-      title: data.data.post.title,
+      title: data.data.event.title,
       openGraph: {
-        images: data.data.post.image_cover.file_url,
-        title: data.data.post.image_cover.caption,
+        images: data.data.event.thumbnail.file_url,
+        title: data.data.event.thumbnail.alt,
       },
       twitter: {
         card: 'summary_large_image',
-        images: [data.data.post.image_cover.file_url],
-        title: data.data.post.image_cover.caption,
+        images: [data.data.event.thumbnail.file_url],
+        title: data.data.event.thumbnail.caption,
       },
-      keywords: data.data.post.tags,
     };
   } catch (error) {
     return {
