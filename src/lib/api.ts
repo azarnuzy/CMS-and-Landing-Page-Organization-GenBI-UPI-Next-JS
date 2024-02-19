@@ -1,6 +1,6 @@
 import axios, { AxiosRequestConfig } from 'axios';
 
-const apiConfig: AxiosRequestConfig = {
+export const apiConfig: AxiosRequestConfig = {
   baseURL: process.env.NEXT_PUBLIC_API_URL,
 };
 

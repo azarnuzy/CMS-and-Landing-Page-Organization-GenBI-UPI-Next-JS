@@ -72,7 +72,9 @@ const HiglightSection = () => {
                 variant='ghost'
                 asChild
               >
-                <Link href={`berita/${data?.data?.[0]?.id}`}>
+                <Link
+                  href={`/berita/${data?.data?.[0]?.id}/${data?.data?.[0].slug}`}
+                >
                   <p className='text-sm'>Selengkapnya</p>
                   <ArrowRight className='text-sm' />
                 </Link>
@@ -95,7 +97,7 @@ const HiglightSection = () => {
                         variant='ghost'
                         asChild
                       >
-                        <Link href={`berita/${item?.id}`}>
+                        <Link href={`/berita/${item?.id}/${item?.slug}`}>
                           <p className='text-sm'>Selengkapnya</p>
                           <ArrowRight className='text-sm' />
                         </Link>

@@ -67,7 +67,7 @@ const SideContentSection = () => {
                 variant='ghost'
                 asChild
               >
-                <Link href={`/berita/${item?.id}`}>
+                <Link href={`/berita/${item?.id}/${item?.slug}`}>
                   <p className='text-sm'>Selengkapnya</p>
                   <ArrowRight className='text-sm' />
                 </Link>

@@ -144,26 +144,26 @@ const ContentSection = ({ id }: { id: number }) => {
                 </PopoverTrigger>
                 <PopoverContent className='w-fit rounded-xl pt-2 flex gap-2 items-center'>
                   <WhatsappShareButton
-                    url={`https://${siteConfig.url}/berita/${data?.data?.post?.id}`}
+                    url={`https://${siteConfig.url}/berita/${data?.data?.post?.id}/${data?.data?.post?.slug}`}
                     title={data?.data?.post?.title}
                     separator=' - '
                   >
                     <WhatsappIcon size={32} round />
                   </WhatsappShareButton>
                   <FacebookShareButton
-                    url={`https://${siteConfig.url}/berita/${data?.data?.post?.id}`}
+                    url={`https://${siteConfig.url}/berita/${data?.data?.post?.id}/${data?.data?.post?.slug}`}
                     title={data?.data?.post?.title}
                   >
                     <FacebookIcon size={32} round />
                   </FacebookShareButton>
                   <LinkedinShareButton
                     title={data?.data?.post?.title}
-                    url={`https://${siteConfig.url}/berita/${data?.data?.post?.id}`}
+                    url={`https://${siteConfig.url}/berita/${data?.data?.post?.id}/${data?.data?.post?.slug}`}
                   >
                     <LinkedinIcon size={32} round />
                   </LinkedinShareButton>
                   <TwitterShareButton
-                    url={`https://${siteConfig.url}/berita/${data?.data?.post?.id}`}
+                    url={`https://${siteConfig.url}/berita/${data?.data?.post?.id}/${data?.data?.post?.slug}`}
                     title={data?.data?.post?.title}
                     hashtags={data?.data?.post?.tags}
                   >

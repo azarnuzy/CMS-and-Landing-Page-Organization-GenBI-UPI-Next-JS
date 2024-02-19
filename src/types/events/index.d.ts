@@ -79,6 +79,7 @@ export interface Banner {
 export interface RelatedPost {
   id: number;
   title: string;
+  slug: string;
   type: string;
   content: string;
   visitors: number;

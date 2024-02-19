@@ -3,6 +3,7 @@ import { TMetaResponse, TMetaResponseSingle } from '@/types';
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export interface TPostsData {
   id: number;
+  slug: string;
   title: string;
   type: string;
   content: string;
@@ -37,6 +38,7 @@ export interface TPostDetailData {
 
 export interface Post {
   id: number;
+  slug: string;
   title: string;
   type: string;
   content: string;
@@ -95,6 +97,7 @@ export interface SimilarPost {
   visitors: number;
   department_id: number;
   department_name: string;
+  slug: string;
   tags: string[];
 }
 

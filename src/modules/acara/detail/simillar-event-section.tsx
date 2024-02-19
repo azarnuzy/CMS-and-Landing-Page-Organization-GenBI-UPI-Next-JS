@@ -30,7 +30,7 @@ const SimillarEventSection = () => {
                       description={item?.content}
                       tags={[item?.type, item?.department_name]}
                       title={item?.title}
-                      link={`/berita/${item?.id}`}
+                      link={`/berita/${item?.id}/${item?.slug}`}
                     />
                   </div>
                 ))}

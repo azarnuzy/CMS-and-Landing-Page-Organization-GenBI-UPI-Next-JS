@@ -162,7 +162,7 @@ const NewsArticleSection = () => {
                     title={item.title}
                     tags={[item.type, item.department_name]}
                     description={item.content}
-                    link={`/berita/${item.id}`}
+                    link={`/berita/${item.id}/${item.slug}`}
                   />
                 </div>
               ))}

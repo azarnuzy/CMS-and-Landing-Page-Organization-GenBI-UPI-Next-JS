@@ -48,7 +48,7 @@ const NewsSection = () => {
                     title={post.title}
                     tags={[post.type, post.department_name]}
                     description={post.content}
-                    link={`/berita/${post.id}`}
+                    link={`/berita/${post.id}/${post.slug}`}
                   />
                 ))}
             </div>
@@ -62,7 +62,7 @@ const NewsSection = () => {
                     title={post.title}
                     tags={[post.type, post.department_name]}
                     description={post.content}
-                    link={`/berita/${post.id}`}
+                    link={`/berita/${post.id}/${post.slug}`}
                   />
                 ))}
             </div>

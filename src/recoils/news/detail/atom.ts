@@ -9,6 +9,7 @@ export const postDetailDataState = atom<TPostDetailData>({
       id: 0,
       title: '',
       type: '',
+      slug: '',
       content: '',
       visitors: 0,
       tags: [],
@@ -35,6 +36,18 @@ export const postDetailDataState = atom<TPostDetailData>({
       updated_at: '',
       attachments: [],
     },
-    similarPosts: [],
+    similarPosts: [
+      {
+        id: 0,
+        title: '',
+        slug: '',
+        type: '',
+        content: '',
+        visitors: 0,
+        tags: [],
+        department_id: 0,
+        department_name: '',
+      },
+    ],
   },
 });
