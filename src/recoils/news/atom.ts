@@ -7,6 +7,7 @@ export const postsDataState = atom<Array<TPostsData>>({
   default: [
     {
       id: 0,
+      slug: '',
       title: '',
       type: '',
       content: '',
