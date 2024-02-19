@@ -9,6 +9,5 @@ export const ValidationSchemaAddCommentForm = z.object({
     .string({
       required_error: 'Komentar harus diisi',
     })
-    .min(1, 'Komentar harus diisi')
-    .optional(),
+    .min(1, 'Komentar harus diisi'),
 });

@@ -8,9 +8,9 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
-import logger from '@/lib/logger';
 import { getTimeDifference } from '@/lib/utils/general-function';
 import { ValidationSchemaAddCommentForm } from '@/lib/validations/comment';
+import { useCreateComment } from '@/hooks/comments/hook';
 import { useGetCommentPost } from '@/hooks/posts/hook';
 
 import { Button } from '@/components/ui/button';
@@ -43,16 +43,30 @@ const CommentsSection = () => {
   });
 
   const { data, refetch } = useGetCommentPost({ id: Number(id) });
+  const { mutate } = useCreateComment();
 
   const [getComments, setComments] = useState<TCommentData[]>(defaultComment);
 
   const onSubmit = (data: z.infer<typeof ValidationSchemaAddCommentForm>) => {
-    toast.success('Komentar berhasil ditambahkan');
-    refetch();
-    logger(data);
-    form.reset();
-    form.setValue('name', '');
-    form.setValue('content', '');
+    mutate(
+      {
+        name: data.name || 'Anonim',
+        content: data.content,
+        post_id: Number(id),
+      },
+      {
+        onSuccess: () => {
+          refetch();
+          form.reset();
+          form.setValue('name', '');
+          form.setValue('content', '');
+          toast.success('Komentar berhasil ditambahkan');
+        },
+        onError: (error) => {
+          toast.error(error.message);
+        },
+      }
+    );
   };
 
   useEffect(() => {
@@ -74,9 +88,7 @@ const CommentsSection = () => {
             name='name'
             render={({ field }) => (
               <FormItem>
-                <FormLabel>
-                  Nama <span className='text-error-main'>*</span>
-                </FormLabel>
+                <FormLabel>Nama</FormLabel>
                 <FormControl>
                   <Input placeholder='Masukkan Nama...' {...field} />
                 </FormControl>
@@ -89,7 +101,9 @@ const CommentsSection = () => {
             name='content'
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Komentar</FormLabel>
+                <FormLabel>
+                  Komentar <span className='text-error-main'>*</span>
+                </FormLabel>
                 <FormControl>
                   <Textarea
                     placeholder='Berikan Komentar...'

@@ -61,7 +61,7 @@ export function getTimeDifference(dateString: string): string {
     const differenceInUnit = Math.floor(differenceInSeconds / seconds);
     if (differenceInUnit >= 1) {
       return `${differenceInUnit} ${unit}${
-        differenceInUnit > 1 ? 'detik' : ''
+        differenceInUnit > 1 ? '' : ''
       } yang lalu`;
     }
   }
