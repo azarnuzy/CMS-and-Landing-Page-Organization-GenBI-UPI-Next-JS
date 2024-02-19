@@ -1,22 +1,19 @@
+'use client';
+
 import Link from 'next/link';
-import React from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import React, { useEffect, useRef, useState } from 'react';
 import { BiLinkExternal } from 'react-icons/bi';
 import { LuPlus } from 'react-icons/lu';
 import { MdDelete } from 'react-icons/md';
 import { TbEdit } from 'react-icons/tb';
+import { useRecoilState } from 'recoil';
 
 import { badgeColor } from '@/lib/utils/badge-color';
+import { useGetAllPost, useGetSearchPost } from '@/hooks/posts/hook';
 
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import Pagination from '@/components/pagination';
 import { Button } from '@/components/ui/button';
-import {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from '@/components/ui/pagination';
 import {
   Table,
   TableBody,
@@ -26,9 +23,96 @@ import {
   TableRow,
 } from '@/components/ui/table';
 
-import { newsData } from '@/modules/admin/news/constant';
+import { postsDataState } from '@/recoils/news/atom';
 
 const ContentNewsManagementSection = () => {
+  const parentRef = useRef<HTMLTableElement>(null);
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
+  const { data, refetch } = useGetAllPost({
+    sort: 'created_at',
+    type: 'desc',
+    limit: 10,
+    page: Number(searchParams.get('page')) || 1,
+    filter: searchParams.get('filter') || '',
+  });
+  const { data: dataSearchPost, refetch: refetchSearchPost } = useGetSearchPost(
+    { keyword: searchParams.get('search') || '' }
+  );
+
+  // const { data: dataTags } = useGetDepartmentsTags();
+
+  const [dataPost, setDataPost] = useRecoilState(postsDataState);
+
+  // const [inputSearch] = useState('');
+  const [dataStatus] = useState('data');
+
+  const handlePageChange = async (page: number) => {
+    if (dataStatus === 'search') {
+      await refetchSearchPost();
+    } else if (dataStatus === 'data') {
+      await refetch();
+    }
+
+    let filter = '';
+    let search = '';
+    if (searchParams.get('filter')) {
+      filter = `&filter=${searchParams.get('filter')}`;
+    }
+
+    if (searchParams.get('search')) {
+      search = `&search=${searchParams.get('search')}`;
+    }
+
+    if (parentRef.current) {
+      parentRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    router.replace(`/admin/news?page=${page}${filter}${search}`, {
+      scroll: false,
+    });
+  };
+
+  // const handleFilterChange = async (filter: string) => {
+  //   setDataStatus('data');
+  //   await refetch();
+  //   let tempFilter = '';
+
+  //   if (filter.length > 0) {
+  //     tempFilter = `&filter=${filter}`;
+  //   }
+  //   if (parentRef.current) {
+  //     parentRef.current.scrollIntoView({ behavior: 'smooth' });
+  //   }
+  //   router.replace(`/admin/news?page=1${tempFilter}`, { scroll: false });
+  // };
+
+  // const handleKeyDownSearch = async (
+  //   e: React.KeyboardEvent<HTMLInputElement>
+  // ) => {
+  //   if (e.key === 'Enter') {
+  //     setDataStatus('search');
+  //     refetchSearchPost();
+  //     if (parentRef.current) {
+  //       parentRef.current.scrollIntoView({ behavior: 'smooth' });
+  //     }
+  //     router.replace(`/admin/news?page=1&search=${inputSearch}`, {
+  //       scroll: false,
+  //     });
+  //   }
+  // };
+
+  useEffect(() => {
+    if (data && dataStatus === 'data') {
+      setDataPost(data?.data);
+    }
+
+    if (dataSearchPost && dataStatus === 'search') {
+      setDataPost(dataSearchPost?.data);
+    }
+  }, [data, dataSearchPost, dataStatus, setDataPost]);
+
   return (
     <div className='pt-5 border rounded-3xl w-full mt-10 mb-5'>
       <div className='flex justify-end px-6 pb-5'>
@@ -42,77 +126,102 @@ const ContentNewsManagementSection = () => {
           </Link>
         </Button>
       </div>
-      <Table className='border-b'>
+      <Table ref={parentRef} className='border-b'>
         <TableHeader className='bg-neutral-50 '>
           <TableRow className=''>
             <TableHead className='text-neutral-500'>No</TableHead>
-            <TableHead className='text-neutral-500'>Title</TableHead>
+            <TableHead className='text-neutral-500 min-w-[100px] max-w-[200px]'>
+              Title
+            </TableHead>
             <TableHead className='text-neutral-500'>Type</TableHead>
             <TableHead className='text-neutral-500'>Department</TableHead>
-            <TableHead className='text-neutral-500'>Author</TableHead>
+            {/* <TableHead className='text-neutral-500'>Author</TableHead> */}
             <TableHead className='text-neutral-500'>Viewers</TableHead>
             <TableHead className='text-neutral-500'>Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {newsData.map((news, index) => {
-            const tag1 = news.type.split(' ').join('-').toLowerCase();
-            const tag2 = news.department.split(' ').join('-').toLowerCase();
-            return (
-              <TableRow key={index}>
-                <TableCell>{index + 1}</TableCell>
-                <TableCell className='text-ellipsis max-w-[150px]'>
-                  {news.title}
-                </TableCell>
-                <TableCell>
-                  <div
-                    className={`px-2.5 py-0.5 ${badgeColor(
-                      (tag1 as string) || ''
-                    )} rounded-full whitespace-nowrap border text-xs`}
-                  >
-                    {news.type}
-                  </div>
-                </TableCell>
-                <TableCell>
-                  <div
-                    className={`px-2.5 py-0.5 ${badgeColor(
-                      (tag2 as string) || ''
-                    )} rounded-full whitespace-nowrap border text-xs`}
-                  >
-                    {news.department}
-                  </div>
-                </TableCell>
-                <TableCell>
+          {data &&
+            dataPost?.map((news, index) => {
+              const tag1 = news.type.split(' ').join('-').toLowerCase();
+              const tag2 = news.department_name
+                .split(' ')
+                .join('-')
+                .toLowerCase();
+              return (
+                <TableRow key={index}>
+                  <TableCell>
+                    {((data?.pagination?.currentPage || 0) - 1) * 10 +
+                      index +
+                      1}
+                  </TableCell>
+                  <TableCell className='text-ellipsis min-w-[100px] max-w-[200px]'>
+                    {news.title}
+                  </TableCell>
+                  <TableCell>
+                    <div
+                      className={`px-2.5 py-0.5 ${badgeColor(
+                        (tag1 as string) || ''
+                      )} rounded-full whitespace-nowrap border text-xs w-fit`}
+                    >
+                      {news.type}
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <div
+                      className={`px-2.5 py-0.5 ${badgeColor(
+                        (tag2 as string) || ''
+                      )} rounded-full whitespace-nowrap border text-xs w-fit`}
+                    >
+                      {news.department_name}
+                    </div>
+                  </TableCell>
+                  {/* <TableCell>
                   <Avatar className='w-10 h-10'>
-                    <AvatarImage src='/images/avatar.jpeg' />
+                    <AvatarImage src={news.} />
                     <AvatarFallback>CN</AvatarFallback>
                   </Avatar>
-                </TableCell>
-                <TableCell>120</TableCell>
-                <TableCell className='flex gap-2 h-full '>
-                  <TbEdit className='text-warning-main text-2xl' />
-                  <MdDelete className='text-error-main text-2xl' />
-                  <BiLinkExternal className='text-primary-main text-2xl' />
-                </TableCell>
-              </TableRow>
-            );
-          })}
+                </TableCell> */}
+                  <TableCell>{news.visitors}</TableCell>
+                  <TableCell className='flex gap-2 h-full '>
+                    <Link href={`/admin/news/edit/${news.id}`}>
+                      <TbEdit className='text-warning-main text-2xl' />
+                    </Link>
+                    <MdDelete className='text-error-main text-2xl' />
+                    <Link
+                      target='_blank'
+                      href={`berita/${news.id}/${news.slug}`}
+                    >
+                      <BiLinkExternal className='text-primary-main text-2xl' />
+                    </Link>
+                  </TableCell>
+                </TableRow>
+              );
+            })}
         </TableBody>
       </Table>
       <div className='flex justify-between items-center py-2'>
         <div className='w-full flex justify-center '>
-          <p className='text-sm'>Showing 1 to 10 of 200 entries</p>
+          <p className='text-sm'>
+            Showing {data?.pagination?.currentPage || 1 - 1 * 10 + 1} to 10 of
+            200 entries
+          </p>
         </div>
-        <Pagination>
-          <PaginationContent>
-            <PaginationPrevious href='#' />
-            <PaginationLink href='#'>1</PaginationLink>
-            <PaginationLink href='#'>2</PaginationLink>
-            <PaginationEllipsis />
-            <PaginationLink href='#'>10</PaginationLink>
-            <PaginationNext href='#' />
-          </PaginationContent>
-        </Pagination>
+        <div className='w-full'>
+          <Pagination
+            currentPage={
+              dataStatus === 'data'
+                ? Number(data?.pagination?.currentPage)
+                : Number(dataSearchPost?.pagination?.currentPage) || 1
+            }
+            totalPages={
+              dataStatus === 'search'
+                ? Number(dataSearchPost?.pagination?.totalPages)
+                : Number(data?.pagination?.totalPages) || 1
+            }
+            onPageChange={handlePageChange}
+          />
+        </div>
       </div>
     </div>
   );

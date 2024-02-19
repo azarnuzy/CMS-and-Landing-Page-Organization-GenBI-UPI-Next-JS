@@ -5,6 +5,7 @@ import Link from 'next/link';
 import React from 'react';
 import { IoMenu } from 'react-icons/io5';
 
+import Button from '@/components/buttons/Button';
 import BaseLayout from '@/components/layouts/base';
 import {
   NavigationMenu,
@@ -120,11 +121,11 @@ const Navbar = () => {
                 Gallery
               </Link>
             </div>
-            {/* <Link href='/login'>
+            <Link href='/login'>
               <Button variant='light' size='base' className='hidden sm:block'>
                 Login
               </Button>
-            </Link> */}
+            </Link>
             {/* Menu Mobile Button */}
             <button onClick={() => setOpen(!open)} className='block sm:hidden'>
               <IoMenu className=' text-white text-3xl' />
@@ -253,9 +254,9 @@ const NavbarMobileMenu = ({
             >
               Gallery
             </Link>
-            {/* <Button variant='light' size='base' className='w-fit'>
+            <Button variant='light' size='base' className='w-fit'>
               Login
-            </Button> */}
+            </Button>
           </div>
         </>
       </BaseLayout>
