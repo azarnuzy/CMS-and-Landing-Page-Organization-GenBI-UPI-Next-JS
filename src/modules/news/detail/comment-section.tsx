@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { useParams } from 'next/navigation';
 import React, { Fragment, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
@@ -27,7 +27,10 @@ import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
 import { Textarea } from '@/components/ui/textarea';
 
-import { commentsDataState } from '@/recoils/comments/atom';
+import {
+  commentsDataState,
+  totalCommentsSelector,
+} from '@/recoils/comments/atom';
 
 const CommentsSection = () => {
   const params = useParams();
@@ -54,6 +57,8 @@ const CommentsSection = () => {
   const { mutate: mutateReply } = useCreateReply();
 
   const [getComments, setComments] = useRecoilState(commentsDataState);
+  const totalComments = useRecoilValue(totalCommentsSelector);
+
   const [formReplyOpen, setFormReplyOpen] = useState<number | null>(null);
 
   const onSubmit = (data: z.infer<typeof ValidationSchemaAddCommentForm>) => {
@@ -111,7 +116,7 @@ const CommentsSection = () => {
 
   return (
     <div className='flex flex-col gap-4'>
-      <h4>Comments ({data?.data?.length || 0})</h4>
+      <h4>Comments ({totalComments || 0})</h4>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
