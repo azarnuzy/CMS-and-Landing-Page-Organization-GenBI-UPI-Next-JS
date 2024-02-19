@@ -206,7 +206,7 @@ const ContentSection = ({ id }: { id: number }) => {
               key={i}
               className='text-neutral-600 py-2 px-4'
             >
-              {item}
+              #{item}
             </Badge>
           )) || ''}
         </div>
