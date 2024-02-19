@@ -203,8 +203,12 @@ const ContentNewsManagementSection = () => {
       <div className='flex justify-between items-center py-2'>
         <div className='w-full flex justify-center '>
           <p className='text-sm'>
-            Showing {data?.pagination?.currentPage || 1 - 1 * 10 + 1} to 10 of
-            200 entries
+            Showing {((data?.pagination?.currentPage || 0) - 1) * 10 + 1} to{' '}
+            {(data?.pagination?.currentPage || 0) * 10 >
+            (data?.pagination?.totalRows || 0)
+              ? data?.pagination?.totalRows || 0
+              : (data?.pagination?.currentPage || 0) * 10}{' '}
+            of {data?.pagination?.totalRows} entries
           </p>
         </div>
         <div className='w-full'>
