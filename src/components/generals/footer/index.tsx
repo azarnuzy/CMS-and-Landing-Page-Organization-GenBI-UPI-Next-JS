@@ -14,11 +14,11 @@ import BaseLayout from '@/components/layouts/base';
 const links = [
   {
     name: 'Press Release',
-    href: '/berita?page=1&filter="Press Release"',
+    href: '/berita?page=1&filter=Press%20Release',
   },
   {
     name: 'Artikel',
-    href: '/berita?page=1&filter="Artikel"',
+    href: '/berita?page=1&filter=Artikel',
   },
   {
     name: 'About GenBI',
