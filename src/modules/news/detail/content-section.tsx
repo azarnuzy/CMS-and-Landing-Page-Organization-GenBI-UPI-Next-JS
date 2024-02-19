@@ -13,17 +13,13 @@ import {
   WhatsappIcon,
   WhatsappShareButton,
 } from 'react-share';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 
 import './index.css';
 
 import { badgeColor } from '@/lib/utils/badge-color';
 import { formatDate, splitAndJoinWithDash } from '@/lib/utils/general-function';
-import {
-  useAddVisitorPost,
-  useGetCommentPost,
-  useGetDetailPost,
-} from '@/hooks/posts/hook';
+import { useAddVisitorPost, useGetDetailPost } from '@/hooks/posts/hook';
 
 import GalleryComponent from '@/components/gallery';
 import { Badge } from '@/components/ui/badge';
@@ -35,12 +31,14 @@ import {
 
 import { siteConfig } from '@/constant/config';
 import CommentsSection from '@/modules/news/detail/comment-section';
+import { totalCommentsSelector } from '@/recoils/comments/atom';
 import { postDetailDataState } from '@/recoils/news/detail/atom';
 
 const ContentSection = ({ id }: { id: number }) => {
   useAddVisitorPost({ id });
   const { data } = useGetDetailPost({ id });
-  const { data: comments } = useGetCommentPost({ id });
+
+  const totalComments = useRecoilValue(totalCommentsSelector);
 
   const [type, setType] = useState('Article');
   const [department, setDepartment] = useState('Marketing');
@@ -131,7 +129,7 @@ const ContentSection = ({ id }: { id: number }) => {
                 width={24}
                 height={24}
               />
-              <p>{comments?.pagination?.totalRows || 0}</p>
+              <p>{totalComments || 0}</p>
             </div>
             <div className='flex gap-1.5 items-center text-neutral-main'>
               <Popover>
