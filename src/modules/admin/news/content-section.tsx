@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect } from 'react';
 import { BiLinkExternal } from 'react-icons/bi';
 import { LuPlus } from 'react-icons/lu';
 import { MdDelete } from 'react-icons/md';
@@ -23,10 +23,15 @@ import {
   TableRow,
 } from '@/components/ui/table';
 
+import {
+  dataStatusAdminNewsState,
+  parentRefAdminNewsState,
+} from '@/recoils/admin/news/atom';
 import { postsDataState } from '@/recoils/news/atom';
 
 const ContentNewsManagementSection = () => {
-  const parentRef = useRef<HTMLTableElement>(null);
+  // const parentRef = useRef<HTMLTableElement>(null);
+
   const searchParams = useSearchParams();
   const router = useRouter();
 
@@ -41,12 +46,10 @@ const ContentNewsManagementSection = () => {
     { keyword: searchParams.get('search') || '' }
   );
 
-  // const { data: dataTags } = useGetDepartmentsTags();
-
   const [dataPost, setDataPost] = useRecoilState(postsDataState);
+  const [parentRef] = useRecoilState(parentRefAdminNewsState);
 
-  // const [inputSearch] = useState('');
-  const [dataStatus] = useState('data');
+  const [dataStatus] = useRecoilState(dataStatusAdminNewsState);
 
   const handlePageChange = async (page: number) => {
     if (dataStatus === 'search') {
@@ -65,43 +68,14 @@ const ContentNewsManagementSection = () => {
       search = `&search=${searchParams.get('search')}`;
     }
 
-    if (parentRef.current) {
-      parentRef.current.scrollIntoView({ behavior: 'smooth' });
+    if (parentRef?.current) {
+      parentRef?.current.scrollIntoView({ behavior: 'smooth' });
     }
 
     router.replace(`/admin/news?page=${page}${filter}${search}`, {
       scroll: false,
     });
   };
-
-  // const handleFilterChange = async (filter: string) => {
-  //   setDataStatus('data');
-  //   await refetch();
-  //   let tempFilter = '';
-
-  //   if (filter.length > 0) {
-  //     tempFilter = `&filter=${filter}`;
-  //   }
-  //   if (parentRef.current) {
-  //     parentRef.current.scrollIntoView({ behavior: 'smooth' });
-  //   }
-  //   router.replace(`/admin/news?page=1${tempFilter}`, { scroll: false });
-  // };
-
-  // const handleKeyDownSearch = async (
-  //   e: React.KeyboardEvent<HTMLInputElement>
-  // ) => {
-  //   if (e.key === 'Enter') {
-  //     setDataStatus('search');
-  //     refetchSearchPost();
-  //     if (parentRef.current) {
-  //       parentRef.current.scrollIntoView({ behavior: 'smooth' });
-  //     }
-  //     router.replace(`/admin/news?page=1&search=${inputSearch}`, {
-  //       scroll: false,
-  //     });
-  //   }
-  // };
 
   useEffect(() => {
     if (data && dataStatus === 'data') {

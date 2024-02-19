@@ -1,8 +1,13 @@
 'use client';
 
+import { useQueryClient } from '@tanstack/react-query';
 import { ChevronDown } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import React from 'react';
 import { IoFilterSharp, IoSearch } from 'react-icons/io5';
+import { useRecoilState } from 'recoil';
+
+import { useGetDepartmentsTags } from '@/hooks/departments/hook';
 
 import { BreadCrumb } from '@/components/breadcrumbs';
 import {
@@ -22,9 +27,53 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import {
   breadcrumbNewsData,
   departmentData,
-  filterData,
 } from '@/modules/admin/news/constant';
+import {
+  dataStatusAdminNewsState,
+  parentRefAdminNewsState,
+  searchAdminNewsState,
+} from '@/recoils/admin/news/atom';
+
 const HeaderNewsSection = () => {
+  const { data } = useGetDepartmentsTags();
+
+  const queryClient = useQueryClient();
+
+  const router = useRouter();
+
+  const [inputSearch, setInputSearch] = useRecoilState(searchAdminNewsState);
+  const [, setDataStatus] = useRecoilState(dataStatusAdminNewsState);
+  const [parentRef] = useRecoilState(parentRefAdminNewsState);
+
+  const handleFilterChange = async (filter: string) => {
+    setDataStatus('data');
+    queryClient.invalidateQueries({ queryKey: ['all-post'] });
+    let tempFilter = '';
+
+    if (filter.length > 0) {
+      tempFilter = `&filter=${filter}`;
+    }
+    if (parentRef?.current) {
+      parentRef?.current.scrollIntoView({ behavior: 'smooth' });
+    }
+    router.replace(`/admin/news?page=1${tempFilter}`, { scroll: false });
+  };
+
+  const handleKeyDownSearch = async (
+    e: React.KeyboardEvent<HTMLInputElement>
+  ) => {
+    if (e.key === 'Enter') {
+      setDataStatus('search');
+      queryClient.invalidateQueries({ queryKey: ['get-search-post'] });
+      if (parentRef?.current) {
+        parentRef.current.scrollIntoView({ behavior: 'smooth' });
+      }
+      router.replace(`/admin/news?page=1&search=${inputSearch}`, {
+        scroll: false,
+      });
+    }
+  };
+
   return (
     <div className='flex flex-col  border-b pb-5'>
       <BreadCrumb items={breadcrumbNewsData} textColor='text-primary-main' />
@@ -41,7 +90,10 @@ const HeaderNewsSection = () => {
             <input
               type='text'
               id='search'
-              placeholder='Search...'
+              placeholder='Cari Berita dan Tekan Enter...'
+              value={inputSearch}
+              onChange={(e) => setInputSearch(e.target.value)}
+              onKeyDown={handleKeyDownSearch}
               className='w-full min-w-[300px] bg-transparent outline-none'
             />
           </div>
@@ -58,18 +110,28 @@ const HeaderNewsSection = () => {
                 <p className='text-neutral-800 py-2 px-4 font-medium text-base'>
                   Filter
                 </p>
-                <RadioGroup defaultValue='all-data'>
-                  {filterData.map((item, i) => (
-                    <div key={i} className=' flex items-center space-x-2 px-4'>
-                      <RadioGroupItem value={item.value} id={item.value} />
-                      <Label
-                        className='text-base text-neutral-800'
-                        htmlFor={item.value}
+                <RadioGroup
+                  onValueChange={(e: string) => {
+                    handleFilterChange(e);
+                  }}
+                  defaultValue='all-data'
+                >
+                  {['', 'Article', 'Press Release', ...(data?.data || [])].map(
+                    (item, i) => (
+                      <div
+                        key={i}
+                        className=' flex items-center space-x-2 px-4'
                       >
-                        {item.label}
-                      </Label>
-                    </div>
-                  ))}
+                        <RadioGroupItem value={item} id={item} />
+                        <Label
+                          className='text-base text-neutral-800'
+                          htmlFor={item === '' ? 'Semua' : item}
+                        >
+                          {item === '' ? 'Semua' : item}
+                        </Label>
+                      </div>
+                    )
+                  )}
                 </RadioGroup>
                 <MenubarSeparator />
                 <Collapsible>
