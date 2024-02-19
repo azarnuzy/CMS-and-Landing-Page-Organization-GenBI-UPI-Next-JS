@@ -26,7 +26,7 @@ export async function generateMetadata({
       title: data.data.event.title,
       openGraph: {
         images: data.data.event.thumbnail.file_url,
-        title: data.data.event.thumbnail.alt,
+        title: data.data.event.title,
       },
       twitter: {
         card: 'summary_large_image',

@@ -27,12 +27,12 @@ export async function generateMetadata({
       title: data.data.post.title,
       openGraph: {
         images: data.data.post.image_cover.file_url,
-        title: data.data.post.image_cover.caption,
+        title: data.data.post.title,
       },
       twitter: {
         card: 'summary_large_image',
         images: [data.data.post.image_cover.file_url],
-        title: data.data.post.image_cover.caption,
+        title: data.data.post.title,
       },
       keywords: data.data.post.tags,
     };
