@@ -7,7 +7,6 @@ import { BiMenu, BiSolidBookAlt } from 'react-icons/bi';
 import { BiMenuAltRight } from 'react-icons/bi';
 import { FaCalendarCheck, FaLayerGroup, FaRegUser } from 'react-icons/fa6';
 import { HiMiniUsers } from 'react-icons/hi2';
-import { LuFileCheck } from 'react-icons/lu';
 import { RiHome6Fill } from 'react-icons/ri';
 import { useRecoilState } from 'recoil';
 
@@ -145,11 +144,11 @@ const dataSideBar = [
         link: '/admin',
         icon: <RiHome6Fill className='w-6 h-6  text-white' />,
       },
-      {
-        title: 'Scholarship Registration',
-        link: '/admin',
-        icon: <LuFileCheck className='w-6 h-6  text-white' />,
-      },
+      // {
+      //   title: 'Scholarship Registration',
+      //   link: '/admin',
+      //   icon: <LuFileCheck className='w-6 h-6  text-white' />,
+      // },
     ],
   },
   {
@@ -177,7 +176,7 @@ const dataSideBar = [
       },
       {
         title: 'Department',
-        link: '/admin',
+        link: '/admin/department',
         icon: <FaLayerGroup className='w-6 h-6  text-white' />,
       },
     ],
