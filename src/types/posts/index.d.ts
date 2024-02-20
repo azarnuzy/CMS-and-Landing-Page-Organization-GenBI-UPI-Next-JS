@@ -55,6 +55,11 @@ export interface Post {
   attachments: Attachments[];
 }
 
+export interface Event {
+  id: number;
+  title: string;
+}
+
 export interface Attachments {
   id: number;
   category: string;

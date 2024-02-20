@@ -1,7 +1,7 @@
 export const siteConfig = {
   title: 'GenBI UPI',
   description:
-    'GenBI (Generasi Baru Indonesia) UPI merupakan komunitas penerima beasiswa Bank Indonesia di Universitas Pendidikan Indonesia',
+    'GenBI UPI merupakan komunitas penerima beasiswa Bank Indonesia di Universitas Pendidikan Indonesia yang telah aktif sejak 2019. GenBI diharapkan mampu menjadi energi baru dalam memberikan kontribusi bagi negara. GenBI ini berada langsung dibawah pimpinan oleh pihak Bank Indonesia sendiri.',
   url: 'https://genbiupi.com',
   keywords: [
     'genbi',
