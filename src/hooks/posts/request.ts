@@ -6,6 +6,7 @@ import {
   TDataGetDetailPostResponse,
   TDataVisitorPostResponse,
   TGetAllPostParams,
+  TGetSearchPostParams,
 } from '@/types/posts';
 
 export const getAllPost = async (
@@ -57,9 +58,18 @@ export const getComments = async (
 };
 
 export const getSearchPost = async (
-  keyword: string
+  params: TGetSearchPostParams
 ): Promise<TDataGetAllPostResponse> => {
-  const { data } = await api.get(`v1/posts/search?keyword=${keyword}`);
+  const { sort, type, limit, page, keyword } = params;
+  const { data } = await api.get(`v1/posts/search`, {
+    params: {
+      sort,
+      type,
+      limit,
+      page,
+      keyword,
+    },
+  });
 
   return data;
 };

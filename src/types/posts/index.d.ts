@@ -141,6 +141,14 @@ export interface TGetAllPostParams {
   filter?: string;
 }
 
+export interface TGetSearchPostParams {
+  keyword: string;
+  sort: string;
+  type: string;
+  limit: number;
+  page: number;
+}
+
 export interface TVisitorPostData {
   id: number;
   visitors: number;

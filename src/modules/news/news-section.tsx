@@ -29,7 +29,13 @@ const NewsArticleSection = () => {
     filter: searchParams.get('filter') || '',
   });
   const { data: dataSearchPost, refetch: refetchSearchPost } = useGetSearchPost(
-    { keyword: searchParams.get('search') || '' }
+    {
+      sort: 'created_at',
+      type: 'desc',
+      limit: 8,
+      page: Number(searchParams.get('page')) || 1,
+      keyword: searchParams.get('search') || '',
+    }
   );
   const { data: dataTags } = useGetDepartmentsTags();
 

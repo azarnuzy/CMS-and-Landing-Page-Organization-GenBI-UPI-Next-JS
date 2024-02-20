@@ -43,7 +43,13 @@ const ContentNewsManagementSection = () => {
     filter: searchParams.get('filter') || '',
   });
   const { data: dataSearchPost, refetch: refetchSearchPost } = useGetSearchPost(
-    { keyword: searchParams.get('search') || '' }
+    {
+      sort: 'created_at',
+      type: 'desc',
+      limit: 10,
+      page: Number(searchParams.get('page')) || 1,
+      keyword: searchParams.get('search') || '',
+    }
   );
 
   const [dataPost, setDataPost] = useRecoilState(postsDataState);
@@ -180,9 +186,17 @@ const ContentNewsManagementSection = () => {
             Showing {((data?.pagination?.currentPage || 0) - 1) * 10 + 1} to{' '}
             {(data?.pagination?.currentPage || 0) * 10 >
             (data?.pagination?.totalRows || 0)
-              ? data?.pagination?.totalRows || 0
-              : (data?.pagination?.currentPage || 0) * 10}{' '}
-            of {data?.pagination?.totalRows} entries
+              ? dataStatus === 'data'
+                ? data?.pagination?.totalRows || 0
+                : dataSearchPost?.pagination?.totalRows || 0
+              : dataStatus === 'data'
+              ? (data?.pagination?.currentPage || 0) * 10
+              : dataSearchPost?.pagination?.currentPage}{' '}
+            of{' '}
+            {dataStatus === 'data'
+              ? data?.pagination?.totalRows
+              : dataSearchPost?.pagination?.totalRows}{' '}
+            entries
           </p>
         </div>
         <div className='w-full'>

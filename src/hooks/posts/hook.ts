@@ -65,11 +65,20 @@ export const useGetCommentPost = ({
   });
 
 export const useGetSearchPost = ({
+  sort,
+  type,
+  limit,
+  page,
   keyword,
 }: {
+  sort: string;
+  type: string;
+  limit: number;
+  page: number;
   keyword: string;
 }): UseQueryResult<TDataGetAllPostResponse, TMetaErrorResponse> =>
   useQuery({
-    queryKey: ['get-search-post', keyword],
-    queryFn: async () => await getSearchPost(keyword),
+    queryKey: ['get-search-post', sort, type, limit, page, keyword],
+    queryFn: async () =>
+      await getSearchPost({ sort, type, limit, page, keyword }),
   });
