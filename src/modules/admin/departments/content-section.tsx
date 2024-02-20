@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import React from 'react';
-import { BiLinkExternal } from 'react-icons/bi';
 import { LuPlus } from 'react-icons/lu';
 import { MdDelete } from 'react-icons/md';
 import { TbEdit } from 'react-icons/tb';
@@ -63,13 +62,21 @@ const ContentDepartmentManagementSection = () => {
                 </TableCell>
                 <TableCell>{item.awardees}</TableCell>
 
-                <TableCell className='flex gap-2 h-full '>
+                <TableCell className='flex gap-2 h-full items-center'>
                   <Link href={`/admin/department/edit/${item.id}`}>
                     <TbEdit className='text-warning-main text-2xl' />
                   </Link>
                   <MdDelete className='text-error-main text-2xl' />
                   <Link target='_blank' href={`/tentang-genbi/upi/${item.id}`}>
-                    <BiLinkExternal className='text-primary-main text-2xl' />
+                    <Button
+                      asChild
+                      size='sm'
+                      className='bg-neutral-100 text-primary-main rounded-full text-sm font-semibold border-primary-main border hover:bg-neutral-100'
+                    >
+                      <Link href={`/admin/department/${item.id}/${item.name}`}>
+                        <span>Manage</span>
+                      </Link>
+                    </Button>
                   </Link>
                 </TableCell>
               </TableRow>

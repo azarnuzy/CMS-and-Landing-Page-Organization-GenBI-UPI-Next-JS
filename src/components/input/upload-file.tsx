@@ -130,7 +130,6 @@ export const UploadField = <T extends FieldValues>(
 
            rounded-lg p-4 outline-none focus:outline-none sr-only
         `}
-        // hidden
       />
       {files && (
         <div className='relative w-full max-w-[400px]'>
