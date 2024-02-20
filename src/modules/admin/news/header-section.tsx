@@ -1,8 +1,7 @@
 'use client';
 
 import { useQueryClient } from '@tanstack/react-query';
-import { ChevronDown } from 'lucide-react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import React from 'react';
 import { IoFilterSharp, IoSearch } from 'react-icons/io5';
 import { useRecoilState } from 'recoil';
@@ -10,24 +9,16 @@ import { useRecoilState } from 'recoil';
 import { useGetDepartmentsTags } from '@/hooks/departments/hook';
 
 import { BreadCrumb } from '@/components/breadcrumbs';
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from '@/components/ui/collapsible';
 import { Label } from '@/components/ui/label';
-import { MenubarSeparator } from '@/components/ui/menubar';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { ScrollArea } from '@/components/ui/scroll-area';
 
-import {
-  breadcrumbNewsData,
-  departmentData,
-} from '@/modules/admin/news/constant';
+import { breadcrumbNewsData } from '@/modules/admin/news/constant';
 import {
   dataStatusAdminNewsState,
   parentRefAdminNewsState,
@@ -40,6 +31,7 @@ const HeaderNewsSection = () => {
   const queryClient = useQueryClient();
 
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   const [inputSearch, setInputSearch] = useRecoilState(searchAdminNewsState);
   const [, setDataStatus] = useRecoilState(dataStatusAdminNewsState);
@@ -116,13 +108,24 @@ const HeaderNewsSection = () => {
                   }}
                   defaultValue='all-data'
                 >
-                  {['', 'Article', 'Press Release', ...(data?.data || [])].map(
-                    (item, i) => (
+                  <ScrollArea className='h-[200px]'>
+                    {[
+                      '',
+                      'Article',
+                      'Press Release',
+                      ...(data?.data || []),
+                    ].map((item, i) => (
                       <div
                         key={i}
-                        className=' flex items-center space-x-2 px-4'
+                        className=' flex items-center space-y-2 space-x-2 px-4'
                       >
-                        <RadioGroupItem value={item} id={item} />
+                        <RadioGroupItem
+                          checked={
+                            searchParams.get('filter') === item ? true : false
+                          }
+                          value={item}
+                          id={item}
+                        />
                         <Label
                           className='text-base text-neutral-800'
                           htmlFor={item === '' ? 'Semua' : item}
@@ -130,36 +133,9 @@ const HeaderNewsSection = () => {
                           {item === '' ? 'Semua' : item}
                         </Label>
                       </div>
-                    )
-                  )}
+                    ))}
+                  </ScrollArea>
                 </RadioGroup>
-                <MenubarSeparator />
-                <Collapsible>
-                  <CollapsibleTrigger className='pb-2 justify-between flex items-center w-full'>
-                    <p className='text-neutral-800 py-2 px-4 font-medium text-base'>
-                      Department
-                    </p>
-                    <ChevronDown className='text-2xl text-neutral-600' />
-                  </CollapsibleTrigger>
-                  <CollapsibleContent>
-                    <RadioGroup defaultValue='all-department'>
-                      {departmentData.map((item, i) => (
-                        <div
-                          key={i}
-                          className=' flex items-center space-x-2 px-4'
-                        >
-                          <RadioGroupItem value={item.value} id={item.value} />
-                          <Label
-                            className='text-base text-neutral-800'
-                            htmlFor={item.value}
-                          >
-                            {item.label}
-                          </Label>
-                        </div>
-                      ))}
-                    </RadioGroup>
-                  </CollapsibleContent>
-                </Collapsible>
               </div>
             </PopoverContent>
           </Popover>
