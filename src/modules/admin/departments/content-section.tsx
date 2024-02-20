@@ -28,7 +28,7 @@ const ContentDepartmentManagementSection = () => {
           asChild
           className='bg-primary-main text-neutral-100 text-sm font-semibold hover:bg-primary-600 rounded-full'
         >
-          <Link className='flex gap-2 ' href='/admin/news/add'>
+          <Link className='flex gap-2 ' href='/admin/department/add'>
             <LuPlus className='text-lg text-neutral-100' />
             <span>Tambah</span>
           </Link>
