@@ -41,14 +41,14 @@ export const ValidationSchemaAddNewsForm = z.object({
         })
         .min(1, 'Hashtag should be filled')
     )
-    .nonempty('Hashtag should be filled')
-    .max(3, 'Maximum hashtag is 3'),
+    .nonempty('Hashtag should be filled'),
 
   event: z
     .string({
       required_error: 'Event should be filled',
     })
-    .min(1, 'Event should be filled'),
+    .min(1, 'Event should be filled')
+    .optional(),
   thumbnail: z
     .any()
     .refine(

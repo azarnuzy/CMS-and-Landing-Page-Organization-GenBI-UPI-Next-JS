@@ -2,7 +2,7 @@
 'use client';
 
 import Image from 'next/image';
-import { ReactElement, useCallback, useState } from 'react';
+import { ReactElement, useCallback, useEffect, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { FieldValues, useController } from 'react-hook-form';
 import { AiOutlineCloseCircle } from 'react-icons/ai';
@@ -46,6 +46,16 @@ export const DraggableImageInput = <T extends FieldValues>(
 
     field.onChange(newFiles);
   };
+
+  useEffect(() => {
+    if (field.value) {
+      setFiles(field.value);
+      const newTypes = field.value.map((file: File) => file.type);
+      setType(newTypes.join(', '));
+      const newNames = field.value.map((file: File) => file.name);
+      setNames(newNames);
+    }
+  }, [field.value]);
 
   const { getRootProps, getInputProps } = useDropzone({ ...props, onDrop });
   const ACCEPTED_IMAGE_TYPES = [

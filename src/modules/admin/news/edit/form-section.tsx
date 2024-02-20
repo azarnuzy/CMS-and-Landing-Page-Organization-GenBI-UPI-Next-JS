@@ -5,7 +5,6 @@ import { convertToRaw, EditorState } from 'draft-js';
 import { stateFromHTML } from 'draft-js-import-html';
 import draftToHtml from 'draftjs-to-html';
 import dynamic from 'next/dynamic';
-import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useRecoilState } from 'recoil';
@@ -48,14 +47,7 @@ const DraftEditor = dynamic(() => import('@/components/text-editor'), {
   ssr: false,
 });
 
-import { IoAlertCircle } from 'react-icons/io5';
-
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTrigger,
-} from '@/components/ui/dialog';
+import { urlToFile } from '@/lib/utils/general-function';
 
 const FormEditNewsSection = ({ id }: { id: string }) => {
   const { data } = useGetDetailPost({ id: Number(id) });
@@ -115,9 +107,28 @@ const FormEditNewsSection = ({ id }: { id: string }) => {
       const contentState = stateFromHTML(data.data.post.content);
       const editorState = EditorState.createWithContent(contentState);
       setEditorState(editorState);
+
+      const promises = data.data.post.images.map((item) => {
+        return urlToFile(item.file_url);
+      });
+
+      Promise.all(promises)
+        .then((files) => {
+          // Once all promises are resolved, set the value in the form
+          logger(files);
+          form.setValue('othersPhoto', files);
+        })
+        .catch((error) => {
+          logger(error);
+        });
+
       form.reset(defaultValues as z.infer<typeof ValidationSchemaAddNewsForm>);
     }
   }, [data, form, form.reset, setNameUpload, setTags]);
+
+  useEffect(() => {
+    logger(form.formState.errors);
+  }, [form.formState.errors]);
 
   return (
     <div className='border rounded-3xl px-6 py-6 my-10 shadow-sm'>
@@ -209,7 +220,6 @@ const FormEditNewsSection = ({ id }: { id: string }) => {
                         </FormControl>
                         <SelectContent>
                           {dataTags?.data?.map((item) => {
-                            logger(field.value === item);
                             return (
                               <SelectItem key={item} value={item}>
                                 {item}
@@ -228,6 +238,7 @@ const FormEditNewsSection = ({ id }: { id: string }) => {
 
             <div className='col-span-2'>
               <DraftEditor
+                required
                 editorState={editorState}
                 setEditorState={(editorStateParams) => {
                   handleEditorChange(editorStateParams);
@@ -242,6 +253,7 @@ const FormEditNewsSection = ({ id }: { id: string }) => {
                 name='hashtag'
                 label='Hashtag'
                 message={form.formState.errors.hashtag?.[0]?.message}
+                required
               />
             </div>
             <div className='col-span-2 lg:col-span-1'>
@@ -251,14 +263,16 @@ const FormEditNewsSection = ({ id }: { id: string }) => {
                 render={({ field }) => {
                   return (
                     <FormItem>
-                      <FormLabel>Select Event *</FormLabel>
+                      <FormLabel>
+                        Select Event <span className='text-error-main'>*</span>
+                      </FormLabel>
                       <Select
-                        value={field.value.toString()}
+                        value={field.value?.toString() || 'Select Event'}
                         onValueChange={field.onChange}
                       >
                         <FormControl>
                           <SelectTrigger>
-                            <SelectValue placeholder='Select Department ' />
+                            <SelectValue placeholder='Select Event ' />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
@@ -367,7 +381,7 @@ const FormEditNewsSection = ({ id }: { id: string }) => {
             </div>
           </div>
           <div className='flex justify-between'>
-            <Dialog>
+            {/* <Dialog>
               <DialogTrigger>
                 <Button
                   type='button'
@@ -401,7 +415,7 @@ const FormEditNewsSection = ({ id }: { id: string }) => {
                   </div>
                 </DialogHeader>
               </DialogContent>
-            </Dialog>
+            </Dialog> */}
 
             <div className='flex justify-end'>
               <Button

@@ -69,3 +69,17 @@ export function getTimeDifference(dateString: string): string {
   // If the difference is less than a minute, return "just now"
   return 'baru saja';
 }
+
+export async function urlToFile(url: string) {
+  // Fetch the image data from the URL
+  const response = await fetch(url);
+  const blob = await response.blob();
+
+  // Extract the filename from the URL
+  const filename = url.substring(url.lastIndexOf('/') + 1);
+
+  // Create a file object from the blob
+  const file = new File([blob], filename, { type: blob.type });
+
+  return file;
+}

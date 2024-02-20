@@ -12,6 +12,7 @@ export interface DraftEditorProps {
   toolbarClassName?: string;
   error?: string;
   label?: string;
+  required?: boolean;
 }
 
 const DraftEditor: React.FC<DraftEditorProps> = ({
@@ -22,6 +23,7 @@ const DraftEditor: React.FC<DraftEditorProps> = ({
   toolbarClassName = '',
   error = '',
   label = '',
+  required = false,
 }) => {
   const handleChange = (newState: EditorState) => {
     setEditorState(newState);
@@ -34,7 +36,7 @@ const DraftEditor: React.FC<DraftEditorProps> = ({
           error ? 'text-red-500' : ''
         }`}
       >
-        {label}
+        {label} {required && <span className='text-error-main'>*</span>}
       </div>
 
       <div>
