@@ -1,7 +1,9 @@
 'use client';
 
-import { ReactElement } from 'react';
+import Image from 'next/image';
+import { ReactElement, useState } from 'react';
 import { FieldValues, useController } from 'react-hook-form';
+import { AiOutlineCloseCircle } from 'react-icons/ai';
 import { useRecoilState } from 'recoil';
 
 import { inputUploadState } from '@/recoils/admin/atom';
@@ -13,8 +15,15 @@ export const UploadField = <T extends FieldValues>(
 ): ReactElement => {
   const { field } = useController(props);
   // const [getName, setName] = useState('');
-
+  const [files, setFiles] = useState<File>();
   const [getName, setName] = useRecoilState(inputUploadState);
+
+  const removeFile = () => {
+    setFiles(undefined);
+    setName('');
+    field.onChange(undefined);
+  };
+
   return (
     <section className='flex flex-col w-auto my-1 gap-y-2 '>
       {props.label && (
@@ -92,6 +101,7 @@ export const UploadField = <T extends FieldValues>(
         onChange={(event) => {
           field.onChange(event.target.files);
           setName(event.target?.files?.[0]?.name as string);
+          setFiles(event.target.files?.[0]);
           props?.onChange?.(event);
         }}
         id={props.name}
@@ -122,6 +132,33 @@ export const UploadField = <T extends FieldValues>(
         `}
         // hidden
       />
+      {files && (
+        <div className='relative w-full max-w-[400px]'>
+          <div className='m-2 w-full'>
+            <div className='relative mx-auto w-full h-40 overflow-hidden rounded-lg shadow-md'>
+              <Image
+                src={URL.createObjectURL(files)}
+                alt='image'
+                width={0}
+                height={0}
+                sizes='100vw'
+                fill={true}
+                className='object-contain w-full h-full'
+              />
+            </div>
+            <div
+              onClick={() => removeFile()}
+              className='absolute top-2 right-2 p-1 bg-white rounded-full cursor-pointer'
+            >
+              <AiOutlineCloseCircle
+                color='#e63a3a'
+                className='text-error-main'
+                size={20}
+              />
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 };
