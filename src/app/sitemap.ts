@@ -24,12 +24,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const events = responseEvent?.data;
 
   const postEntries: MetadataRoute.Sitemap = posts.map((post) => ({
-    url: `https://genbiupi.com/berita/${post.id}`,
+    url: `https://genbiupi.com/berita/${post.id}/${post.slug}`,
     lastModified: post.updated_at,
   }));
 
   const eventEntries: MetadataRoute.Sitemap = events.map((event) => ({
-    url: `https://genbiupi.com/acara/${event.id}`,
+    url: `https://genbiupi.com/acara/${event.id}/${event.slug}`,
     lastModified: event.updated_at,
   }));
 
