@@ -1,34 +1,37 @@
 import { MetadataRoute } from 'next';
 
+import { getAllEvents } from '@/hooks/events/request';
+import { getAllPost } from '@/hooks/posts/request';
+
 import { siteConfig } from '@/constant/config';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  // const response = await getAllPost({
-  //   limit: 1000,
-  //   page: 1,
-  //   sort: 'created_at',
-  //   type: 'desc',
-  // });
+  const response = await getAllPost({
+    limit: 100,
+    page: 1,
+    sort: 'created_at',
+    type: 'desc',
+  });
 
-  // const responseEvent = await getAllEvents({
-  //   limit: 1000,
-  //   page: 1,
-  //   sort: 'created_at',
-  //   type: 'desc',
-  // });
+  const responseEvent = await getAllEvents({
+    limit: 100,
+    page: 1,
+    sort: 'created_at',
+    type: 'desc',
+  });
 
-  // const posts = response?.data;
-  // const events = responseEvent?.data;
+  const posts = response?.data;
+  const events = responseEvent?.data;
 
-  // const postEntries: MetadataRoute.Sitemap = posts.map((post) => ({
-  //   url: `${siteConfig.url}/berita/${post.id}`,
-  //   lastModified: post.updated_at,
-  // }));
+  const postEntries: MetadataRoute.Sitemap = posts.map((post) => ({
+    url: `https://genbiupi.com/berita/${post.id}`,
+    lastModified: post.updated_at,
+  }));
 
-  // const eventEntries: MetadataRoute.Sitemap = events.map((event) => ({
-  //   url: `${siteConfig.url}/acara/${event.id}`,
-  //   lastModified: event.updated_at,
-  // }));
+  const eventEntries: MetadataRoute.Sitemap = events.map((event) => ({
+    url: `https://genbiupi.com/acara/${event.id}`,
+    lastModified: event.updated_at,
+  }));
 
   return [
     {
@@ -51,7 +54,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       url: `${siteConfig.url}/login`,
       lastModified: new Date().toISOString(),
     },
-    // ...postEntries,
-    // ...eventEntries,
+    ...postEntries,
+    ...eventEntries,
   ];
 }
