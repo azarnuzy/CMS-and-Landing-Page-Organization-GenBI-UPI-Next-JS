@@ -156,7 +156,7 @@ const dataSideBar = [
     children: [
       {
         title: 'Awardee',
-        link: '/admin',
+        link: '/admin/awardee',
         icon: <HiMiniUsers className='w-6 h-6  text-white' />,
       },
       {
