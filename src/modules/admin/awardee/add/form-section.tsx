@@ -443,6 +443,25 @@ const AddAwardeeFormSection = () => {
                 )}
               />
             </div>
+            <div className='w-full col-span-2 '>
+              <FormLabel
+                className={`${
+                  form.formState?.errors?.transcript
+                    ? 'text-red-500'
+                    : 'text-black'
+                }`}
+              >
+                Transcript <span className='text-error-main'>*</span>
+              </FormLabel>
+              <UploadField
+                control={form.control}
+                name='transcript'
+                accepted='.jpg, .jpeg, .png'
+                variant='sm'
+                message={form?.formState?.errors?.transcript?.message?.toString()}
+                status={form?.formState?.errors?.transcript ? 'error' : 'none'}
+              />
+            </div>
           </div>
           <div className='flex justify-between'>
             <Button
