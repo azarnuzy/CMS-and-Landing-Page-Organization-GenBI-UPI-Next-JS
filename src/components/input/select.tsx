@@ -34,7 +34,7 @@ export const SelectField = <T extends FieldValues>({
                variant === 'lg'
                  ? 'text-[18px] font-semibold'
                  : variant === 'md'
-                 ? 'text-[16px] font-semibold'
+                 ? 'text-[14px] font-semibold'
                  : variant === 'sm'
                  ? 'text-[14px] font-semibold'
                  : ''
@@ -44,7 +44,7 @@ export const SelectField = <T extends FieldValues>({
         >
           {props.label}
           {props.required && (
-            <span className='text-error-base font-bold ml-1'>*</span>
+            <span className='text-red-500 font-bold ml-1'>*</span>
           )}
         </Listbox.Label>
 

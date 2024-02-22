@@ -31,6 +31,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 
+import { addNewsDefaultValues } from '@/modules/admin/news/add/constant';
 import { departmentData } from '@/modules/admin/news/constant';
 import { inputTagState, inputUploadState } from '@/recoils/admin/atom';
 
@@ -41,21 +42,7 @@ const DraftEditor = dynamic(() => import('@/components/text-editor'), {
 const FormAddNewsSection = () => {
   const form = useForm<z.infer<typeof ValidationSchemaAddNewsForm>>({
     resolver: zodResolver(ValidationSchemaAddNewsForm),
-    defaultValues: {
-      title: '',
-      content: '<p></p>\n',
-      department: '',
-      type: '',
-      event: '',
-      hashtag: [''],
-      thumbnail: undefined,
-      othersPhoto: undefined,
-      caption_othersPhoto_1: '',
-      caption_othersPhoto_2: '',
-      caption_othersPhoto_3: '',
-      caption_othersPhoto_4: '',
-      caption_othersPhoto_5: '',
-    },
+    defaultValues: addNewsDefaultValues,
   });
 
   const [editorState, setEditorState] = useState<EditorState>(
