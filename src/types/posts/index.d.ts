@@ -40,6 +40,7 @@ export interface Post {
   id: number;
   slug: string;
   title: string;
+  content_preview: string;
   type: string;
   content: string;
   visitors: number;
