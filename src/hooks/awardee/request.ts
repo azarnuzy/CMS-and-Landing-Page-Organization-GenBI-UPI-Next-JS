@@ -9,15 +9,8 @@ import {
 export const getAwardeesRequest = async (
   params: TAwardeesParams
 ): Promise<TDataGetAllAwardeesResponse> => {
-  const { sort, type, limit, page } = params;
-
   const { data } = await api.get(`v1/awardees`, {
-    params: {
-      sort,
-      type,
-      limit,
-      page,
-    },
+    params,
   });
 
   return data;

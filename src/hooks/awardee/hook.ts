@@ -15,9 +15,18 @@ import {
 export const useGetAllAwardees = (
   params: TAwardeesParams
 ): UseQueryResult<TDataGetAllAwardeesResponse, TMetaErrorResponse> => {
-  const { sort, type, limit, page } = params;
+  const { sort, type, limit, page, search, management, department } = params;
   return useQuery({
-    queryKey: ['all-awardees', sort, type, limit, page],
+    queryKey: [
+      'all-awardees',
+      sort,
+      type,
+      limit,
+      page,
+      search,
+      management,
+      department,
+    ],
     queryFn: async () => await getAwardeesRequest(params),
   });
 };

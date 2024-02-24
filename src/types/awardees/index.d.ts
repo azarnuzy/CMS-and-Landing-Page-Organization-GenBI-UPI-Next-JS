@@ -79,6 +79,9 @@ export interface TAwardeesParams {
   page: number;
   sort: string;
   type: string;
+  management?: string;
+  department?: string;
+  search?: string;
 }
 
 export type TDataGetAllAwardeesResponse = TMetaResponse<TAwardeesData>;
