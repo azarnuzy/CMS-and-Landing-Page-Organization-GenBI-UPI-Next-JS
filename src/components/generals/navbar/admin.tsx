@@ -1,6 +1,7 @@
 'use client';
 
 import { User } from 'lucide-react';
+import { signOut } from 'next-auth/react';
 import React from 'react';
 import { LuLogOut } from 'react-icons/lu';
 import { useRecoilState } from 'recoil';
@@ -49,7 +50,12 @@ const NavbarAdmin = () => {
                   <User className='w-4 h-4 text-primary-900' />{' '}
                   <p className='text-primary-900'>Profile</p>
                 </div>
-                <div className='flex gap-2 items-center py-2'>
+                <div
+                  className='flex gap-2 items-center py-2 cursor-pointer'
+                  onClick={() => {
+                    signOut({ callbackUrl: '/login' });
+                  }}
+                >
                   <LuLogOut className='w-4 h-4 text-primary-900' />{' '}
                   <p className='text-primary-900'>Keluar</p>
                 </div>

@@ -6,7 +6,7 @@ import LoginSection from '@/modules/login/login-section';
 export const metadata: Metadata = {
   title: 'Login',
   description:
-    'Halaman login untuk anggota GenBI UPI. Login untuk mengakses fitur-fitur yang hanya bisa diakses oleh anggota GenBI UPI.',
+    'Halaman login untuk anggota GenBI UPI. Login untuk mengakses dashboard admin.',
 };
 
 const LoginPage = () => {
