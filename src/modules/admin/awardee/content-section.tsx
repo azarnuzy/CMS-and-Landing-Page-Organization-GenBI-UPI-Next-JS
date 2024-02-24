@@ -111,7 +111,7 @@ const ContentAwardeeSection = () => {
               <TableRow key={index}>
                 <TableCell>
                   {' '}
-                  {((data?.pagination?.currentPage || 0) - 1) * 10 + index + 1}
+                  {((data?.pagination?.currentPage || 1) - 1) * 10 + index + 1}
                 </TableCell>
                 <TableCell className='text-ellipsis min-w-[100px] max-w-[200px]'>
                   <div className='flex gap-2 items-center'>
@@ -164,7 +164,7 @@ const ContentAwardeeSection = () => {
       <div className='flex justify-between items-center py-2'>
         <div className='w-full flex justify-center '>
           <p className='text-sm'>
-            Showing {((data?.pagination?.currentPage || 0) - 1) * 10 + 1} to{' '}
+            Showing {((data?.pagination?.currentPage || 1) - 1) * 10 + 1} to{' '}
             {(data?.pagination?.currentPage || 0) * 10 >
             (data?.pagination?.totalRows || 0)
               ? data?.pagination?.totalRows || 0

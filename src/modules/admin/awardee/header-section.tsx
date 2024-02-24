@@ -65,7 +65,7 @@ const HeaderAwardeetSection = () => {
     }
 
     router.replace(
-      `/admin/awardee?page=1&department=${filter}${tempSearch}${tempManagement}`,
+      `/admin/awardee?&department=${filter}${tempSearch}${tempManagement}`,
       { scroll: false }
     );
     queryClient.invalidateQueries({ queryKey: ['all-awardees'] });
@@ -93,7 +93,7 @@ const HeaderAwardeetSection = () => {
     }
 
     router.replace(
-      `/admin/awardee?page=1${tempDepartment}${tempSearch}${tempManagement}`,
+      `/admin/awardee?${tempDepartment}${tempSearch}${tempManagement}`,
       { scroll: false }
     );
     queryClient.invalidateQueries({ queryKey: ['all-awardees'] });
@@ -122,7 +122,7 @@ const HeaderAwardeetSection = () => {
         tempSearch = `&search=${inputSearch}`;
       }
       router.replace(
-        `/admin/awardee?page=1${tempDepartment}${tempSearch}${tempManagement}`,
+        `/admin/awardee?${tempDepartment}${tempSearch}${tempManagement}`,
         { scroll: false }
       );
 
@@ -149,7 +149,7 @@ const HeaderAwardeetSection = () => {
             <input
               type='text'
               id='search'
-              placeholder='Cari Berita dan Tekan Enter...'
+              placeholder='Cari Nama Awardee dan Tekan Enter...'
               value={inputSearch}
               onChange={(e) => setInputSearch(e.target.value)}
               onKeyDown={handleKeyDownSearch}
