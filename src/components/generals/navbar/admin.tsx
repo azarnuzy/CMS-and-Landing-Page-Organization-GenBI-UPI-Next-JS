@@ -19,6 +19,7 @@ import { sidebarMinimizeState } from '@/recoils/sidebar/atom';
 
 const NavbarAdmin = () => {
   const [isMinimize] = useRecoilState(sidebarMinimizeState);
+
   return (
     <div
       className={`${
@@ -28,13 +29,13 @@ const NavbarAdmin = () => {
       <div className=''></div>
       <div className='flex justify-end gap-4'>
         <Badge className='bg-error-300 hover:bg-error-400 border-error-400 py-1 px-4 text-sm'>
-          Marketing
+          Admin
         </Badge>
         <Menubar>
           <MenubarMenu>
             <MenubarTrigger className='cursor-pointer'>
               <Avatar className='w-10 h-10'>
-                <AvatarImage src='/images/avatar.jpeg' />
+                <AvatarImage src='/images/profile-no-photo.png' />
                 <AvatarFallback>CN</AvatarFallback>
               </Avatar>
             </MenubarTrigger>
