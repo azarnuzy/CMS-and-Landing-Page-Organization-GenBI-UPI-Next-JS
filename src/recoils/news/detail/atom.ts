@@ -7,6 +7,7 @@ export const postDetailDataState = atom<TPostDetailData>({
   default: {
     post: {
       id: 0,
+      content_preview: '',
       title: '',
       type: '',
       slug: '',

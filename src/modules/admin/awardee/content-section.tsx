@@ -106,59 +106,62 @@ const ContentAwardeeSection = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {dataAwardees.map((item, index) => {
-            return (
-              <TableRow key={index}>
-                <TableCell>
-                  {' '}
-                  {((data?.pagination?.currentPage || 1) - 1) * 10 + index + 1}
-                </TableCell>
-                <TableCell className='text-ellipsis min-w-[100px] max-w-[200px]'>
-                  <div className='flex gap-2 items-center'>
-                    <Image
-                      src={item.photo.file_url || '/images/avatar.png'}
-                      width={36}
-                      className='rounded-full'
-                      height={36}
-                      alt='image-avatar'
-                    />
-                    {item.name}
-                  </div>
-                </TableCell>
-                <TableCell>
-                  <div className='w-fit'>
-                    <BadgeTag size='sm' title={item.department} />
-                  </div>
-                </TableCell>
-                <TableCell>
-                  {' '}
-                  <div className='w-fit'>
-                    <BadgeTag
-                      size='sm'
-                      title={(item.division as string) || '-'}
-                    />
-                  </div>
-                </TableCell>
-                <TableCell>{item.study_program}</TableCell>
+          {data &&
+            dataAwardees?.map((item, index) => {
+              return (
+                <TableRow key={index}>
+                  <TableCell>
+                    {' '}
+                    {((data?.pagination?.currentPage || 1) - 1) * 10 +
+                      index +
+                      1}
+                  </TableCell>
+                  <TableCell className='text-ellipsis min-w-[100px] max-w-[200px]'>
+                    <div className='flex gap-2 items-center'>
+                      <Image
+                        src={item?.photo?.file_url || '/images/avatar.png'}
+                        width={36}
+                        className='rounded-full'
+                        height={36}
+                        alt='image-avatar'
+                      />
+                      {item?.name}
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <div className='w-fit'>
+                      <BadgeTag size='sm' title={item?.department || ''} />
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    {' '}
+                    <div className='w-fit'>
+                      <BadgeTag
+                        size='sm'
+                        title={(item?.division as string) || 'Manager'}
+                      />
+                    </div>
+                  </TableCell>
+                  <TableCell>{item?.study_program}</TableCell>
 
-                <TableCell className='flex gap-2 h-full items-center'>
-                  <Link href={`/admin/awardee/edit/${item.id}`}>
-                    <TbEdit className='text-warning-main text-2xl' />
-                  </Link>
-                  <MdDelete className='text-error-main text-2xl' />
-                  <Button
-                    asChild
-                    size='sm'
-                    className='bg-neutral-100 text-primary-main rounded-full text-sm font-semibold border-primary-main border hover:bg-neutral-100'
-                  >
-                    <Link target='_blank' href={`/awardee/${item.id}`}>
-                      <span>Detail</span>
+                  <TableCell className='flex gap-2 h-full items-center'>
+                    <Link href={`/admin/awardee/edit/${item?.id}`}>
+                      <TbEdit className='text-warning-main text-2xl' />
                     </Link>
-                  </Button>
-                </TableCell>
-              </TableRow>
-            );
-          })}
+                    <MdDelete className='text-error-main text-2xl' />
+                    <Button
+                      asChild
+                      size='sm'
+                      className='bg-neutral-100 text-primary-main rounded-full text-sm font-semibold border-primary-main border hover:bg-neutral-100'
+                    >
+                      <Link target='_blank' href={`/awardee/${item?.id}`}>
+                        <span>Detail</span>
+                      </Link>
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              );
+            })}
         </TableBody>
       </Table>
       <div className='flex justify-between items-center py-2'>
