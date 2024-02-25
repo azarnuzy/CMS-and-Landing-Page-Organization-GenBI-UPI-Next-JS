@@ -159,7 +159,7 @@ const ContentAwardeeSection = () => {
                     >
                       <Link
                         target='_blank'
-                        href={`/awardee/detail/${item?.id}`}
+                        href={`/admin/awardee/detail/${item?.id}`}
                       >
                         <span>Detail</span>
                       </Link>
