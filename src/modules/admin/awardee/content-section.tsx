@@ -157,7 +157,10 @@ const ContentAwardeeSection = () => {
                       size='sm'
                       className='bg-neutral-100 text-primary-main rounded-full text-sm font-semibold border-primary-main border hover:bg-neutral-100'
                     >
-                      <Link target='_blank' href={`/awardee/${item?.id}`}>
+                      <Link
+                        target='_blank'
+                        href={`/awardee/detail/${item?.id}`}
+                      >
                         <span>Detail</span>
                       </Link>
                     </Button>
