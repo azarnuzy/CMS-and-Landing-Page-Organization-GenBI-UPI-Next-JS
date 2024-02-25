@@ -1,6 +1,6 @@
 import { atom } from 'recoil';
 
-import { TAwardeesData } from '@/types/awardees';
+import { TAwardeeDetailData, TAwardeesData } from '@/types/awardees';
 
 export const awardeesDataState = atom<Array<TAwardeesData>>({
   key: 'awardeesDataState',
@@ -27,6 +27,63 @@ export const awardeesDataState = atom<Array<TAwardeesData>>({
       division: '',
     },
   ],
+});
+
+export const awardeesDataDetailState = atom<TAwardeeDetailData>({
+  key: 'awardeesDataDetailState',
+  default: {
+    id: 0,
+    name: '',
+    birth_date: '',
+    linkedin_username: '',
+    instagram_username: '',
+    telp: '',
+    member_since: '',
+    scholarship: 0,
+    nim: '',
+    year: '',
+    ip1: '',
+    ip2: '',
+    ip3: '',
+    ip4: '',
+    ip5: '',
+    ip6: '',
+    ip7: '',
+    ip8: '',
+    ipk1: '',
+    ipk2: '',
+    ipk3: '',
+    ipk4: '',
+    ipk5: '',
+    ipk6: '',
+    ipk7: '',
+    ipk8: '',
+    study_program: '',
+    faculty: '',
+    created_at: '',
+    updated_at: '',
+    photo: {
+      alt: '',
+      caption: '',
+      file_url: '',
+      id: 0,
+      mimetype: '',
+    },
+    transcript: {
+      file_name: '',
+      file_url: '',
+      id: 0,
+    },
+    managements: [
+      {
+        department: '',
+        id: 0,
+        management: '',
+        division: '',
+        position: '',
+      },
+    ],
+  },
 });
 
 export const dataStatusAdminAwardeeState = atom<string>({
