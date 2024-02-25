@@ -87,6 +87,13 @@ export interface Photo2 {
   mimetype: string;
 }
 
+export interface TDepartmentOptionData {
+  id: number;
+  name: string;
+}
+
 export type TDataGetDepartmentsTagResponse = TMetaResponse<string>;
 export type TDataGetDepartmentsByIdResponse =
   TMetaResponseSingle<TDepartmentByIdData>;
+export type TDataGetDepartmentOptionResponse =
+  TMetaResponse<TDepartmentOptionData>;

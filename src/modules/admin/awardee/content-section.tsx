@@ -95,6 +95,7 @@ const ContentAwardeeSection = () => {
         <TableHeader className='bg-neutral-50 '>
           <TableRow className=''>
             <TableHead className='text-neutral-500'>No</TableHead>
+            <TableHead className='text-neutral-500'>NIM</TableHead>
             <TableHead className='text-neutral-500 min-w-[100px] max-w-[200px]'>
               Name
             </TableHead>
@@ -102,6 +103,7 @@ const ContentAwardeeSection = () => {
             <TableHead className='text-neutral-500'>Division</TableHead>
 
             <TableHead className='text-neutral-500'>Study Program</TableHead>
+            <TableHead className='text-neutral-500'>Scholarship</TableHead>
             <TableHead className='text-neutral-500'>Actions</TableHead>
           </TableRow>
         </TableHeader>
@@ -116,7 +118,8 @@ const ContentAwardeeSection = () => {
                       index +
                       1}
                   </TableCell>
-                  <TableCell className='text-ellipsis min-w-[100px] max-w-[200px]'>
+                  <TableCell>{item?.nim || '-'}</TableCell>
+                  <TableCell className=''>
                     <div className='flex gap-2 items-center'>
                       <Image
                         src={item?.photo?.file_url || '/images/avatar.png'}
@@ -143,7 +146,7 @@ const ContentAwardeeSection = () => {
                     </div>
                   </TableCell>
                   <TableCell>{item?.study_program}</TableCell>
-
+                  <TableCell>{item?.scholarship || '-'}</TableCell>
                   <TableCell className='flex gap-2 h-full items-center'>
                     <Link href={`/admin/awardee/edit/${item?.id}`}>
                       <TbEdit className='text-warning-main text-2xl' />

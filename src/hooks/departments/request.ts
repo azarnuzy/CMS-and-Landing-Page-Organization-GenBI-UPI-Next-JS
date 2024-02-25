@@ -1,6 +1,7 @@
 import { api } from '@/lib/api';
 
 import {
+  TDataGetDepartmentOptionResponse,
   TDataGetDepartmentsByIdResponse,
   TDataGetDepartmentsTagResponse,
 } from '@/types/departments';
@@ -19,3 +20,10 @@ export const getDepartmentByIdRequest = async (
 
   return data;
 };
+
+export const getOptionDepartmentsRequest =
+  async (): Promise<TDataGetDepartmentOptionResponse> => {
+    const { data } = await api.get(`/v1/departments?options=true`);
+
+    return data;
+  };

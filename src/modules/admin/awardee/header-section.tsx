@@ -1,23 +1,15 @@
 'use client';
 
 import { useQueryClient } from '@tanstack/react-query';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import React from 'react';
-import { IoFilterSharp, IoSearch } from 'react-icons/io5';
+import { IoSearch } from 'react-icons/io5';
 import { useRecoilState } from 'recoil';
 
-import { useGetDepartmentsTags } from '@/hooks/departments/hook';
+import { useGetOptionDepartments } from '@/hooks/departments/hook';
 import { useGetOptionManagements } from '@/hooks/managements/hook';
 
 import { BreadCrumb } from '@/components/breadcrumbs';
-import { Label } from '@/components/ui/label';
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { ScrollArea } from '@/components/ui/scroll-area';
 import {
   Select,
   SelectContent,
@@ -35,12 +27,11 @@ import {
 } from '@/recoils/admin/awardees/atom';
 
 const HeaderAwardeetSection = () => {
-  const { data } = useGetDepartmentsTags();
   const { data: dataManagement } = useGetOptionManagements();
+  const { data: dataDepartment } = useGetOptionDepartments();
   const queryClient = useQueryClient();
 
   const router = useRouter();
-  const searchParams = useSearchParams();
 
   const [inputSearch, setInputSearch] = useRecoilState(searchAdminAwardeeState);
   const [department, setDepartment] = useRecoilState(
@@ -55,6 +46,7 @@ const HeaderAwardeetSection = () => {
   const handleFilterDepartmentChange = async (filter: string) => {
     let tempSearch = '';
     let tempManagement = '';
+    let tempDepartment = '';
 
     if (inputSearch.length > 0) {
       tempSearch = `&search=${inputSearch}`;
@@ -64,8 +56,12 @@ const HeaderAwardeetSection = () => {
       tempManagement = `&management=${management}`;
     }
 
+    if (filter !== '0') {
+      tempDepartment = `&department=${filter}`;
+    }
+
     router.replace(
-      `/admin/awardee?&department=${filter}${tempSearch}${tempManagement}`,
+      `/admin/awardee?${tempDepartment}${tempSearch}${tempManagement}`,
       { scroll: false }
     );
     queryClient.invalidateQueries({ queryKey: ['all-awardees'] });
@@ -136,7 +132,7 @@ const HeaderAwardeetSection = () => {
   return (
     <div className='flex flex-col  border-b pb-5'>
       <BreadCrumb items={breadcrumbAwardeeData} textColor='text-primary-main' />
-      <div className='flex flex-col lg:flex-row justify-between lg:items-center gap-y-4'>
+      <div className='flex flex-col xl:flex-row justify-between xl:items-center gap-y-4'>
         <h3 className='text-primary-900'>Awardee Management </h3>
         <div className='flex gap-4  lg:flex-row flex-col '>
           <div className='rounded-full border border-neutral-300 py-2.5 px-6 flex gap-2'>
@@ -149,7 +145,7 @@ const HeaderAwardeetSection = () => {
             <input
               type='text'
               id='search'
-              placeholder='Cari Nama Awardee dan Tekan Enter...'
+              placeholder='Search Name of Awardee and Press Enter...'
               value={inputSearch}
               onChange={(e) => setInputSearch(e.target.value)}
               onKeyDown={handleKeyDownSearch}
@@ -179,51 +175,28 @@ const HeaderAwardeetSection = () => {
                 ))}
               </SelectContent>
             </Select>
-            <Popover>
-              <PopoverTrigger>
-                {' '}
-                <div className='border border-primary-main rounded-lg p-[10px] flex items-center'>
-                  <IoFilterSharp className='text-2xl text-primary-main' />
-                </div>
-              </PopoverTrigger>
-              <PopoverContent>
-                {' '}
-                <div className='flex flex-col gap-2 rounded-[18px] '>
-                  <p className='text-neutral-800 py-2 px-4 font-medium text-base'>
-                    Filter
-                  </p>
-                  <RadioGroup
-                    onValueChange={(e: string) => {
-                      handleFilterDepartmentChange(e);
-                    }}
-                    defaultValue='all-data'
-                  >
-                    <ScrollArea className='h-[200px]'>
-                      {['', ...(data?.data || [])].map((item, i) => (
-                        <div
-                          key={i}
-                          className=' flex items-center space-y-2 space-x-2 px-4'
-                        >
-                          <RadioGroupItem
-                            checked={
-                              searchParams.get('filter') === item ? true : false
-                            }
-                            value={item}
-                            id={item}
-                          />
-                          <Label
-                            className='text-base text-neutral-800'
-                            htmlFor={item === '' ? 'Semua' : item}
-                          >
-                            {item === '' ? 'Semua' : item}
-                          </Label>
-                        </div>
-                      ))}
-                    </ScrollArea>
-                  </RadioGroup>
-                </div>
-              </PopoverContent>
-            </Popover>
+            <Select
+              onValueChange={(e) => {
+                handleFilterDepartmentChange(e);
+              }}
+            >
+              <SelectTrigger className='min-w-fit bg-primary-main text-neutral-100 border-primary-main focus:outline-none focus:ring-0'>
+                <SelectValue placeholder='Select Department' />
+              </SelectTrigger>
+              <SelectContent>
+                {[
+                  {
+                    id: '0',
+                    name: 'All Departments',
+                  },
+                  ...(dataDepartment?.data || []),
+                ].map((item, i) => (
+                  <SelectItem key={i} value={String(item.id) || ''}>
+                    {item.name || '-'}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
         </div>
       </div>
