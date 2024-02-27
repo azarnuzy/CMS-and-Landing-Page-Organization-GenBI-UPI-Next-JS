@@ -30,9 +30,3 @@ export const postsDataState = atom<Array<TPostsData>>({
     },
   ],
 });
-
-export const parentRefAdminNewsState =
-  atom<React.RefObject<HTMLTableElement> | null>({
-    key: 'parentRefAdminNewsState',
-    default: null,
-  });
