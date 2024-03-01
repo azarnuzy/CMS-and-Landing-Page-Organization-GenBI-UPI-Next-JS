@@ -6,6 +6,8 @@ export function badgeColor(tag: string) {
       return 'bg-error-100 text-error-700 border-error-400 hover:bg-error-200';
     case 'marketing':
       return 'bg-error-300 text-neutral-100 border-error-400 hover:bg-error-400';
+    case 'announcement ':
+      return 'bg-primary-100 text-primary-500 border-primary-300 hover:bg-primary-200';
     case 'executive':
       return 'bg-error-100 text-error-400 border-error-300 hover:bg-error-200';
     case 'healthcare':

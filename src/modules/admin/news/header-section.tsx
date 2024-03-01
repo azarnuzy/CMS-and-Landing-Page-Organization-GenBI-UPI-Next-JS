@@ -113,6 +113,7 @@ const HeaderNewsSection = () => {
                       '',
                       'Article',
                       'Press Release',
+                      'Announcement',
                       ...(data?.data || []),
                     ].map((item, i) => (
                       <div

@@ -141,23 +141,27 @@ const NewsArticleSection = () => {
           </div>
           <div className='flex overflow-x-auto flex-nowrap items-center gap-4 pb-2   scrollbar-thin scrollbar-track-slate-100 scrollbar-thumb-slate-300 scrollbar-thumb-rounded'>
             {dataTags &&
-              ['', 'Article', 'Press Release', ...(dataTags?.data || [])].map(
-                (item, i) => (
-                  <div
+              [
+                '',
+                'Article',
+                'Press Release',
+                'Announcement',
+                ...(dataTags?.data || []),
+              ].map((item, i) => (
+                <div
+                  className='cursor-pointer'
+                  onClick={() => {
+                    handleFilterChange(item);
+                  }}
+                  key={i}
+                >
+                  <BadgeTag
+                    size='lg'
+                    title={item === '' ? 'Semua' : item}
                     className='cursor-pointer'
-                    onClick={() => {
-                      handleFilterChange(item);
-                    }}
-                    key={i}
-                  >
-                    <BadgeTag
-                      size='lg'
-                      title={item === '' ? 'Semua' : item}
-                      className='cursor-pointer'
-                    />
-                  </div>
-                )
-              )}
+                  />
+                </div>
+              ))}
           </div>
           <div className='grid grid-cols-2 gap-5'>
             {data &&
