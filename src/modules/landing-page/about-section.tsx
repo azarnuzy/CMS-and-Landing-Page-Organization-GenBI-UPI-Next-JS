@@ -18,26 +18,33 @@ export const misiData = [
   {
     icon: <Zap className='2-6 h-6 text-neutral-100' />,
     description:
-      'Menciptakan lingkungan GenBI yang supportif terhadap gagasan baru.',
+      'Menggagas berbagai kegiatan pemberdayaan masyarakat untuk Indonesia yang lebih baik (INITIATE)',
     color: 'bg-warning-main',
   },
   {
     icon: <BsTrophy className='w-6 h-6 text-neutral-100' />,
-    description: 'Mempererat hubungan antar anggota.',
+    description:
+      'Menjadi garda terdepan dalam melakukan aksi nyata untuk pembangunan bangsa (ACT)',
     color: 'bg-error-main',
   },
   {
     icon: <HiMiniUsers className='w-6 h-6 text-neutral-100' />,
     description:
-      'Bergerak adaptif dan optimal dalam memanfaatkan potensi perkembangan zaman.',
+      'Peduli dan berkontribusi untuk pemberdayaan masyarakat (SHARE)',
     color: 'bg-primary-main',
   },
   {
     icon: <GrAnnounce className='w-6 h-6 text-neutral-100' />,
     description:
-      'Siap dan selaras menyuarakan kebijakan Bank Indonesia kepada masyarakat.',
+      'Berbagi inspirasi dan motivasi untuk menjadi energi bagi negeri (INSPIRE)',
     color: 'bg-blue-300',
   },
+];
+
+export const tujuanData = [
+  'Frontliners Bank Indonesia (mengkomunikasikan kelembagaan dan berbagai kebijakan Bank Indonesia kepada sesama mahasiswa dan masyarakat umum)',
+  'Change Agents (menjadi agen perubahan dan role model di kalangan pelajar, mahasiswa, dan masyarakat)',
+  'Future Leaders (menjadi pemimpin masa depan di berbagai bidang dan tingkatan)',
 ];
 
 const AboutSection = () => {

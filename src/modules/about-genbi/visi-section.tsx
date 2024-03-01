@@ -5,7 +5,7 @@ import React from 'react';
 
 import BaseLayout from '@/components/layouts/base';
 
-import { misiData } from '@/modules/landing-page/about-section';
+import { misiData, tujuanData } from '@/modules/landing-page/about-section';
 
 const VisiSection = () => {
   return (
@@ -22,7 +22,7 @@ const VisiSection = () => {
         <BaseLayout>
           <div className='flex flex-col gap-4 pb-10'>
             <h1 className='text-center text-neutral-main'>
-              Visi & Misi <span className='text-primary-main'>GenBI UPI</span>{' '}
+              Visi & Misi <span className='text-primary-main'>GenBI </span>{' '}
             </h1>
             <div className='rounded-3xl p-6 flex gap-4 items-center bg-neutral-100 text-neutral-600 shadow-md border'>
               <Image
@@ -35,8 +35,9 @@ const VisiSection = () => {
               <div className='flex flex-col gap-2 w-fit'>
                 <h2>Visi</h2>
                 <p>
-                  GenBI sebagai wadah eksplorasi diri serta menjadi mediator BI
-                  untuk menyebarkan kebermanfaatan kepada masyarakat.
+                  Menjadikan kaum muda Indonesia sebagai generasi yang kompeten
+                  dalam berbagai bidang keilmuan serta dapat membawa perubahan
+                  positif dan menjadi inspirasi bagi bangsa dan negara.
                 </p>
               </div>
             </div>
@@ -52,6 +53,19 @@ const VisiSection = () => {
                       {item.icon}
                     </div>
                     <p className='text-neutral-600'>{item.description}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className='rounded-3xl p-6 flex flex-col gap-4 justify-center bg-neutral-100 text-neutral-600 shadow-md border'>
+              <h2 className='text-start'>Tujuan</h2>
+              <div className='flex flex-col gap-4 w-full'>
+                {tujuanData.map((item, index) => (
+                  <div
+                    className='rounded-2xl bg-neutral-100 border border-neutral-300 p-4 flex gap-4 items-center w-full'
+                    key={index}
+                  >
+                    <p className='text-neutral-600'>{item}</p>
                   </div>
                 ))}
               </div>
