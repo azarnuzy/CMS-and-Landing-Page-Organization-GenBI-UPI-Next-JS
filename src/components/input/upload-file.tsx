@@ -4,9 +4,6 @@ import Image from 'next/image';
 import { ReactElement, useState } from 'react';
 import { FieldValues, useController } from 'react-hook-form';
 import { AiOutlineCloseCircle } from 'react-icons/ai';
-import { useRecoilState } from 'recoil';
-
-import { inputUploadState } from '@/recoils/admin/atom';
 
 import { TUploadFieldProps } from '@/types/components/upload-file';
 
@@ -14,13 +11,13 @@ export const UploadField = <T extends FieldValues>(
   props: TUploadFieldProps<T>
 ): ReactElement => {
   const { field } = useController(props);
-  // const [getName, setName] = useState('');
+  // const [props.getName, props.setName] = useState('');
   const [files, setFiles] = useState<File>();
-  const [getName, setName] = useRecoilState(inputUploadState);
+  // const [props.getName, setName] = useRecoilState(inputUploadState);
 
   const removeFile = () => {
     setFiles(undefined);
-    setName('');
+    props.setName('');
     field.onChange(undefined);
   };
 
@@ -65,9 +62,9 @@ export const UploadField = <T extends FieldValues>(
                 props.status === 'error' ? 'text-red-500 italic' : ''
               } px-4 text-xs text-nowrap overflow-hidden overflow-ellipsis whitespace-nowrap`}
             >
-              {getName || props.files ? (
+              {props.getName || props.files ? (
                 <span>
-                  {getName || props.files}
+                  {props.getName || props.files}
                   {props.status === 'error' && `(${props.message})`}
                 </span>
               ) : (
@@ -100,7 +97,7 @@ export const UploadField = <T extends FieldValues>(
         {...props}
         onChange={(event) => {
           field.onChange(event.target.files);
-          setName(event.target?.files?.[0]?.name as string);
+          props.setName(event.target?.files?.[0]?.name as string);
           setFiles(event.target.files?.[0]);
           props?.onChange?.(event);
         }}

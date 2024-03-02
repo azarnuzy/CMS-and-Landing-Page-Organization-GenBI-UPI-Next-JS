@@ -8,6 +8,8 @@ import { BsLinkedin, BsWhatsapp } from 'react-icons/bs';
 import { GrDocument } from 'react-icons/gr';
 import { useRecoilState } from 'recoil';
 
+import { formatDate } from '@/lib/utils/general-function';
+
 import {
   Table,
   TableBody,
@@ -62,96 +64,103 @@ const ContentDetailAwardeeAdminSection = () => {
     <div className='py-5 border rounded-3xl w-full mt-10 mb-5 px-5'>
       <h4 className='text-neutral-600'>General Data</h4>
       <div className='flex flex-col lg:flex-row justify-between'>
-        <table border={0}>
-          <tbody>
-            <tr>
-              <td className='min-w-36 font-semibold'>Name</td>
-              <td className='min-w-3'>: </td>
-              <td>{dataDetail?.name || '-'}</td>
-            </tr>
-            <tr>
-              <td className='min-w-36 font-semibold'>Birth Date</td>
-              <td className='min-w-3'>: </td>
-              <td>{dataDetail?.birth_date || '-'}</td>
-            </tr>
-            <tr>
-              <td className='min-w-36 font-semibold'>Member Since</td>
-              <td className='min-w-3'>: </td>
-              <td>{dataDetail?.member_since || '-'}</td>
-            </tr>
-            <tr>
-              <td className='min-w-36 font-semibold'>Total Scholarship</td>
-              <td className='min-w-3'>: </td>
-              <td>{dataDetail?.scholarship || '-'}</td>
-            </tr>
-            <tr>
-              <td className='min-w-36 font-semibold'>NIM</td>
-              <td className='min-w-3'>: </td>
-              <td>{dataDetail?.nim || '-'}</td>
-            </tr>
-            <tr>
-              <td className='min-w-36 font-semibold'>Year</td>
-              <td className='min-w-3'>: </td>
-              <td>{dataDetail?.year || '-'}</td>
-            </tr>
-            <tr>
-              <td className='min-w-36 font-semibold'>Study Program</td>
-              <td className='min-w-3'>: </td>
-              <td>{dataDetail?.study_program || '-'}</td>
-            </tr>
-            <tr>
-              <td className='min-w-36 font-semibold'>Faculty</td>
-              <td className='min-w-3'>: </td>
-              <td>{dataDetail?.faculty || '-'}</td>
-            </tr>
-            <tr>
-              <td className='min-w-36 font-semibold align-top'>Managements</td>
-              <td className='min-w-3 align-top'>: </td>
-              <td className=''>
-                <div>
-                  {dataDetail?.managements?.map((item, i) => (
-                    <div className=' flex flex-col list-disc' key={i}>
-                      <span className='font-semibold'>{item.management}</span>
-                      <tr>
-                        <td className='min-w-36 font-medium'>Department</td>
-                        <td className='min-w-3'>: </td>
-                        <td>{item.department || '-'}</td>
-                      </tr>
-                      <tr>
-                        <td className='min-w-36 font-medium'>Division</td>
-                        <td className='min-w-3'>: </td>
-                        <td>{item.division || '-'}</td>
-                      </tr>
-                      <tr>
-                        <td className='min-w-36 font-semibold'>Position</td>
-                        <td className='min-w-3'>: </td>
-                        <td>{item.position || '-'}</td>
-                      </tr>
-                    </div>
-                  ))}
-                </div>
-              </td>
-            </tr>
+        {dataDetail?.name.length > 0 && (
+          <table border={0}>
+            <tbody>
+              <tr>
+                <td className='min-w-36 font-semibold'>Name</td>
+                <td className='min-w-3'>: </td>
+                <td>{dataDetail?.name || '-'}</td>
+              </tr>
+              <tr>
+                <td className='min-w-36 font-semibold'>Birth Date</td>
+                <td className='min-w-3'>: </td>
+                <td>{formatDate(dataDetail?.birth_date.toString()) || '-'}</td>
+              </tr>
+              <tr>
+                <td className='min-w-36 font-semibold'>Member Since</td>
+                <td className='min-w-3'>: </td>
+                <td>
+                  {formatDate(dataDetail?.member_since.toString()) || '-'}
+                </td>
+              </tr>
+              <tr>
+                <td className='min-w-36 font-semibold'>Total Scholarship</td>
+                <td className='min-w-3'>: </td>
+                <td>{dataDetail?.scholarship || '-'}</td>
+              </tr>
+              <tr>
+                <td className='min-w-36 font-semibold'>NIM</td>
+                <td className='min-w-3'>: </td>
+                <td>{dataDetail?.nim || '-'}</td>
+              </tr>
+              <tr>
+                <td className='min-w-36 font-semibold'>Year</td>
+                <td className='min-w-3'>: </td>
+                <td>{dataDetail?.year || '-'}</td>
+              </tr>
+              <tr>
+                <td className='min-w-36 font-semibold'>Study Program</td>
+                <td className='min-w-3'>: </td>
+                <td>{dataDetail?.study_program || '-'}</td>
+              </tr>
+              <tr>
+                <td className='min-w-36 font-semibold'>Faculty</td>
+                <td className='min-w-3'>: </td>
+                <td>{dataDetail?.faculty || '-'}</td>
+              </tr>
+              <tr>
+                <td className='min-w-36 font-semibold align-top'>
+                  Managements
+                </td>
+                <td className='min-w-3 align-top'>: </td>
+                <td className=''>
+                  <div>
+                    {dataDetail?.managements?.map((item, i) => (
+                      <div className=' flex flex-col list-disc' key={i}>
+                        <span className='font-semibold'>{item.management}</span>
+                        <div className='flex gap-4 items-center'>
+                          <td className='min-w-36 font-medium'>Department</td>
+                          <td className='min-w-3'>: </td>
+                          <td>{item.department || '-'}</td>
+                        </div>
+                        <div className='flex gap-4 items-center'>
+                          <td className='min-w-36 font-medium'>Division</td>
+                          <td className='min-w-3'>: </td>
+                          <td>{item.division || '-'}</td>
+                        </div>
+                        <div className='flex gap-4 items-center'>
+                          <td className='min-w-36 font-semibold'>Position</td>
+                          <td className='min-w-3'>: </td>
+                          <td>{item.position || '-'}</td>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </td>
+              </tr>
 
-            <tr>
-              <td className='min-w-36 font-semibold'>Transcript</td>
-            </tr>
-            <tr className='mt-4'>
-              <td className='min-w-36 font-medium'></td>
-              <td className='min-w-3'> </td>
-              <td>
-                <Link
-                  className='min-w-80 font-semibold p-4 border border-primary-main rounded-xl  flex gap-2'
-                  target='_blank'
-                  href={dataDetail?.transcript?.file_url || '#'}
-                >
-                  <GrDocument className='text-primary-main text-2xl' />
-                  <span>{dataDetail?.transcript?.file_name}</span>
-                </Link>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+              <tr>
+                <td className='min-w-36 font-semibold'>Transcript</td>
+              </tr>
+              <tr className='mt-4'>
+                <td className='min-w-36 font-medium'></td>
+                <td className='min-w-3'> </td>
+                <td>
+                  <Link
+                    className='min-w-80 font-semibold p-4 border border-primary-main rounded-xl  flex gap-2'
+                    target='_blank'
+                    href={dataDetail?.transcript?.file_url || '#'}
+                  >
+                    <GrDocument className='text-primary-main text-2xl' />
+                    <span>{dataDetail?.transcript?.file_name}</span>
+                  </Link>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        )}
+
         <div className='flex flex-col gap-4 items-center '>
           <div className=''></div>
           <div className='shadow-md  w-[232px] h-[250px] relative rounded-[14px] p-6   overflow-hidden'>

@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-const MAX_FILE_SIZE = 3 * 1024 * 1024;
+const MAX_FILE_SIZE = 10 * 1024 * 1024;
 const ACCEPTED_MEDIA_TYPES = [
   'image/jpeg',
   'image/jpg',
@@ -53,19 +53,19 @@ export const ValidationSchemaAddAwardeeForm = z.object({
     .string({
       required_error: 'linkedin should be filled',
     })
-    .min(1, 'linkedin should be filled')
+    // .min(1, 'linkedin should be filled')
     .optional(),
   instagram: z
     .string({
       required_error: 'instagram should be filled',
     })
-    .min(1, 'instagram  should be filled')
+    // .min(1, 'instagram  should be filled')
     .optional(),
   whatsapp: z
     .string({
       required_error: 'whatsapp should be filled',
     })
-    .min(1, 'whatsapp should be filled')
+    // .min(1, 'whatsapp should be filled')
     .optional(),
   profile_photo: z
     .any()
@@ -87,61 +87,53 @@ export const ValidationSchemaAddAwardeeForm = z.object({
       (files: File[]) => files !== undefined && files?.length >= 1,
       'Transcript should be uploaded.'
     )
-    .refine((files: File[]) => {
-      // console.log(files);
-      return files !== undefined && files?.[0]?.size <= MAX_FILE_SIZE;
-    }, 'Maximum file size is 3mb.')
-    .refine(
-      (files: File[]) => ACCEPTED_MEDIA_TYPES.includes(files?.[0]?.type),
-      'Accepts only .jpg, .jpeg, .png, and .webp'
-    )
     .optional(),
-  sem1_gpa: z
+  ip1: z
     .string({
-      required_error: 'whatsapp should be filled',
+      required_error: 'IP should be filled',
     })
-    .min(1, 'whatsapp should be filled')
+    .min(1, 'IP should be filled')
     .optional(),
-  sem2_gpa: z
+  ip2: z
     .string({
-      required_error: 'whatsapp should be filled',
+      required_error: 'IP should be filled',
     })
-    .min(1, 'whatsapp should be filled')
+    .min(1, 'IP should be filled')
     .optional(),
-  sem3_gpa: z
+  ip3: z
     .string({
-      required_error: 'whatsapp should be filled',
+      required_error: 'IP should be filled',
     })
-    .min(1, 'whatsapp should be filled')
+    .min(1, 'IP should be filled')
     .optional(),
-  sem4_gpa: z
+  ip4: z
     .string({
-      required_error: 'whatsapp should be filled',
+      required_error: 'IP should be filled',
     })
-    .min(1, 'whatsapp should be filled')
+    .min(1, 'IP should be filled')
     .optional(),
-  sem5_gpa: z
+  ip5: z
     .string({
-      required_error: 'whatsapp should be filled',
+      required_error: 'IP should be filled',
     })
-    .min(1, 'whatsapp should be filled')
+    .min(1, 'IP should be filled')
     .optional(),
-  sem6_gpa: z
+  ip6: z
     .string({
-      required_error: 'whatsapp should be filled',
+      required_error: 'IP should be filled',
     })
-    .min(1, 'whatsapp should be filled')
+    .min(1, 'IP should be filled')
     .optional(),
-  sem7_gpa: z
+  ip7: z
     .string({
-      required_error: 'whatsapp should be filled',
+      required_error: 'IP should be filled',
     })
-    .min(1, 'whatsapp should be filled')
+    .min(1, 'IP should be filled')
     .optional(),
-  sem8_gpa: z
+  ip8: z
     .string({
-      required_error: 'whatsapp should be filled',
+      required_error: 'IP should be filled',
     })
-    .min(1, 'whatsapp should be filled')
+    .min(1, 'IP should be filled')
     .optional(),
 });

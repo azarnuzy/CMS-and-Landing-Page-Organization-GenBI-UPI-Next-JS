@@ -1,3 +1,5 @@
+import logger from '@/lib/logger';
+
 export const splitAndJoinWithDash = (text: string): string => {
   return text.split(' ').join('-').toLowerCase();
 };
@@ -71,15 +73,21 @@ export function getTimeDifference(dateString: string): string {
 }
 
 export async function urlToFile(url: string) {
+  logger(url);
   // Fetch the image data from the URL
-  const response = await fetch(url);
-  const blob = await response.blob();
+  try {
+    const response = await fetch(url);
+    const blob = await response.blob();
 
-  // Extract the filename from the URL
-  const filename = url.substring(url.lastIndexOf('/') + 1);
+    // Extract the filename from the URL
+    const filename = url.substring(url.lastIndexOf('/') + 1);
 
-  // Create a file object from the blob
-  const file = new File([blob], filename, { type: blob.type });
+    // Create a file object from the blob
+    const file = new File([blob], filename, { type: blob.type });
 
-  return file;
+    return file;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    logger('Error fetching image data from URL:', error);
+  }
 }

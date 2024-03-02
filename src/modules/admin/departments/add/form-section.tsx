@@ -39,6 +39,7 @@ const FormAddDepartmentSection = () => {
   const [editorState, setEditorState] = useState<EditorState>(
     EditorState.createEmpty()
   );
+  const [getCoverName, setCoverName] = useState<string>('');
 
   const handleEditorChange = (editorState: EditorState) => {
     setEditorState(editorState);
@@ -106,6 +107,8 @@ const FormAddDepartmentSection = () => {
                 Cover <span className='text-error-main'>*</span>
               </FormLabel>
               <UploadField
+                getName={getCoverName}
+                setName={setCoverName}
                 control={form.control}
                 name='cover'
                 accepted='.jpg, .jpeg, .png'

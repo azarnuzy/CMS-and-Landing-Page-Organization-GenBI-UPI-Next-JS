@@ -48,6 +48,7 @@ const FormAddNewsSection = () => {
   const [editorState, setEditorState] = useState<EditorState>(
     EditorState.createEmpty()
   );
+  const [getThumbnailName, setThumbnailName] = useState<string>('');
 
   const [, setTags] = useRecoilState(inputTagState);
   const [, setNameUpload] = useRecoilState(inputUploadState);
@@ -213,6 +214,8 @@ const FormAddNewsSection = () => {
                 Thumbnail <span className='text-error-main'>*</span>
               </FormLabel>
               <UploadField
+                getName={getThumbnailName}
+                setName={setThumbnailName}
                 control={form.control}
                 name='thumbnail'
                 accepted='.jpg, .jpeg, .png'

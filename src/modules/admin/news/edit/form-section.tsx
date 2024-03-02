@@ -41,7 +41,7 @@ import {
 } from '@/components/ui/select';
 
 import { defaultValuesData } from '@/modules/admin/news/edit/constant';
-import { inputTagState, inputUploadState } from '@/recoils/admin/atom';
+import { inputTagState } from '@/recoils/admin/atom';
 
 const DraftEditor = dynamic(() => import('@/components/text-editor'), {
   ssr: false,
@@ -66,9 +66,9 @@ const FormEditNewsSection = ({ id }: { id: string }) => {
   const [editorState, setEditorState] = useState<EditorState>(
     EditorState.createEmpty()
   );
+  const [getThumbnailName, setThumbnailName] = useState<string>('');
 
   const [, setTags] = useRecoilState(inputTagState);
-  const [, setNameUpload] = useRecoilState(inputUploadState);
 
   const handleEditorChange = (editorState: EditorState) => {
     setEditorState(editorState);
@@ -98,15 +98,26 @@ const FormEditNewsSection = ({ id }: { id: string }) => {
         department: data.data.post.department_name || '',
         content: data.data.post.content || '',
         hashtag: data.data.post.tags || '',
-        thumbnail: data.data.post.image_cover.file_url || '',
+        // thumbnail: data.data.post.image_cover.file_url || '',
         caption_thumbnail: data.data.post.image_cover.caption || '',
         event: String(data.data.post.event.id) || 0,
       };
       setTags(data.data.post.tags);
-      setNameUpload(data.data.post.image_cover.alt);
+
+      setThumbnailName(data.data.post.image_cover.alt);
       const contentState = stateFromHTML(data.data.post.content);
       const editorState = EditorState.createWithContent(contentState);
       setEditorState(editorState);
+
+      const promise_thumbnail = urlToFile(data.data.post.image_cover.file_url);
+
+      promise_thumbnail
+        .then((file) => {
+          form.setValue('thumbnail', [file]);
+        })
+        .catch((error) => {
+          logger(error);
+        });
 
       const promises = data.data.post.images.map((item) => {
         return urlToFile(item.file_url);
@@ -115,7 +126,7 @@ const FormEditNewsSection = ({ id }: { id: string }) => {
       Promise.all(promises)
         .then((files) => {
           // Once all promises are resolved, set the value in the form
-          logger(files);
+
           form.setValue('othersPhoto', files);
         })
         .catch((error) => {
@@ -124,7 +135,7 @@ const FormEditNewsSection = ({ id }: { id: string }) => {
 
       form.reset(defaultValues as z.infer<typeof ValidationSchemaAddNewsForm>);
     }
-  }, [data, form, form.reset, setNameUpload, setTags]);
+  }, [data, form, form.reset, setTags]);
 
   useEffect(() => {
     logger(form.formState.errors);
@@ -303,6 +314,8 @@ const FormEditNewsSection = ({ id }: { id: string }) => {
                 Thumbnail <span className='text-error-main'>*</span>
               </FormLabel>
               <UploadField
+                getName={getThumbnailName}
+                setName={setThumbnailName}
                 control={form.control}
                 name='thumbnail'
                 accepted='.jpg, .jpeg, .png'

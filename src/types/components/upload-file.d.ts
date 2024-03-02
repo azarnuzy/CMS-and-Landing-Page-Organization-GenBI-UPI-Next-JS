@@ -19,4 +19,7 @@ export type TUploadFieldProps<T extends FieldValues> = UseControllerProps<T> & {
   variant: 'sm' | 'md' | 'lg';
   status?: 'error' | 'success' | 'warning' | 'none';
   message?: string;
+  getName: string;
+  // type of setName is state in hook
+  setName: (state: string) => void;
 };

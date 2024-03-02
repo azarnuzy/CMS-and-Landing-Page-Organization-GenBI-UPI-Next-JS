@@ -4,16 +4,20 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { format } from 'date-fns';
 import { CalendarIcon } from 'lucide-react';
 import Link from 'next/link';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { DayPicker } from 'react-day-picker';
 import { useForm } from 'react-hook-form';
+import { useRecoilState } from 'recoil';
+import { toast } from 'sonner';
 import { z } from 'zod';
 
 import 'react-day-picker/dist/style.css';
 
 import logger from '@/lib/logger';
 import { cn } from '@/lib/utils';
+import { urlToFile } from '@/lib/utils/general-function';
 import { ValidationSchemaAddAwardeeForm } from '@/lib/validations/awardee';
+import { useGetDetailAwardee } from '@/hooks/awardee/hook';
 
 import { SelectField } from '@/components/input/select';
 import { UploadField } from '@/components/input/upload-file';
@@ -34,18 +38,79 @@ import {
 } from '@/components/ui/popover';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 
-import { defaultValuesAddAwardee } from '@/modules/admin/awardee/add/constant';
+import { defaultValuesAwardeeEditData } from '@/modules/admin/awardee/edit/constant';
 import { departmentData } from '@/modules/admin/news/constant';
-const AddAwardeeFormSection = () => {
+import { awardeesDataEditState } from '@/recoils/admin/awardees/atom';
+
+const EditAwardeeFormSection = ({ id }: { id: string }) => {
+  const { data } = useGetDetailAwardee({ id: Number(id) });
+
   const form = useForm<z.infer<typeof ValidationSchemaAddAwardeeForm>>({
     resolver: zodResolver(ValidationSchemaAddAwardeeForm),
-    defaultValues: defaultValuesAddAwardee,
+    defaultValues: defaultValuesAwardeeEditData,
   });
+
+  const [, setDataEditAwardee] = useRecoilState(awardeesDataEditState);
+  // const [, setNameUpload] = useRecoilState(inputUploadState);
 
   const [getPhoto, setPhoto] = useState<string>('');
   const [getTranscript, setTranscript] = useState<string>('');
 
+  useEffect(() => {
+    if (data) {
+      setDataEditAwardee(data.data);
+      const defaultValues = {
+        full_name: data.data.name,
+        birth_date: new Date(data.data.birth_date),
+        member_since: new Date(data.data.member_since),
+        total_scholarship: data.data.scholarship,
+        year: Number(data.data.year),
+        nim: data.data.nim,
+        study_program: data.data.study_program,
+        linkedin: data.data.linkedin_username || '',
+        instagram: data.data.instagram_username || '',
+        whatsapp: data.data.telp || '',
+        ip1: data.data.ip1 || '',
+        ip2: data.data.ip2 || '',
+        ip3: data.data.ip3 || '',
+        ip4: data.data.ip4 || '',
+        ip5: data.data.ip5 || '',
+        ip6: data.data.ip6 || '',
+        ip7: data.data.ip7 || '',
+        ip8: data.data.ip8 || '',
+        transcript: data.data.transcript.file_url,
+      };
+
+      // setNameUpload(data.data.photo.alt);
+      setPhoto(data.data.photo.alt);
+      setTranscript(data.data.transcript.file_name);
+
+      const promise_photo = urlToFile(data.data.photo.file_url);
+      const promise_transcript = urlToFile(data.data.transcript.file_url);
+      promise_photo
+        .then((file) => {
+          form.setValue('profile_photo', [file]);
+        })
+        .catch((error) => {
+          logger(error);
+        });
+
+      promise_transcript
+        .then((file) => {
+          form.setValue('transcript', [file]);
+        })
+        .catch((error) => {
+          logger(error);
+        });
+
+      form.reset(
+        defaultValues as z.infer<typeof ValidationSchemaAddAwardeeForm>
+      );
+    }
+  }, [data, form, setDataEditAwardee]);
+
   const onSubmit = (data: z.infer<typeof ValidationSchemaAddAwardeeForm>) => {
+    toast.success(`Berhasil Edit Awardee ${data.full_name}`);
     logger(data);
   };
 
@@ -289,7 +354,7 @@ const AddAwardeeFormSection = () => {
             <div className='col-span-2 md:col-span-1'>
               <FormField
                 control={form.control}
-                name='nim'
+                name='whatsapp'
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Whatsapp</FormLabel>
@@ -456,13 +521,13 @@ const AddAwardeeFormSection = () => {
                     : 'text-black'
                 }`}
               >
-                Transcript <span className='text-error-main'>*</span>
+                Transcript
               </FormLabel>
               <UploadField
                 control={form.control}
-                name='transcript'
                 getName={getTranscript}
                 setName={setTranscript}
+                name='transcript'
                 accepted='.jpg, .jpeg, .png'
                 variant='sm'
                 message={form?.formState?.errors?.transcript?.message?.toString()}
@@ -494,4 +559,4 @@ const AddAwardeeFormSection = () => {
   );
 };
 
-export default AddAwardeeFormSection;
+export default EditAwardeeFormSection;

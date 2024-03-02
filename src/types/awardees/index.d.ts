@@ -27,14 +27,14 @@ export interface Photo {
 export interface TAwardeeDetailData {
   id: number;
   name: string;
-  birth_date: string;
+  birth_date: Date;
   linkedin_username: string;
   instagram_username: string;
   telp: string;
-  member_since: string;
+  member_since: Date;
   scholarship: number;
   nim: string;
-  year: string;
+  year: number;
   ip1: string;
   ip2: string;
   ip3: string;
