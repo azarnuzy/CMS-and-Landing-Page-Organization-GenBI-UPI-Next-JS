@@ -84,6 +84,110 @@ export interface TAwardeesParams {
   search?: string;
 }
 
+export interface TAwardeeAddData {
+  id: number;
+  user_id: number;
+  name: string;
+  photo_id: number;
+  birth_date: string;
+  linkedin_username: string;
+  instagram_username: string;
+  telp: string;
+  member_since: string;
+  scholarship: number;
+  nim: string;
+  study_program_id: number;
+  year: string;
+  smt1_ip: string;
+  smt2_ip: string;
+  smt3_ip: string;
+  smt4_ip: string;
+  smt5_ip: string;
+  smt6_ip: string;
+  smt7_ip: string;
+  smt8_ip: string;
+  smt1_ipk: string;
+  smt2_ipk: string;
+  smt3_ipk: string;
+  smt4_ipk: string;
+  smt5_ipk: string;
+  smt6_ipk: string;
+  smt7_ipk: string;
+  smt8_ipk: string;
+  transcript_id: number;
+  updatedAt: string;
+  createdAt: string;
+}
+
+export interface TAwardeeAddPayload {
+  name: string;
+  photo: FILE;
+  birth_date: string;
+  linkedin_username: string;
+  instagram_username: string;
+  telp: string;
+  member_since: string;
+  scholarship: number;
+  nim: string;
+  study_program_id: number;
+  year: string;
+  smt1_ip: string;
+  smt2_ip: string;
+  smt3_ip: string;
+  smt4_ip: string;
+  smt5_ip: string;
+  smt6_ip: string;
+  smt7_ip: string;
+  smt8_ip: string;
+  smt1_ipk: string;
+  smt2_ipk: string;
+  smt3_ipk: string;
+  smt4_ipk: string;
+  smt5_ipk: string;
+  smt6_ipk: string;
+  smt7_ipk: string;
+  smt8_ipk: string;
+  transcript_id: FILE;
+}
+
+export interface TAwardeePutPayload {
+  name?: string;
+  photo?: FILE;
+  birth_date?: string;
+  linkedin_username?: string;
+  instagram_username?: string;
+  telp?: string;
+  member_since?: string;
+  scholarship?: number;
+  nim?: string;
+  study_program_id?: number;
+  year?: string;
+  smt1_ip?: string;
+  smt2_ip?: string;
+  smt3_ip?: string;
+  smt4_ip?: string;
+  smt5_ip?: string;
+  smt6_ip?: string;
+  smt7_ip?: string;
+  smt8_ip?: string;
+  smt1_ipk?: string;
+  smt2_ipk?: string;
+  smt3_ipk?: string;
+  smt4_ipk?: string;
+  smt5_ipk?: string;
+  smt6_ipk?: string;
+  smt7_ipk?: string;
+  smt8_ipk?: string;
+  transcript_id?: FILE;
+}
+
+export interface TAwardeePutData {
+  id: number;
+}
+
 export type TDataGetAllAwardeesResponse = TMetaResponse<TAwardeesData>;
 export type TDataDetailAwardeeResponse =
   TMetaResponseSingle<TAwardeeDetailData>;
+export type TDataAddAwardeeResponse = TMetaResponseSingle<TAwardeeAddData>;
+export type TDataPutAwardeeResponse = TMetaResponseSingle<TAwardeePutData>;
+export type TDataDeleteAwardeeResponse = TMetaResponseSingle<TAwardeePutData>;
