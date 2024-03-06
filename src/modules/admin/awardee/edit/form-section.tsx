@@ -60,10 +60,10 @@ const EditAwardeeFormSection = ({ id }: { id: string }) => {
     if (data) {
       setDataEditAwardee(data.data);
       const defaultValues = {
-        full_name: data.data.name,
+        name: data.data.name,
         birth_date: new Date(data.data.birth_date),
         member_since: new Date(data.data.member_since),
-        total_scholarship: data.data.scholarship,
+        scholarship: data.data.scholarship,
         year: Number(data.data.year),
         nim: data.data.nim,
         study_program: data.data.study_program,
@@ -89,7 +89,7 @@ const EditAwardeeFormSection = ({ id }: { id: string }) => {
       const promise_transcript = urlToFile(data.data.transcript.file_url);
       promise_photo
         .then((file) => {
-          form.setValue('profile_photo', [file]);
+          form.setValue('photo', [file]);
         })
         .catch((error) => {
           logger(error);
@@ -110,7 +110,7 @@ const EditAwardeeFormSection = ({ id }: { id: string }) => {
   }, [data, form, setDataEditAwardee]);
 
   const onSubmit = (data: z.infer<typeof ValidationSchemaAddAwardeeForm>) => {
-    toast.success(`Berhasil Edit Awardee ${data.full_name}`);
+    toast.success(`Berhasil Edit Awardee ${data.name}`);
     logger(data);
   };
 
@@ -125,7 +125,7 @@ const EditAwardeeFormSection = ({ id }: { id: string }) => {
             <div className='col-span-2 md:col-span-1'>
               <FormField
                 control={form.control}
-                name='full_name'
+                name='name'
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>
@@ -228,7 +228,7 @@ const EditAwardeeFormSection = ({ id }: { id: string }) => {
             <div className='col-span-2 lg:col-span-1'>
               <FormField
                 control={form.control}
-                name='total_scholarship'
+                name='scholarship'
                 render={({ field }) => (
                   <FormItem className='space-y-3'>
                     <FormLabel>
@@ -318,7 +318,7 @@ const EditAwardeeFormSection = ({ id }: { id: string }) => {
             <div className='col-span-2 md:col-span-1'>
               <FormField
                 control={form.control}
-                name='linkedin'
+                name='linkedin_username'
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Linkedin</FormLabel>
@@ -336,7 +336,7 @@ const EditAwardeeFormSection = ({ id }: { id: string }) => {
             <div className='col-span-2 md:col-span-1'>
               <FormField
                 control={form.control}
-                name='instagram'
+                name='instagram_username'
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Instagram</FormLabel>
@@ -354,7 +354,7 @@ const EditAwardeeFormSection = ({ id }: { id: string }) => {
             <div className='col-span-2 md:col-span-1'>
               <FormField
                 control={form.control}
-                name='whatsapp'
+                name='telp'
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Whatsapp</FormLabel>
@@ -372,9 +372,7 @@ const EditAwardeeFormSection = ({ id }: { id: string }) => {
             <div className='w-full col-span-2 '>
               <FormLabel
                 className={`${
-                  form.formState?.errors?.profile_photo
-                    ? 'text-red-500'
-                    : 'text-black'
+                  form.formState?.errors?.photo ? 'text-red-500' : 'text-black'
                 }`}
               >
                 Profile Photo <span className='text-error-main'>*</span>
@@ -383,19 +381,17 @@ const EditAwardeeFormSection = ({ id }: { id: string }) => {
                 control={form.control}
                 getName={getPhoto}
                 setName={setPhoto}
-                name='profile_photo'
+                name='photo'
                 accepted='.jpg, .jpeg, .png'
                 variant='sm'
-                message={form?.formState?.errors?.profile_photo?.message?.toString()}
-                status={
-                  form?.formState?.errors?.profile_photo ? 'error' : 'none'
-                }
+                message={form?.formState?.errors?.photo?.message?.toString()}
+                status={form?.formState?.errors?.photo ? 'error' : 'none'}
               />
             </div>
             <div className='col-span-2 md:col-span-1'>
               <FormField
                 control={form.control}
-                name='ip1'
+                name='sem1_ip'
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Semester 1</FormLabel>
@@ -410,7 +406,7 @@ const EditAwardeeFormSection = ({ id }: { id: string }) => {
             <div className='col-span-2 md:col-span-1'>
               <FormField
                 control={form.control}
-                name='ip2'
+                name='sem2_ip'
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Semester 2</FormLabel>
@@ -426,7 +422,7 @@ const EditAwardeeFormSection = ({ id }: { id: string }) => {
             <div className='col-span-2 md:col-span-1'>
               <FormField
                 control={form.control}
-                name='ip3'
+                name='sem3_ip'
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Semester 3</FormLabel>
@@ -441,7 +437,7 @@ const EditAwardeeFormSection = ({ id }: { id: string }) => {
             <div className='col-span-2 md:col-span-1'>
               <FormField
                 control={form.control}
-                name='ip4'
+                name='sem4_ip'
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Semester 4</FormLabel>
@@ -456,7 +452,7 @@ const EditAwardeeFormSection = ({ id }: { id: string }) => {
             <div className='col-span-2 md:col-span-1'>
               <FormField
                 control={form.control}
-                name='ip5'
+                name='sem5_ip'
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Semester 5</FormLabel>
@@ -471,7 +467,7 @@ const EditAwardeeFormSection = ({ id }: { id: string }) => {
             <div className='col-span-2 md:col-span-1'>
               <FormField
                 control={form.control}
-                name='ip6'
+                name='sem6_ip'
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Semester 6</FormLabel>
@@ -486,7 +482,7 @@ const EditAwardeeFormSection = ({ id }: { id: string }) => {
             <div className='col-span-2 md:col-span-1'>
               <FormField
                 control={form.control}
-                name='ip7'
+                name='sem7_ip'
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Semester 7</FormLabel>
@@ -501,7 +497,7 @@ const EditAwardeeFormSection = ({ id }: { id: string }) => {
             <div className='col-span-2 md:col-span-1'>
               <FormField
                 control={form.control}
-                name='ip8'
+                name='sem8_ip'
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Semester 8</FormLabel>

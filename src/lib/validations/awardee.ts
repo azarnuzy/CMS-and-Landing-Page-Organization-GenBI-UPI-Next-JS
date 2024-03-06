@@ -8,12 +8,14 @@ const ACCEPTED_MEDIA_TYPES = [
   'image/webp',
 ];
 
+const ACCEPTED_MEDIA_TYPES_TRANSCRIPT = ['application/pdf'];
+
 export const ValidationSchemaAddAwardeeForm = z.object({
-  full_name: z
+  name: z
     .string({
-      required_error: 'full_name should be filled',
+      required_error: 'name should be filled',
     })
-    .min(1, 'full_name  should be filled'),
+    .min(1, 'name  should be filled'),
   birth_date: z.date({
     required_error: 'birth_date should be filled',
   }),
@@ -21,13 +23,13 @@ export const ValidationSchemaAddAwardeeForm = z.object({
     required_error: 'member_since should be filled',
   }),
 
-  total_scholarship: z
+  scholarship: z
     .number({
-      required_error: 'total_scholarship should be filled',
+      required_error: 'scholarship should be filled',
     })
-    .gte(1, 'total_scholarship  should be more than 1')
+    .gte(1, 'scholarship  should be more than 1')
     .positive({
-      message: 'total_scholarship should be positive',
+      message: 'scholarship should be positive',
     })
     .int(),
   year: z
@@ -45,29 +47,29 @@ export const ValidationSchemaAddAwardeeForm = z.object({
     })
     .min(1, 'nim  should be filled'),
   study_program: z
-    .string({
+    .number({
       required_error: 'study_program should be filled',
     })
-    .min(1, 'study_program  should be filled'),
-  linkedin: z
+    .gte(1, 'study_program  should be filled'),
+  linkedin_username: z
     .string({
       required_error: 'linkedin should be filled',
     })
     // .min(1, 'linkedin should be filled')
     .optional(),
-  instagram: z
+  instagram_username: z
     .string({
       required_error: 'instagram should be filled',
     })
     // .min(1, 'instagram  should be filled')
     .optional(),
-  whatsapp: z
+  telp: z
     .string({
       required_error: 'whatsapp should be filled',
     })
     // .min(1, 'whatsapp should be filled')
     .optional(),
-  profile_photo: z
+  photo: z
     .any()
     .refine(
       (files: File[]) => files !== undefined && files?.length >= 1,
@@ -87,53 +89,106 @@ export const ValidationSchemaAddAwardeeForm = z.object({
       (files: File[]) => files !== undefined && files?.length >= 1,
       'Transcript should be uploaded.'
     )
+    .refine(
+      (files: File[]) =>
+        ACCEPTED_MEDIA_TYPES_TRANSCRIPT.includes(files?.[0]?.type),
+      'Accepts only .pdf'
+    )
     .optional(),
-  ip1: z
+  sem1_ip: z
     .string({
       required_error: 'IP should be filled',
     })
     .min(1, 'IP should be filled')
     .optional(),
-  ip2: z
+  sem2_ip: z
     .string({
       required_error: 'IP should be filled',
     })
     .min(1, 'IP should be filled')
     .optional(),
-  ip3: z
+  sem3_ip: z
     .string({
       required_error: 'IP should be filled',
     })
     .min(1, 'IP should be filled')
     .optional(),
-  ip4: z
+  sem4_ip: z
     .string({
       required_error: 'IP should be filled',
     })
     .min(1, 'IP should be filled')
     .optional(),
-  ip5: z
+  sem5_ip: z
     .string({
       required_error: 'IP should be filled',
     })
     .min(1, 'IP should be filled')
     .optional(),
-  ip6: z
+  sem6_ip: z
     .string({
       required_error: 'IP should be filled',
     })
     .min(1, 'IP should be filled')
     .optional(),
-  ip7: z
+  sem7_ip: z
     .string({
       required_error: 'IP should be filled',
     })
     .min(1, 'IP should be filled')
     .optional(),
-  ip8: z
+  sem8_ip: z
     .string({
       required_error: 'IP should be filled',
     })
     .min(1, 'IP should be filled')
+    .optional(),
+  sem1_ipk: z
+    .string({
+      required_error: 'IPK should be filled',
+    })
+    .min(1, 'IPK should be filled')
+    .optional(),
+  sem2_ipk: z
+    .string({
+      required_error: 'IPK should be filled',
+    })
+    .min(1, 'IPK should be filled')
+    .optional(),
+  sem3_ipk: z
+    .string({
+      required_error: 'IPK should be filled',
+    })
+    .min(1, 'IPK should be filled')
+    .optional(),
+  sem4_ipk: z
+    .string({
+      required_error: 'IPK should be filled',
+    })
+    .min(1, 'IPK should be filled')
+    .optional(),
+  sem5_ipk: z
+    .string({
+      required_error: 'IPK should be filled',
+    })
+    .min(1, 'IPK should be filled')
+    .optional(),
+  sem6_ipk: z
+    .string({
+      required_error: 'IPK should be filled',
+    })
+    .min(1, 'IPK should be filled')
+    .optional(),
+  sem7_ipk: z
+    .string({
+      required_error: 'IPK should be filled',
+    })
+    .min(1, 'IPK should be filled')
+    .optional(),
+  sem8_ipk: z
+    .string({
+      required_error: 'IPK should be filled',
+    })
+    .min(1, 'IPK should be filled')
     .optional(),
 });

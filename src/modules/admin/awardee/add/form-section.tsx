@@ -2,11 +2,12 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { format } from 'date-fns';
-import { CalendarIcon } from 'lucide-react';
+import { CalendarIcon, Check, ChevronsUpDown } from 'lucide-react';
 import Link from 'next/link';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { DayPicker } from 'react-day-picker';
 import { useForm } from 'react-hook-form';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { z } from 'zod';
 
 import 'react-day-picker/dist/style.css';
@@ -14,10 +15,17 @@ import 'react-day-picker/dist/style.css';
 import logger from '@/lib/logger';
 import { cn } from '@/lib/utils';
 import { ValidationSchemaAddAwardeeForm } from '@/lib/validations/awardee';
+import { useGetAllStudyPrograms } from '@/hooks/study-programs/hook';
 
-import { SelectField } from '@/components/input/select';
 import { UploadField } from '@/components/input/upload-file';
 import { Button } from '@/components/ui/button';
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+} from '@/components/ui/command';
 import {
   Form,
   FormControl,
@@ -33,9 +41,13 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { ScrollArea } from '@/components/ui/scroll-area';
 
 import { defaultValuesAddAwardee } from '@/modules/admin/awardee/add/constant';
-import { departmentData } from '@/modules/admin/news/constant';
+import {
+  studyProgramDataState,
+  studyProgramSelectorData,
+} from '@/recoils/study-program/atom';
 const AddAwardeeFormSection = () => {
   const form = useForm<z.infer<typeof ValidationSchemaAddAwardeeForm>>({
     resolver: zodResolver(ValidationSchemaAddAwardeeForm),
@@ -45,9 +57,20 @@ const AddAwardeeFormSection = () => {
   const [getPhoto, setPhoto] = useState<string>('');
   const [getTranscript, setTranscript] = useState<string>('');
 
+  const [, setStudyProgram] = useRecoilState(studyProgramDataState);
+  const dataStudyProgram = useRecoilValue(studyProgramSelectorData);
+
+  const { data } = useGetAllStudyPrograms();
+
   const onSubmit = (data: z.infer<typeof ValidationSchemaAddAwardeeForm>) => {
     logger(data);
   };
+
+  useEffect(() => {
+    if (data) {
+      setStudyProgram(data?.data);
+    }
+  }, [data, setStudyProgram]);
 
   return (
     <div className='border rounded-3xl px-6 py-6 my-10 shadow-sm'>
@@ -60,11 +83,11 @@ const AddAwardeeFormSection = () => {
             <div className='col-span-2 md:col-span-1'>
               <FormField
                 control={form.control}
-                name='full_name'
+                name='name'
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>
-                      Title <span className='text-error-main'>*</span>
+                      Full Name <span className='text-error-main'>*</span>
                     </FormLabel>
                     <FormControl>
                       <Input placeholder='Input Your Fullname...' {...field} />
@@ -163,7 +186,7 @@ const AddAwardeeFormSection = () => {
             <div className='col-span-2 lg:col-span-1'>
               <FormField
                 control={form.control}
-                name='total_scholarship'
+                name='scholarship'
                 render={({ field }) => (
                   <FormItem className='space-y-3'>
                     <FormLabel>
@@ -238,28 +261,91 @@ const AddAwardeeFormSection = () => {
               />
             </div>
             <div className='col-span-2 lg:col-span-1'>
-              <SelectField
+              {/* <SelectField
                 error={form.formState.errors.study_program?.message}
                 variant='md'
                 control={form.control}
-                options={departmentData}
+                options={dataStudyProgram}
                 name='study_program'
                 label='Study Program'
                 required
                 placeholder='Select Study Program'
                 styletext='!text-black text-[10px]'
+              /> */}
+              <FormField
+                control={form.control}
+                name='study_program'
+                render={({ field }) => (
+                  <FormItem className='flex flex-col gap-2'>
+                    <FormLabel>
+                      Study Program <span className='text-error-main'>*</span>
+                    </FormLabel>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <FormControl>
+                          <Button
+                            variant='outline'
+                            role='combobox'
+                            className={cn(
+                              'justify-between',
+                              !field.value && 'text-muted-foreground'
+                            )}
+                          >
+                            {field.value
+                              ? dataStudyProgram.find(
+                                  (language) => language.value === field.value
+                                )?.label
+                              : 'Select Study Program'}
+                            <ChevronsUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
+                          </Button>
+                        </FormControl>
+                      </PopoverTrigger>
+                      <PopoverContent className='w-full p-0'>
+                        <Command>
+                          <CommandInput placeholder='Search Study Program...' />
+                          <CommandEmpty>No Study Program found.</CommandEmpty>
+                          <ScrollArea className='h-[200px]'>
+                            <CommandGroup>
+                              {dataStudyProgram.map((item) => (
+                                <CommandItem
+                                  value={item.label}
+                                  key={item.value}
+                                  onSelect={() => {
+                                    form.setValue('study_program', item.value);
+                                  }}
+                                >
+                                  <Check
+                                    className={cn(
+                                      'mr-2 h-4 w-4',
+                                      item.value === field.value
+                                        ? 'opacity-100'
+                                        : 'opacity-0'
+                                    )}
+                                  />
+                                  {item.label}
+                                </CommandItem>
+                              ))}
+                            </CommandGroup>
+                          </ScrollArea>
+                        </Command>
+                      </PopoverContent>
+                    </Popover>
+
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
             </div>
             <div className='col-span-2 md:col-span-1'>
               <FormField
                 control={form.control}
-                name='linkedin'
+                name='linkedin_username'
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Linkedin</FormLabel>
                     <FormControl>
                       <Input
-                        placeholder='Input Your Linkedin Username...'
+                        placeholder='Input Your Username (ex: genbiupi)...'
                         {...field}
                       />
                     </FormControl>
@@ -271,13 +357,13 @@ const AddAwardeeFormSection = () => {
             <div className='col-span-2 md:col-span-1'>
               <FormField
                 control={form.control}
-                name='instagram'
+                name='instagram_username'
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Instagram</FormLabel>
                     <FormControl>
                       <Input
-                        placeholder='Input Your Instagram Username...'
+                        placeholder='Input Your Username (ex: genbiupi)...'
                         {...field}
                       />
                     </FormControl>
@@ -295,7 +381,7 @@ const AddAwardeeFormSection = () => {
                     <FormLabel>Whatsapp</FormLabel>
                     <FormControl>
                       <Input
-                        placeholder='Input Your Phone Number...'
+                        placeholder='Input Your Number (ex: 08123456789)...'
                         {...field}
                       />
                     </FormControl>
@@ -307,9 +393,7 @@ const AddAwardeeFormSection = () => {
             <div className='w-full col-span-2 '>
               <FormLabel
                 className={`${
-                  form.formState?.errors?.profile_photo
-                    ? 'text-red-500'
-                    : 'text-black'
+                  form.formState?.errors?.photo ? 'text-red-500' : 'text-black'
                 }`}
               >
                 Profile Photo <span className='text-error-main'>*</span>
@@ -318,136 +402,264 @@ const AddAwardeeFormSection = () => {
                 control={form.control}
                 getName={getPhoto}
                 setName={setPhoto}
-                name='profile_photo'
+                name='photo'
                 accepted='.jpg, .jpeg, .png'
                 variant='sm'
-                message={form?.formState?.errors?.profile_photo?.message?.toString()}
-                status={
-                  form?.formState?.errors?.profile_photo ? 'error' : 'none'
-                }
+                message={form?.formState?.errors?.photo?.message?.toString()}
+                status={form?.formState?.errors?.photo ? 'error' : 'none'}
               />
             </div>
-            <div className='col-span-2 md:col-span-1'>
-              <FormField
-                control={form.control}
-                name='ip1'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Semester 1</FormLabel>
-                    <FormControl>
-                      <Input placeholder='Ex: 3,78...' {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+            <div className='col-span-2 grid grid-cols-2 gap-4'>
+              <div className='col-span-2 md:col-span-1 grid grid-cols-2 border rounded-3xl px-6 py-6 shadow-sm gap-4'>
+                <h4 className='col-span-2'>Data IP</h4>
+                <div className='col-span-2 md:col-span-1'>
+                  <FormField
+                    control={form.control}
+                    name='sem1_ip'
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Semester 1</FormLabel>
+                        <FormControl>
+                          <Input placeholder='Ex: 3,78...' {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+                <div className='col-span-2 md:col-span-1'>
+                  <FormField
+                    control={form.control}
+                    name='sem2_ip'
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Semester 2</FormLabel>
+                        <FormControl>
+                          <Input placeholder='Ex: 3,78...' {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+                {/* create input gap until sem8 */}
+                <div className='col-span-2 md:col-span-1'>
+                  <FormField
+                    control={form.control}
+                    name='sem3_ip'
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Semester 3</FormLabel>
+                        <FormControl>
+                          <Input placeholder='Ex: 3,78...' {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+                <div className='col-span-2 md:col-span-1'>
+                  <FormField
+                    control={form.control}
+                    name='sem4_ip'
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Semester 4</FormLabel>
+                        <FormControl>
+                          <Input placeholder='Ex: 3,78...' {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+                <div className='col-span-2 md:col-span-1'>
+                  <FormField
+                    control={form.control}
+                    name='sem5_ip'
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Semester 5</FormLabel>
+                        <FormControl>
+                          <Input placeholder='Ex: 3,78...' {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+                <div className='col-span-2 md:col-span-1'>
+                  <FormField
+                    control={form.control}
+                    name='sem6_ip'
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Semester 6</FormLabel>
+                        <FormControl>
+                          <Input placeholder='Ex: 3,78...' {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+                <div className='col-span-2 md:col-span-1'>
+                  <FormField
+                    control={form.control}
+                    name='sem7_ip'
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Semester 7</FormLabel>
+                        <FormControl>
+                          <Input placeholder='Ex: 3,78...' {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+                <div className='col-span-2 md:col-span-1'>
+                  <FormField
+                    control={form.control}
+                    name='sem8_ip'
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Semester 8</FormLabel>
+                        <FormControl>
+                          <Input placeholder='Ex: 3,78...' {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              </div>
+              <div className='col-span-2 md:col-span-1 grid grid-cols-2 border rounded-3xl px-6 py-6 shadow-sm gap-4'>
+                <h4 className='col-span-2'>Data IPK</h4>
+                <div className='col-span-2 md:col-span-1'>
+                  <FormField
+                    control={form.control}
+                    name='sem1_ipk'
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Semester 1</FormLabel>
+                        <FormControl>
+                          <Input placeholder='Ex: 3,78...' {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+                <div className='col-span-2 md:col-span-1'>
+                  <FormField
+                    control={form.control}
+                    name='sem2_ipk'
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Semester 2</FormLabel>
+                        <FormControl>
+                          <Input placeholder='Ex: 3,78...' {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+                {/* create input gap until sem8 */}
+                <div className='col-span-2 md:col-span-1'>
+                  <FormField
+                    control={form.control}
+                    name='sem3_ipk'
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Semester 3</FormLabel>
+                        <FormControl>
+                          <Input placeholder='Ex: 3,78...' {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+                <div className='col-span-2 md:col-span-1'>
+                  <FormField
+                    control={form.control}
+                    name='sem4_ipk'
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Semester 4</FormLabel>
+                        <FormControl>
+                          <Input placeholder='Ex: 3,78...' {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+                <div className='col-span-2 md:col-span-1'>
+                  <FormField
+                    control={form.control}
+                    name='sem5_ipk'
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Semester 5</FormLabel>
+                        <FormControl>
+                          <Input placeholder='Ex: 3,78...' {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+                <div className='col-span-2 md:col-span-1'>
+                  <FormField
+                    control={form.control}
+                    name='sem6_ipk'
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Semester 6</FormLabel>
+                        <FormControl>
+                          <Input placeholder='Ex: 3,78...' {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+                <div className='col-span-2 md:col-span-1'>
+                  <FormField
+                    control={form.control}
+                    name='sem7_ipk'
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Semester 7</FormLabel>
+                        <FormControl>
+                          <Input placeholder='Ex: 3,78...' {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+                <div className='col-span-2 md:col-span-1'>
+                  <FormField
+                    control={form.control}
+                    name='sem8_ipk'
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Semester 8</FormLabel>
+                        <FormControl>
+                          <Input placeholder='Ex: 3,78...' {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              </div>
             </div>
-            <div className='col-span-2 md:col-span-1'>
-              <FormField
-                control={form.control}
-                name='ip2'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Semester 2</FormLabel>
-                    <FormControl>
-                      <Input placeholder='Ex: 3,78...' {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            {/* create input gap until sem8 */}
-            <div className='col-span-2 md:col-span-1'>
-              <FormField
-                control={form.control}
-                name='ip3'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Semester 3</FormLabel>
-                    <FormControl>
-                      <Input placeholder='Ex: 3,78...' {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className='col-span-2 md:col-span-1'>
-              <FormField
-                control={form.control}
-                name='ip4'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Semester 4</FormLabel>
-                    <FormControl>
-                      <Input placeholder='Ex: 3,78...' {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className='col-span-2 md:col-span-1'>
-              <FormField
-                control={form.control}
-                name='ip5'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Semester 5</FormLabel>
-                    <FormControl>
-                      <Input placeholder='Ex: 3,78...' {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className='col-span-2 md:col-span-1'>
-              <FormField
-                control={form.control}
-                name='ip6'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Semester 6</FormLabel>
-                    <FormControl>
-                      <Input placeholder='Ex: 3,78...' {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className='col-span-2 md:col-span-1'>
-              <FormField
-                control={form.control}
-                name='ip7'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Semester 7</FormLabel>
-                    <FormControl>
-                      <Input placeholder='Ex: 3,78...' {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className='col-span-2 md:col-span-1'>
-              <FormField
-                control={form.control}
-                name='ip8'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Semester 8</FormLabel>
-                    <FormControl>
-                      <Input placeholder='Ex: 3,78...' {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
+
             <div className='w-full col-span-2 '>
               <FormLabel
                 className={`${
@@ -456,14 +668,14 @@ const AddAwardeeFormSection = () => {
                     : 'text-black'
                 }`}
               >
-                Transcript <span className='text-error-main'>*</span>
+                Transcript
               </FormLabel>
               <UploadField
                 control={form.control}
                 name='transcript'
                 getName={getTranscript}
                 setName={setTranscript}
-                accepted='.jpg, .jpeg, .png'
+                accepted='.pdf'
                 variant='sm'
                 message={form?.formState?.errors?.transcript?.message?.toString()}
                 status={form?.formState?.errors?.transcript ? 'error' : 'none'}

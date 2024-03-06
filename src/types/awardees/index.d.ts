@@ -51,7 +51,7 @@ export interface TAwardeeDetailData {
   ipk6: string;
   ipk7: string;
   ipk8: string;
-  study_program: string;
+  study_program: number;
   faculty: string;
   created_at: string;
   updated_at: string;

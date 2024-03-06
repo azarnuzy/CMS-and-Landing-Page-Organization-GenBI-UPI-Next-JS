@@ -20,7 +20,7 @@ export const defaultValuesAwardeeEditData = {
   total_scholarship: 0,
   year: 0,
   nim: '',
-  study_program: '',
+  study_program: 0,
   linkedin: '',
   instagram: '',
   ip1: '',
