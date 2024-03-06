@@ -55,10 +55,19 @@ export const putAwardeeRequest = async ({
   payload: TAwardeePutPayload;
   id: number;
 }): Promise<TDataPutAwardeeResponse | undefined> => {
-  const { data } = await api.put<TDataPutAwardeeResponse>(
-    `v1/awardees/${id}`,
-    payload
-  );
+  // const { data } = await api.put<TDataPutAwardeeResponse>(
+  //   `v1/awardees/${id}`,
+  //   payload
+  // );
+
+  const { data } = await api({
+    method: 'put',
+    url: `v1/awardees/${id}`,
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+    data: serialize(payload),
+  });
 
   return data;
 };

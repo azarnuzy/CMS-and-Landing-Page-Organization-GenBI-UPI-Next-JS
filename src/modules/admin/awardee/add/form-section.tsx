@@ -202,7 +202,7 @@ const AddAwardeeFormSection = () => {
                           onSelect={field.onChange}
                           captionLayout='dropdown-buttons'
                           fromYear={2015}
-                          toYear={2025}
+                          toYear={new Date().getFullYear()}
                         />
                       </PopoverContent>
                     </Popover>
@@ -848,7 +848,7 @@ const AddAwardeeFormSection = () => {
                 className='rounded-full text-white px-6 py-2.5 font-semibold border-primary-main bg-primary-main hover:bg-primary-dark transition-colors duration-200 ease-in-out'
                 disabled={status === 'pending'}
               >
-                {status === 'pending' ? 'Loading' : 'Simpan'}
+                {status === 'pending' ? 'Loading...' : 'Simpan'}
               </Button>
             </div>
           </div>
