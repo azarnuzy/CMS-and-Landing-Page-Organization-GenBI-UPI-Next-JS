@@ -78,8 +78,8 @@ const EditAwardeeFormSection = ({ id }: { id: string }) => {
       setDataEditAwardee(data.data);
 
       // setnameUpload(data.data.photo.alt);
-      setPhoto(data.data.photo.alt);
-      setTranscript(data.data.transcript.file_name);
+      setPhoto(data?.data?.photo?.alt || 'Tidak ada foto');
+      setTranscript(data?.data?.transcript?.file_name || 'Tidak ada file');
 
       form.reset(defaultValuesPutAwardee(data?.data));
     }
