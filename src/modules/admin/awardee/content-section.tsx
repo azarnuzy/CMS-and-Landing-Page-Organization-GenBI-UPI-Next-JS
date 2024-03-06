@@ -1,19 +1,29 @@
 'use client';
 
+import { Trash } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { FaTrash } from 'react-icons/fa6';
 import { LuPlus } from 'react-icons/lu';
-import { MdDelete } from 'react-icons/md';
 import { TbEdit } from 'react-icons/tb';
 import { useRecoilState } from 'recoil';
+import { toast } from 'sonner';
 
-import { useGetAllAwardees } from '@/hooks/awardee/hook';
+import { useDeleteAwardee, useGetAllAwardees } from '@/hooks/awardee/hook';
 
 import BadgeTag from '@/components/badge';
+import { LoadingSpinner } from '@/components/loading-spinner';
 import Pagination from '@/components/pagination';
 import { Button } from '@/components/ui/button';
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogHeader,
+  DialogTrigger,
+} from '@/components/ui/dialog';
 import {
   Table,
   TableBody,
@@ -41,8 +51,12 @@ const ContentAwardeeSection = () => {
     search: searchParams.get('search') || '',
   });
 
+  const [, setOpenDialog] = useState(false);
+
   const [dataAwardees, setDataAwardees] = useRecoilState(awardeesDataState);
   const [parentRef] = useRecoilState(parentRefAdminAwardeesState);
+
+  const { mutate, status } = useDeleteAwardee();
 
   const handlePageChange = async (page: number) => {
     await refetch();
@@ -78,8 +92,21 @@ const ContentAwardeeSection = () => {
     }
   }, [data, setDataAwardees]);
 
+  const handleRemoveData = (id: number) => {
+    mutate(id, {
+      onSuccess: () => {
+        refetch();
+        setOpenDialog(false);
+        toast.success('Berhasil menghapus data');
+      },
+      onError: () => {
+        toast.error('Gagal menghapus data');
+      },
+    });
+  };
+
   return (
-    <div className='pt-5 border rounded-3xl w-full mt-10 mb-5'>
+    <div className='pt-5 border rounded-3xl w-full mt-10 mb-5 relative'>
       <div className='flex justify-end px-6 pb-5'>
         <Button
           asChild
@@ -151,7 +178,47 @@ const ContentAwardeeSection = () => {
                     <Link href={`/admin/awardee/edit/${item?.id}`}>
                       <TbEdit className='text-warning-main text-2xl' />
                     </Link>
-                    <MdDelete className='text-error-main text-2xl' />
+                    <Dialog onOpenChange={setOpenDialog}>
+                      <DialogTrigger>
+                        <FaTrash className='text-2xl text-error-main' />
+                      </DialogTrigger>
+                      <DialogContent className='max-w-[320px] rounded-3xl '>
+                        <DialogHeader>
+                          <div className='flex flex-col gap-2'>
+                            <div className='w-7 h-7 bg-error-100 rounded-full'>
+                              <Trash className='text-error-main w-5 h-5 mx-auto my-1' />
+                            </div>
+                            <h4 className='text-error-main'>Hapus Data?</h4>
+                            <p className='text-neutral-600'>
+                              Data yang sudah dihapus tidak dapat dikembalikan
+                              lagi harap periksa data sebelum menghapus
+                            </p>
+                          </div>
+                          <div className='mt-7 w-full flex justify-between items-center gap-3'>
+                            <DialogClose asChild>
+                              <Button
+                                className='rounded-full w-full'
+                                type='button'
+                                variant='secondary'
+                              >
+                                Batal
+                              </Button>
+                            </DialogClose>
+                            <Button
+                              asChild
+                              type='button'
+                              variant='destructive'
+                              className='border-neutral-main bg-neutral-main rounded-full text-neutral-100  px-6 py-2.5 font-semibold w-full'
+                            >
+                              <div onClick={() => handleRemoveData(item.id)}>
+                                Hapus
+                              </div>
+                            </Button>
+                          </div>
+                        </DialogHeader>
+                      </DialogContent>
+                    </Dialog>
+
                     <Button
                       asChild
                       size='sm'
@@ -188,6 +255,11 @@ const ContentAwardeeSection = () => {
           />
         </div>
       </div>
+      {status === 'pending' && (
+        <div className='absolute min-h-screen w-full bottom-0 right-0 z-10'>
+          <LoadingSpinner />
+        </div>
+      )}
     </div>
   );
 };
