@@ -33,20 +33,19 @@ export const ValidationSchemaAddAwardeeForm = z.object({
     })
     .int(),
   year: z
-    .number({
+    .string({
       required_error: 'year should be filled',
     })
-    .gte(2015, 'year should be more than 2015')
-    .positive({
-      message: 'year should be positive',
-    })
-    .int(),
+    .refine((year) => {
+      const yearNum = parseInt(year);
+      return yearNum >= 2010 && yearNum <= new Date().getFullYear();
+    }),
   nim: z
     .string({
       required_error: 'nim should be filled',
     })
     .min(1, 'nim  should be filled'),
-  study_program: z
+  study_program_id: z
     .number({
       required_error: 'study_program should be filled',
     })
@@ -55,20 +54,20 @@ export const ValidationSchemaAddAwardeeForm = z.object({
     .string({
       required_error: 'linkedin should be filled',
     })
-    // .min(1, 'linkedin should be filled')
-    .optional(),
+    .min(1, 'linkedin should be filled'),
+
   instagram_username: z
     .string({
       required_error: 'instagram should be filled',
     })
-    // .min(1, 'instagram  should be filled')
-    .optional(),
+    .min(1, 'instagram  should be filled'),
+
   telp: z
     .string({
       required_error: 'whatsapp should be filled',
     })
-    // .min(1, 'whatsapp should be filled')
-    .optional(),
+    .min(1, 'whatsapp should be filled'),
+
   photo: z
     .any()
     .refine(
@@ -93,102 +92,85 @@ export const ValidationSchemaAddAwardeeForm = z.object({
       (files: File[]) =>
         ACCEPTED_MEDIA_TYPES_TRANSCRIPT.includes(files?.[0]?.type),
       'Accepts only .pdf'
-    )
-    .optional(),
-  sem1_ip: z
-    .string({
+    ),
+  smt1_ip: z
+    .number({
       required_error: 'IP should be filled',
     })
-    .min(1, 'IP should be filled')
-    .optional(),
-  sem2_ip: z
-    .string({
+    .gte(1, 'IP should be more than 1'),
+  smt2_ip: z
+    .number({
       required_error: 'IP should be filled',
     })
-    .min(1, 'IP should be filled')
-    .optional(),
-  sem3_ip: z
-    .string({
+    .gte(1, 'IP should be more than 1'),
+  smt3_ip: z
+    .number({
       required_error: 'IP should be filled',
     })
-    .min(1, 'IP should be filled')
-    .optional(),
-  sem4_ip: z
-    .string({
+    .gte(1, 'IP should be more than 1'),
+  smt4_ip: z
+    .number({
       required_error: 'IP should be filled',
     })
-    .min(1, 'IP should be filled')
     .optional(),
-  sem5_ip: z
-    .string({
+  smt5_ip: z
+    .number({
       required_error: 'IP should be filled',
     })
-    .min(1, 'IP should be filled')
     .optional(),
-  sem6_ip: z
-    .string({
+  smt6_ip: z
+    .number({
       required_error: 'IP should be filled',
     })
-    .min(1, 'IP should be filled')
     .optional(),
-  sem7_ip: z
-    .string({
+  smt7_ip: z
+    .number({
       required_error: 'IP should be filled',
     })
-    .min(1, 'IP should be filled')
     .optional(),
-  sem8_ip: z
-    .string({
+  smt8_ip: z
+    .number({
       required_error: 'IP should be filled',
     })
-    .min(1, 'IP should be filled')
     .optional(),
-  sem1_ipk: z
-    .string({
+  smt1_ipk: z
+    .number({
       required_error: 'IPK should be filled',
     })
-    .min(1, 'IPK should be filled')
-    .optional(),
-  sem2_ipk: z
-    .string({
+    .gte(1, 'IPK should be more than 1'),
+  smt2_ipk: z
+    .number({
       required_error: 'IPK should be filled',
     })
-    .min(1, 'IPK should be filled')
-    .optional(),
-  sem3_ipk: z
-    .string({
+    .gte(1, 'IPK should be more than 1'),
+  smt3_ipk: z
+    .number({
       required_error: 'IPK should be filled',
     })
-    .min(1, 'IPK should be filled')
-    .optional(),
-  sem4_ipk: z
-    .string({
+    .gte(1, 'IPK should be more than 1'),
+  smt4_ipk: z
+    .number({
       required_error: 'IPK should be filled',
     })
-    .min(1, 'IPK should be filled')
     .optional(),
-  sem5_ipk: z
-    .string({
+  smt5_ipk: z
+    .number({
       required_error: 'IPK should be filled',
     })
-    .min(1, 'IPK should be filled')
     .optional(),
-  sem6_ipk: z
-    .string({
+  smt6_ipk: z
+    .number({
       required_error: 'IPK should be filled',
     })
-    .min(1, 'IPK should be filled')
     .optional(),
-  sem7_ipk: z
-    .string({
+  smt7_ipk: z
+    .number({
       required_error: 'IPK should be filled',
     })
-    .min(1, 'IPK should be filled')
     .optional(),
-  sem8_ipk: z
-    .string({
+  smt8_ipk: z
+    .number({
       required_error: 'IPK should be filled',
     })
-    .min(1, 'IPK should be filled')
     .optional(),
 });

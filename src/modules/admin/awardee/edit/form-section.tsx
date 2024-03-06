@@ -51,7 +51,7 @@ const EditAwardeeFormSection = ({ id }: { id: string }) => {
   });
 
   const [, setDataEditAwardee] = useRecoilState(awardeesDataEditState);
-  // const [, setNameUpload] = useRecoilState(inputUploadState);
+  // const [, setnameUpload] = useRecoilState(inputUploadState);
 
   const [getPhoto, setPhoto] = useState<string>('');
   const [getTranscript, setTranscript] = useState<string>('');
@@ -66,7 +66,7 @@ const EditAwardeeFormSection = ({ id }: { id: string }) => {
         scholarship: data.data.scholarship,
         year: Number(data.data.year),
         nim: data.data.nim,
-        study_program: data.data.study_program,
+        study_program_id: data.data.study_program,
         linkedin: data.data.linkedin_username || '',
         instagram: data.data.instagram_username || '',
         whatsapp: data.data.telp || '',
@@ -81,7 +81,7 @@ const EditAwardeeFormSection = ({ id }: { id: string }) => {
         transcript: data.data.transcript.file_url,
       };
 
-      // setNameUpload(data.data.photo.alt);
+      // setnameUpload(data.data.photo.alt);
       setPhoto(data.data.photo.alt);
       setTranscript(data.data.transcript.file_name);
 
@@ -304,11 +304,11 @@ const EditAwardeeFormSection = ({ id }: { id: string }) => {
             </div>
             <div className='col-span-2 lg:col-span-1'>
               <SelectField
-                error={form.formState.errors.study_program?.message}
+                error={form.formState.errors.study_program_id?.message}
                 variant='md'
                 control={form.control}
                 options={departmentData}
-                name='study_program'
+                name='study_program_id'
                 label='Study Program'
                 required
                 placeholder='Select Study Program'
@@ -379,8 +379,8 @@ const EditAwardeeFormSection = ({ id }: { id: string }) => {
               </FormLabel>
               <UploadField
                 control={form.control}
-                getName={getPhoto}
-                setName={setPhoto}
+                getname={getPhoto}
+                setname={setPhoto}
                 name='photo'
                 accepted='.jpg, .jpeg, .png'
                 variant='sm'
@@ -521,8 +521,8 @@ const EditAwardeeFormSection = ({ id }: { id: string }) => {
               </FormLabel>
               <UploadField
                 control={form.control}
-                getName={getTranscript}
-                setName={setTranscript}
+                getname={getTranscript}
+                setname={setTranscript}
                 name='transcript'
                 accepted='.jpg, .jpeg, .png'
                 variant='sm'

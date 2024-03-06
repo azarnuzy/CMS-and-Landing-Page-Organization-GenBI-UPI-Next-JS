@@ -1,3 +1,5 @@
+import { serialize } from 'object-to-formdata';
+
 import { api } from '@/lib/api';
 
 import {
@@ -35,13 +37,17 @@ export const getDetailAwardeeRequest = async (
 export const addAwardeeRequest = async (
   payload: TAwardeeAddPayload
 ): Promise<TDataAddAwardeeResponse | undefined> => {
-  const { data } = await api.post<TDataAddAwardeeResponse>(
-    'v1/awardees',
-    payload
-  );
-
+  const { data } = await api({
+    method: 'post',
+    url: 'v1/awardees',
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+    data: serialize(payload),
+  });
   return data;
 };
+
 export const putAwardeeRequest = async ({
   payload,
   id,

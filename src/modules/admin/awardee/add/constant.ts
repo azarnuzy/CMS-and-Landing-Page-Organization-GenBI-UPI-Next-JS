@@ -1,3 +1,5 @@
+import { TAwardeeAddPayload } from '@/types/awardees';
+
 export const breadcrumbAddAwardeeData = [
   {
     name: 'Home',
@@ -13,25 +15,33 @@ export const breadcrumbAddAwardeeData = [
   },
 ];
 
-export const defaultValuesAddAwardee = {
-  full_name: '',
+export const defaultValuesAddAwardee: TAwardeeAddPayload = {
+  name: '',
   birth_date: undefined,
   member_since: undefined,
-  total_scholarship: 0,
-  year: 0,
+  scholarship: undefined,
+  year: '',
   nim: '',
-  study_program: 0,
-  linkedin: '',
-  instagram: '',
-  whatsapp: '',
-  profile_photo: undefined,
+  study_program_id: undefined,
+  linkedin_username: '',
+  instagram_username: '',
+  telp: '',
+  photo: undefined,
   transcript: undefined,
-  sem1_gpa: '',
-  sem2_gpa: '',
-  sem3_gpa: '',
-  sem4_gpa: '',
-  sem5_gpa: '',
-  sem6_gpa: '',
-  sem7_gpa: '',
-  sem8_gpa: '',
+  smt1_ip: undefined,
+  smt2_ip: undefined,
+  smt3_ip: undefined,
+  smt4_ip: undefined,
+  smt5_ip: undefined,
+  smt6_ip: undefined,
+  smt7_ip: undefined,
+  smt8_ip: undefined,
+  smt1_ipk: undefined,
+  smt2_ipk: undefined,
+  smt3_ipk: undefined,
+  smt4_ipk: undefined,
+  smt5_ipk: undefined,
+  smt6_ipk: undefined,
+  smt7_ipk: undefined,
+  smt8_ipk: undefined,
 };

@@ -121,33 +121,33 @@ export interface TAwardeeAddData {
 
 export interface TAwardeeAddPayload {
   name: string;
-  photo: FILE;
-  birth_date: string;
-  linkedin_username: string;
-  instagram_username: string;
-  telp: string;
-  member_since: string;
-  scholarship: number;
+  birth_date: Date | undefined;
+  linkedin_username?: string;
+  instagram_username?: string;
+  telp?: string;
+  member_since: Date | undefined;
+  scholarship?: number;
   nim: string;
-  study_program_id: number;
+  study_program_id?: number;
+  photo: FILE;
   year: string;
-  smt1_ip: string;
-  smt2_ip: string;
-  smt3_ip: string;
-  smt4_ip: string;
-  smt5_ip: string;
-  smt6_ip: string;
-  smt7_ip: string;
-  smt8_ip: string;
-  smt1_ipk: string;
-  smt2_ipk: string;
-  smt3_ipk: string;
-  smt4_ipk: string;
-  smt5_ipk: string;
-  smt6_ipk: string;
-  smt7_ipk: string;
-  smt8_ipk: string;
-  transcript_id: FILE;
+  smt1_ip?: number;
+  smt2_ip?: number;
+  smt3_ip?: number;
+  smt4_ip?: number;
+  smt5_ip?: number;
+  smt6_ip?: number;
+  smt7_ip?: number;
+  smt8_ip?: number;
+  smt1_ipk?: number;
+  smt2_ipk?: number;
+  smt3_ipk?: number;
+  smt4_ipk?: number;
+  smt5_ipk?: number;
+  smt6_ipk?: number;
+  smt7_ipk?: number;
+  smt8_ipk?: number;
+  transcript?: FILE;
 }
 
 export interface TAwardeePutPayload {

@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { ReactElement, useState } from 'react';
+import { ReactElement, useEffect, useState } from 'react';
 import { FieldValues, useController } from 'react-hook-form';
 import { AiOutlineCloseCircle } from 'react-icons/ai';
 
@@ -11,15 +11,21 @@ export const UploadField = <T extends FieldValues>(
   props: TUploadFieldProps<T>
 ): ReactElement => {
   const { field } = useController(props);
-  // const [props.getName, props.setName] = useState('');
+  // const [props.getname, props.setname] = useState('');
   const [files, setFiles] = useState<File>();
-  // const [props.getName, setName] = useRecoilState(inputUploadState);
+  // const [props.getname, setname] = useRecoilState(inputUploadState);
 
   const removeFile = () => {
     setFiles(undefined);
-    props.setName('');
+    props.setname('');
     field.onChange(undefined);
   };
+
+  useEffect(() => {
+    if (props.getname.length === 0) {
+      setFiles(undefined);
+    }
+  }, [props.getname.length]);
 
   return (
     <section className='flex flex-col w-auto my-1 gap-y-2 '>
@@ -62,9 +68,9 @@ export const UploadField = <T extends FieldValues>(
                 props.status === 'error' ? 'text-red-500 italic' : ''
               } px-4 text-xs text-nowrap overflow-hidden overflow-ellipsis whitespace-nowrap`}
             >
-              {props.getName || props.files ? (
+              {props.getname || props.files ? (
                 <span>
-                  {props.getName || props.files}
+                  {props.getname || props.files}
                   {props.status === 'error' && `(${props.message})`}
                 </span>
               ) : (
@@ -97,7 +103,7 @@ export const UploadField = <T extends FieldValues>(
         {...props}
         onChange={(event) => {
           field.onChange(event.target.files);
-          props.setName(event.target?.files?.[0]?.name as string);
+          props.setname(event.target?.files?.[0]?.name as string);
           setFiles(event.target.files?.[0]);
           props?.onChange?.(event);
         }}

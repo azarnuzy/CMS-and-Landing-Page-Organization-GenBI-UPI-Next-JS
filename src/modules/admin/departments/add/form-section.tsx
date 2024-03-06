@@ -107,8 +107,8 @@ const FormAddDepartmentSection = () => {
                 Cover <span className='text-error-main'>*</span>
               </FormLabel>
               <UploadField
-                getName={getCoverName}
-                setName={setCoverName}
+                getname={getCoverName}
+                setname={setCoverName}
                 control={form.control}
                 name='cover'
                 accepted='.jpg, .jpeg, .png'

@@ -314,8 +314,8 @@ const FormEditNewsSection = ({ id }: { id: string }) => {
                 Thumbnail <span className='text-error-main'>*</span>
               </FormLabel>
               <UploadField
-                getName={getThumbnailName}
-                setName={setThumbnailName}
+                getname={getThumbnailName}
+                setname={setThumbnailName}
                 control={form.control}
                 name='thumbnail'
                 accepted='.jpg, .jpeg, .png'

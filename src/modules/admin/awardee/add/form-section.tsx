@@ -8,6 +8,7 @@ import React, { useEffect, useState } from 'react';
 import { DayPicker } from 'react-day-picker';
 import { useForm } from 'react-hook-form';
 import { useRecoilState, useRecoilValue } from 'recoil';
+import { toast } from 'sonner';
 import { z } from 'zod';
 
 import 'react-day-picker/dist/style.css';
@@ -15,6 +16,7 @@ import 'react-day-picker/dist/style.css';
 import logger from '@/lib/logger';
 import { cn } from '@/lib/utils';
 import { ValidationSchemaAddAwardeeForm } from '@/lib/validations/awardee';
+import { useAddAwardee } from '@/hooks/awardee/hook';
 import { useGetAllStudyPrograms } from '@/hooks/study-programs/hook';
 
 import { UploadField } from '@/components/input/upload-file';
@@ -48,6 +50,9 @@ import {
   studyProgramDataState,
   studyProgramSelectorData,
 } from '@/recoils/study-program/atom';
+
+import { TAwardeeAddPayload } from '@/types/awardees';
+
 const AddAwardeeFormSection = () => {
   const form = useForm<z.infer<typeof ValidationSchemaAddAwardeeForm>>({
     resolver: zodResolver(ValidationSchemaAddAwardeeForm),
@@ -61,9 +66,32 @@ const AddAwardeeFormSection = () => {
   const dataStudyProgram = useRecoilValue(studyProgramSelectorData);
 
   const { data } = useGetAllStudyPrograms();
+  const { mutate, status } = useAddAwardee();
 
   const onSubmit = (data: z.infer<typeof ValidationSchemaAddAwardeeForm>) => {
-    logger(data);
+    try {
+      const payload: TAwardeeAddPayload = {
+        ...data,
+        photo: data?.photo[0],
+        transcript: data?.transcript[0],
+      };
+
+      mutate(payload, {
+        onSuccess: () => {
+          toast.success('Awardee has been added');
+          form.reset(defaultValuesAddAwardee);
+          setPhoto('');
+          setTranscript('');
+        },
+        onError: (error) => {
+          logger(data);
+          logger('Add Awardee Error:', error.response?.data.message);
+          toast.error('Failed to add awardee');
+        },
+      });
+    } catch (error) {
+      throw new Error('Invalid response');
+    }
   };
 
   useEffect(() => {
@@ -74,6 +102,7 @@ const AddAwardeeFormSection = () => {
 
   return (
     <div className='border rounded-3xl px-6 py-6 my-10 shadow-sm'>
+      {/* {status === 'pending' && toast.loading('Loading...')} */}
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
@@ -195,7 +224,7 @@ const AddAwardeeFormSection = () => {
                     </FormLabel>
                     <FormControl>
                       <RadioGroup
-                        onValueChange={field.onChange}
+                        onValueChange={(e) => field.onChange(Number(e))}
                         className='flex gap-2 items-center'
                       >
                         {Array(4)
@@ -208,7 +237,7 @@ const AddAwardeeFormSection = () => {
                               <FormControl>
                                 <RadioGroupItem
                                   value={(index + 1).toString()}
-                                  checked={field.value === index + 1}
+                                  checked={field.value == index + 1}
                                 />
                               </FormControl>
                               <FormLabel className='font-normal'>
@@ -261,20 +290,9 @@ const AddAwardeeFormSection = () => {
               />
             </div>
             <div className='col-span-2 lg:col-span-1'>
-              {/* <SelectField
-                error={form.formState.errors.study_program?.message}
-                variant='md'
-                control={form.control}
-                options={dataStudyProgram}
-                name='study_program'
-                label='Study Program'
-                required
-                placeholder='Select Study Program'
-                styletext='!text-black text-[10px]'
-              /> */}
               <FormField
                 control={form.control}
-                name='study_program'
+                name='study_program_id'
                 render={({ field }) => (
                   <FormItem className='flex flex-col gap-2'>
                     <FormLabel>
@@ -311,7 +329,10 @@ const AddAwardeeFormSection = () => {
                                   value={item.label}
                                   key={item.value}
                                   onSelect={() => {
-                                    form.setValue('study_program', item.value);
+                                    form.setValue(
+                                      'study_program_id',
+                                      item.value
+                                    );
                                   }}
                                 >
                                   <Check
@@ -342,7 +363,9 @@ const AddAwardeeFormSection = () => {
                 name='linkedin_username'
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Linkedin</FormLabel>
+                    <FormLabel>
+                      Linkedin <span className='text-error-main'>*</span>
+                    </FormLabel>
                     <FormControl>
                       <Input
                         placeholder='Input Your Username (ex: genbiupi)...'
@@ -360,7 +383,9 @@ const AddAwardeeFormSection = () => {
                 name='instagram_username'
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Instagram</FormLabel>
+                    <FormLabel>
+                      Instagram <span className='text-error-main'>*</span>
+                    </FormLabel>
                     <FormControl>
                       <Input
                         placeholder='Input Your Username (ex: genbiupi)...'
@@ -375,10 +400,12 @@ const AddAwardeeFormSection = () => {
             <div className='col-span-2 md:col-span-1'>
               <FormField
                 control={form.control}
-                name='nim'
+                name='telp'
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Whatsapp</FormLabel>
+                    <FormLabel>
+                      Whatsapp <span className='text-error-main'>*</span>
+                    </FormLabel>
                     <FormControl>
                       <Input
                         placeholder='Input Your Number (ex: 08123456789)...'
@@ -400,8 +427,8 @@ const AddAwardeeFormSection = () => {
               </FormLabel>
               <UploadField
                 control={form.control}
-                getName={getPhoto}
-                setName={setPhoto}
+                getname={getPhoto}
+                setname={setPhoto}
                 name='photo'
                 accepted='.jpg, .jpeg, .png'
                 variant='sm'
@@ -415,12 +442,21 @@ const AddAwardeeFormSection = () => {
                 <div className='col-span-2 md:col-span-1'>
                   <FormField
                     control={form.control}
-                    name='sem1_ip'
+                    name='smt1_ip'
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Semester 1</FormLabel>
+                        <FormLabel>
+                          Semester 1 <span className='text-error-main'>*</span>
+                        </FormLabel>
                         <FormControl>
-                          <Input placeholder='Ex: 3,78...' {...field} />
+                          <Input
+                            placeholder='Ex: 3,78...'
+                            type='number'
+                            {...field}
+                            onChange={(e) =>
+                              field.onChange(Number(e.target.value))
+                            }
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -430,12 +466,21 @@ const AddAwardeeFormSection = () => {
                 <div className='col-span-2 md:col-span-1'>
                   <FormField
                     control={form.control}
-                    name='sem2_ip'
+                    name='smt2_ip'
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Semester 2</FormLabel>
+                        <FormLabel>
+                          Semester 2 <span className='text-error-main'>*</span>
+                        </FormLabel>
                         <FormControl>
-                          <Input placeholder='Ex: 3,78...' {...field} />
+                          <Input
+                            placeholder='Ex: 3,78...'
+                            type='number'
+                            {...field}
+                            onChange={(e) =>
+                              field.onChange(Number(e.target.value))
+                            }
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -446,12 +491,21 @@ const AddAwardeeFormSection = () => {
                 <div className='col-span-2 md:col-span-1'>
                   <FormField
                     control={form.control}
-                    name='sem3_ip'
+                    name='smt3_ip'
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Semester 3</FormLabel>
+                        <FormLabel>
+                          Semester 3 <span className='text-error-main'>*</span>
+                        </FormLabel>
                         <FormControl>
-                          <Input placeholder='Ex: 3,78...' {...field} />
+                          <Input
+                            placeholder='Ex: 3,78...'
+                            type='number'
+                            {...field}
+                            onChange={(e) =>
+                              field.onChange(Number(e.target.value))
+                            }
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -461,12 +515,19 @@ const AddAwardeeFormSection = () => {
                 <div className='col-span-2 md:col-span-1'>
                   <FormField
                     control={form.control}
-                    name='sem4_ip'
+                    name='smt4_ip'
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Semester 4</FormLabel>
+                        <FormLabel>Semester 4 </FormLabel>
                         <FormControl>
-                          <Input placeholder='Ex: 3,78...' {...field} />
+                          <Input
+                            placeholder='Ex: 3,78...'
+                            type='number'
+                            {...field}
+                            onChange={(e) =>
+                              field.onChange(Number(e.target.value))
+                            }
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -476,12 +537,19 @@ const AddAwardeeFormSection = () => {
                 <div className='col-span-2 md:col-span-1'>
                   <FormField
                     control={form.control}
-                    name='sem5_ip'
+                    name='smt5_ip'
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Semester 5</FormLabel>
                         <FormControl>
-                          <Input placeholder='Ex: 3,78...' {...field} />
+                          <Input
+                            placeholder='Ex: 3,78...'
+                            type='number'
+                            {...field}
+                            onChange={(e) =>
+                              field.onChange(Number(e.target.value))
+                            }
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -491,12 +559,19 @@ const AddAwardeeFormSection = () => {
                 <div className='col-span-2 md:col-span-1'>
                   <FormField
                     control={form.control}
-                    name='sem6_ip'
+                    name='smt6_ip'
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Semester 6</FormLabel>
                         <FormControl>
-                          <Input placeholder='Ex: 3,78...' {...field} />
+                          <Input
+                            placeholder='Ex: 3,78...'
+                            type='number'
+                            {...field}
+                            onChange={(e) =>
+                              field.onChange(Number(e.target.value))
+                            }
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -506,12 +581,19 @@ const AddAwardeeFormSection = () => {
                 <div className='col-span-2 md:col-span-1'>
                   <FormField
                     control={form.control}
-                    name='sem7_ip'
+                    name='smt7_ip'
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Semester 7</FormLabel>
                         <FormControl>
-                          <Input placeholder='Ex: 3,78...' {...field} />
+                          <Input
+                            placeholder='Ex: 3,78...'
+                            type='number'
+                            {...field}
+                            onChange={(e) =>
+                              field.onChange(Number(e.target.value))
+                            }
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -521,12 +603,19 @@ const AddAwardeeFormSection = () => {
                 <div className='col-span-2 md:col-span-1'>
                   <FormField
                     control={form.control}
-                    name='sem8_ip'
+                    name='smt8_ip'
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Semester 8</FormLabel>
                         <FormControl>
-                          <Input placeholder='Ex: 3,78...' {...field} />
+                          <Input
+                            placeholder='Ex: 3,78...'
+                            type='number'
+                            {...field}
+                            onChange={(e) =>
+                              field.onChange(Number(e.target.value))
+                            }
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -539,12 +628,21 @@ const AddAwardeeFormSection = () => {
                 <div className='col-span-2 md:col-span-1'>
                   <FormField
                     control={form.control}
-                    name='sem1_ipk'
+                    name='smt1_ipk'
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Semester 1</FormLabel>
+                        <FormLabel>
+                          Semester 1 <span className='text-error-main'>*</span>
+                        </FormLabel>
                         <FormControl>
-                          <Input placeholder='Ex: 3,78...' {...field} />
+                          <Input
+                            placeholder='Ex: 3,78...'
+                            type='number'
+                            {...field}
+                            onChange={(e) =>
+                              field.onChange(Number(e.target.value))
+                            }
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -554,12 +652,21 @@ const AddAwardeeFormSection = () => {
                 <div className='col-span-2 md:col-span-1'>
                   <FormField
                     control={form.control}
-                    name='sem2_ipk'
+                    name='smt2_ipk'
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Semester 2</FormLabel>
+                        <FormLabel>
+                          Semester 2 <span className='text-error-main'>*</span>
+                        </FormLabel>
                         <FormControl>
-                          <Input placeholder='Ex: 3,78...' {...field} />
+                          <Input
+                            placeholder='Ex: 3,78...'
+                            type='number'
+                            {...field}
+                            onChange={(e) =>
+                              field.onChange(Number(e.target.value))
+                            }
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -570,12 +677,21 @@ const AddAwardeeFormSection = () => {
                 <div className='col-span-2 md:col-span-1'>
                   <FormField
                     control={form.control}
-                    name='sem3_ipk'
+                    name='smt3_ipk'
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Semester 3</FormLabel>
+                        <FormLabel>
+                          Semester 3 <span className='text-error-main'>*</span>
+                        </FormLabel>
                         <FormControl>
-                          <Input placeholder='Ex: 3,78...' {...field} />
+                          <Input
+                            placeholder='Ex: 3,78...'
+                            type='number'
+                            {...field}
+                            onChange={(e) =>
+                              field.onChange(Number(e.target.value))
+                            }
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -585,12 +701,19 @@ const AddAwardeeFormSection = () => {
                 <div className='col-span-2 md:col-span-1'>
                   <FormField
                     control={form.control}
-                    name='sem4_ipk'
+                    name='smt4_ipk'
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Semester 4</FormLabel>
                         <FormControl>
-                          <Input placeholder='Ex: 3,78...' {...field} />
+                          <Input
+                            placeholder='Ex: 3,78...'
+                            type='number'
+                            {...field}
+                            onChange={(e) =>
+                              field.onChange(Number(e.target.value))
+                            }
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -600,12 +723,19 @@ const AddAwardeeFormSection = () => {
                 <div className='col-span-2 md:col-span-1'>
                   <FormField
                     control={form.control}
-                    name='sem5_ipk'
+                    name='smt5_ipk'
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Semester 5</FormLabel>
                         <FormControl>
-                          <Input placeholder='Ex: 3,78...' {...field} />
+                          <Input
+                            placeholder='Ex: 3,78...'
+                            type='number'
+                            {...field}
+                            onChange={(e) =>
+                              field.onChange(Number(e.target.value))
+                            }
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -615,12 +745,19 @@ const AddAwardeeFormSection = () => {
                 <div className='col-span-2 md:col-span-1'>
                   <FormField
                     control={form.control}
-                    name='sem6_ipk'
+                    name='smt6_ipk'
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Semester 6</FormLabel>
                         <FormControl>
-                          <Input placeholder='Ex: 3,78...' {...field} />
+                          <Input
+                            placeholder='Ex: 3,78...'
+                            type='number'
+                            {...field}
+                            onChange={(e) =>
+                              field.onChange(Number(e.target.value))
+                            }
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -630,12 +767,19 @@ const AddAwardeeFormSection = () => {
                 <div className='col-span-2 md:col-span-1'>
                   <FormField
                     control={form.control}
-                    name='sem7_ipk'
+                    name='smt7_ipk'
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Semester 7</FormLabel>
                         <FormControl>
-                          <Input placeholder='Ex: 3,78...' {...field} />
+                          <Input
+                            placeholder='Ex: 3,78...'
+                            type='number'
+                            {...field}
+                            onChange={(e) =>
+                              field.onChange(Number(e.target.value))
+                            }
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -645,12 +789,19 @@ const AddAwardeeFormSection = () => {
                 <div className='col-span-2 md:col-span-1'>
                   <FormField
                     control={form.control}
-                    name='sem8_ipk'
+                    name='smt8_ipk'
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Semester 8</FormLabel>
                         <FormControl>
-                          <Input placeholder='Ex: 3,78...' {...field} />
+                          <Input
+                            placeholder='Ex: 3,78...'
+                            type='number'
+                            {...field}
+                            onChange={(e) =>
+                              field.onChange(Number(e.target.value))
+                            }
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -673,8 +824,8 @@ const AddAwardeeFormSection = () => {
               <UploadField
                 control={form.control}
                 name='transcript'
-                getName={getTranscript}
-                setName={setTranscript}
+                getname={getTranscript}
+                setname={setTranscript}
                 accepted='.pdf'
                 variant='sm'
                 message={form?.formState?.errors?.transcript?.message?.toString()}
@@ -695,8 +846,9 @@ const AddAwardeeFormSection = () => {
               <Button
                 type='submit'
                 className='rounded-full text-white px-6 py-2.5 font-semibold border-primary-main bg-primary-main hover:bg-primary-dark transition-colors duration-200 ease-in-out'
+                disabled={status === 'pending'}
               >
-                Simpan
+                {status === 'pending' ? 'Loading' : 'Simpan'}
               </Button>
             </div>
           </div>
