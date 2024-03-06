@@ -5,8 +5,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
-import { FaTrash } from 'react-icons/fa6';
 import { LuPlus } from 'react-icons/lu';
+import { MdDelete } from 'react-icons/md';
 import { TbEdit } from 'react-icons/tb';
 import { useRecoilState } from 'recoil';
 import { toast } from 'sonner';
@@ -180,7 +180,7 @@ const ContentAwardeeSection = () => {
                     </Link>
                     <Dialog onOpenChange={setOpenDialog}>
                       <DialogTrigger>
-                        <FaTrash className='text-2xl text-error-main' />
+                        <MdDelete className='text-2xl text-error-main' />
                       </DialogTrigger>
                       <DialogContent className='max-w-[320px] rounded-3xl '>
                         <DialogHeader>
