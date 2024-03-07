@@ -51,7 +51,8 @@ const ContentAwardeeSection = () => {
     search: searchParams.get('search') || '',
   });
 
-  const [openDialog, setOpenDialog] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [getId, setId] = useState(0);
 
   const [dataAwardees, setDataAwardees] = useRecoilState(awardeesDataState);
   const [parentRef] = useRecoilState(parentRefAdminAwardeesState);
@@ -92,11 +93,13 @@ const ContentAwardeeSection = () => {
     }
   }, [data, setDataAwardees]);
 
-  const handleRemoveData = (id: number) => {
-    mutate(id, {
+  const handleRemoveData = () => {
+    // console.log(id);
+
+    mutate(getId, {
       onSuccess: () => {
         refetch();
-        setOpenDialog(false);
+        setOpen(false);
         toast.success('Berhasil menghapus data');
       },
       onError: () => {
@@ -178,8 +181,12 @@ const ContentAwardeeSection = () => {
                     <Link href={`/admin/awardee/edit/${item?.id}`}>
                       <TbEdit className='text-warning-main text-2xl' />
                     </Link>
-                    <Dialog open={openDialog} onOpenChange={setOpenDialog}>
-                      <DialogTrigger>
+                    <Dialog open={open} onOpenChange={setOpen}>
+                      <DialogTrigger
+                        onClick={() => {
+                          setId(item.id);
+                        }}
+                      >
                         <MdDelete className='text-2xl text-error-main' />
                       </DialogTrigger>
                       <DialogContent className='max-w-[320px] rounded-3xl '>
@@ -208,7 +215,10 @@ const ContentAwardeeSection = () => {
                               type='button'
                               variant='destructive'
                               className='border-neutral-main bg-neutral-main rounded-full text-neutral-100  px-6 py-2.5 font-semibold w-full'
-                              onClick={() => handleRemoveData(item.id)}
+                              onClick={() => {
+                                handleRemoveData();
+                                setId(0);
+                              }}
                             >
                               Hapus
                             </Button>
