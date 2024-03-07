@@ -1,4 +1,4 @@
-import { TAddPostPayload } from '@/types/posts/add';
+import { TAddPostPayload } from '@/types/posts/crud';
 import { TUserParams } from '@/types/users';
 
 export const breadcrumbAddNewsData = [

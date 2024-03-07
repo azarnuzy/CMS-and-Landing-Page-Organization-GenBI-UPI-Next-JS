@@ -66,8 +66,7 @@ export const ValidationSchemaAddNewsForm = z.object({
     .string({
       required_error: 'Caption cover should be filled',
     })
-    .min(1, 'Caption cover should be filled')
-    .optional(),
+    .min(1, 'Caption cover should be filled'),
   other: z
     .any()
     // make sure that the file is uploaded with maximum 5 files

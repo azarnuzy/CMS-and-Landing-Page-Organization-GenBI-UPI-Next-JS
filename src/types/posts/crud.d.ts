@@ -64,17 +64,41 @@ export interface TAddPostPayload {
   type: string;
   department_id: number | undefined;
   author_id: number | undefined;
-  event_id: number | undefined;
+  event_id?: number | undefined;
   tags: string[];
   caption_cover: string;
-  caption_other1: string;
-  caption_other2: string;
-  caption_other3: string;
-  caption_other4: string;
+  caption_other1?: string;
+  caption_other2?: string;
+  caption_other3?: string;
+  caption_other4?: string;
   cover: File | undefined;
-  other: Array<File> | undefined;
-  attachment: Array<File> | undefined;
+  other?: Array<File> | undefined;
+  attachment?: Array<File> | undefined;
+}
+
+export interface TPutPostPayload {
+  title?: string;
+  content?: string;
+  type?: string;
+  department_id?: number | undefined;
+  author_id?: number | undefined;
+  event_id?: number | undefined;
+  tags?: string[];
+}
+
+export interface TPutPostPhotoPayload {
+  file: File;
+  caption: string;
+  category: string;
+  featured: boolean;
+  post_id: number | undefined;
+}
+
+export interface TPutPostData {
+  id: string;
 }
 
 export type TDataAddPostResponse = TMetaResponseSingle<TAddPostResponse>;
 export type TDataGetPostTypeResponse = TMetaResponse<Array<string>>;
+export type TDataPutPostResponse = TMetaResponseSingle<TPutPostData>;
+export type TDataPutPostPhotoResponse = TMetaResponseSingle<TPutPostData>;

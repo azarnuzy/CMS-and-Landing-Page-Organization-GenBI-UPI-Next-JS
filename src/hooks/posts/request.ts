@@ -1,3 +1,5 @@
+import { serialize } from 'object-to-formdata';
+
 import { api } from '@/lib/api';
 
 import {
@@ -8,6 +10,14 @@ import {
   TGetAllPostParams,
   TGetSearchPostParams,
 } from '@/types/posts';
+import {
+  TAddPostPayload,
+  TDataAddPostResponse,
+  TDataPutPostPhotoResponse,
+  TDataPutPostResponse,
+  TPutPostPayload,
+  TPutPostPhotoPayload,
+} from '@/types/posts/crud';
 
 export const getAllPost = async (
   params: TGetAllPostParams
@@ -76,6 +86,51 @@ export const getSearchPost = async (
 
 export const getPostTypes = async (): Promise<string[]> => {
   const { data } = await api.get(`v1/posts/types`);
+
+  return data;
+};
+
+export const addPostRequest = async (
+  payload: TAddPostPayload
+): Promise<TDataAddPostResponse> => {
+  const { data } = await api({
+    method: 'post',
+    url: 'v1/posts',
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+    data: serialize(payload),
+  });
+  return data;
+};
+
+export const putPostRequest = async ({
+  payload,
+  id,
+}: {
+  payload: TPutPostPayload;
+  id: number;
+}): Promise<TDataPutPostResponse> => {
+  const { data } = await api.put(`v1/posts/${id}`, payload);
+
+  return data;
+};
+
+export const putPostPhotoRequest = async ({
+  payload,
+  id,
+}: {
+  payload: TPutPostPhotoPayload;
+  id: number;
+}): Promise<TDataPutPostPhotoResponse | undefined> => {
+  const { data } = await api({
+    method: 'put',
+    url: `v1/photos/${id}`,
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+    data: serialize(payload),
+  });
 
   return data;
 };

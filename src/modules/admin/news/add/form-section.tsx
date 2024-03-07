@@ -243,8 +243,8 @@ const FormAddNewsSection = () => {
                       </PopoverTrigger>
                       <PopoverContent className='w-full p-0'>
                         <Command>
-                          <CommandInput placeholder='Search Study Program...' />
-                          <CommandEmpty>No Study Program found.</CommandEmpty>
+                          <CommandInput placeholder='Search Author...' />
+                          <CommandEmpty>No Author found.</CommandEmpty>
                           <ScrollArea className='h-[200px]'>
                             <CommandGroup>
                               {usersOptionData.map((item) => (
@@ -271,7 +271,6 @@ const FormAddNewsSection = () => {
                         </Command>
                       </PopoverContent>
                     </Popover>
-
                     <FormMessage />
                   </FormItem>
                 )}
