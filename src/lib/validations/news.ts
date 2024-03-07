@@ -19,11 +19,17 @@ export const ValidationSchemaAddNewsForm = z.object({
       required_error: 'Type should be filled',
     })
     .min(1, 'Type should be filled'),
-  department: z
-    .string({
+  department_id: z.number({
+    required_error: 'Department should be filled',
+  }),
+  author_id: z.number({
+    required_error: 'Department should be filled',
+  }),
+  event_id: z
+    .number({
       required_error: 'Department should be filled',
     })
-    .min(1, 'Department should be filled'),
+    .optional(),
   content: z
     .string({
       required_error: 'Content should be filled with minimum 5 character',
@@ -42,14 +48,7 @@ export const ValidationSchemaAddNewsForm = z.object({
         .min(1, 'Hashtag should be filled')
     )
     .nonempty('Hashtag should be filled'),
-
-  event: z
-    .string({
-      required_error: 'Event should be filled',
-    })
-    .min(1, 'Event should be filled')
-    .optional(),
-  thumbnail: z
+  cover: z
     .any()
     .refine(
       (files: File[]) => files !== undefined && files?.length >= 1,
@@ -69,26 +68,66 @@ export const ValidationSchemaAddNewsForm = z.object({
     })
     .min(1, 'Hashtag should be filled')
     .optional(),
-  othersPhoto: z
+  other: z
     .any()
     // make sure that the file is uploaded with maximum 5 files
 
     .refine((files: File[]) => {
-      // console.log(files);
-      return files !== undefined && files?.[0]?.size <= MAX_FILE_SIZE;
+      // maximum file size is 3mb
+      if (files !== undefined) {
+        for (let i = 0; i < files.length; i++) {
+          if (files[i].size > MAX_FILE_SIZE) {
+            return false;
+          }
+        }
+      }
     }, 'Maximum file size is 3mb.')
+    .refine((files: File[]) => {
+      // accept only ACCEPTED_MEDIA_TYPES
+      if (files !== undefined) {
+        for (let i = 0; i < files.length; i++) {
+          if (!ACCEPTED_MEDIA_TYPES.includes(files[i].type)) {
+            return false;
+          }
+        }
+      }
+    }, 'Accepts only .jpg, .jpeg, .png, and .webp')
     .refine(
-      (files: File[]) => ACCEPTED_MEDIA_TYPES.includes(files?.[0]?.type),
-      'Accepts only .jpg, .jpeg, .png, and .webp'
-    )
-    .refine(
-      (files: File[]) => files !== undefined && files?.length <= 5,
-      'Maximum file is 5.'
+      (files: File[]) => files !== undefined && files?.length <= 4,
+      'Maximum file is 4.'
     )
     .optional(),
   caption_othersPhoto_1: z.string({}).optional(),
   caption_othersPhoto_2: z.string({}).optional(),
   caption_othersPhoto_3: z.string({}).optional(),
   caption_othersPhoto_4: z.string({}).optional(),
-  caption_othersPhoto_5: z.string({}).optional(),
+  attachment: z
+    .any()
+    // make sure that the file is uploaded with maximum 5 files
+
+    .refine((files: File[]) => {
+      // maximum file size is 3mb
+      if (files !== undefined) {
+        for (let i = 0; i < files.length; i++) {
+          if (files[i].size > MAX_FILE_SIZE) {
+            return false;
+          }
+        }
+      }
+    }, 'Maximum file size is 3mb.')
+    .refine((files: File[]) => {
+      // accept only ACCEPTED_MEDIA_TYPES
+      if (files !== undefined) {
+        for (let i = 0; i < files.length; i++) {
+          if (!ACCEPTED_MEDIA_TYPES.includes(files[i].type)) {
+            return false;
+          }
+        }
+      }
+    }, 'Accepts only .jpg, .jpeg, .png, and .webp')
+    .refine(
+      (files: File[]) => files !== undefined && files?.length <= 4,
+      'Maximum file is 4.'
+    )
+    .optional(),
 });
