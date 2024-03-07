@@ -1,11 +1,19 @@
-import { useQuery, UseQueryResult } from '@tanstack/react-query';
+import {
+  useMutation,
+  UseMutationResult,
+  useQuery,
+  UseQueryResult,
+} from '@tanstack/react-query';
 
 import {
+  addPostRequest,
   getAllPost,
   getComments,
   getDetailPost,
   getPostTypes,
   getSearchPost,
+  putPostPhotoRequest,
+  putPostRequest,
   updateVisitorPost,
 } from '@/hooks/posts/request';
 
@@ -16,6 +24,14 @@ import {
   TDataGetDetailPostResponse,
   TDataVisitorPostResponse,
 } from '@/types/posts';
+import {
+  TAddPostPayload,
+  TDataAddPostResponse,
+  TDataPutPostPhotoResponse,
+  TDataPutPostResponse,
+  TPutPostPayload,
+  TPutPostPhotoPayload,
+} from '@/types/posts/crud';
 
 export const useGetAllPost = ({
   sort,
@@ -92,3 +108,76 @@ export const useGetPostTypes = (): UseQueryResult<
     queryKey: ['get-post-types'],
     queryFn: async () => await getPostTypes(),
   });
+
+export const useAddPost = (): UseMutationResult<
+  TDataAddPostResponse,
+  TMetaErrorResponse,
+  TAddPostPayload
+> => {
+  return useMutation<TDataAddPostResponse, TMetaErrorResponse, TAddPostPayload>(
+    {
+      mutationKey: ['add-post'],
+      mutationFn: async (payload: TAddPostPayload) => {
+        const response = await addPostRequest(payload);
+        if (!response) {
+          throw new Error('Invalid response');
+        }
+        return response;
+      },
+    }
+  );
+};
+
+export const usePutPost = (): UseMutationResult<
+  TDataPutPostResponse,
+  TMetaErrorResponse,
+  { payload: TPutPostPayload; id: number }
+> => {
+  return useMutation<
+    TDataPutPostResponse,
+    TMetaErrorResponse,
+    { payload: TPutPostPayload; id: number }
+  >({
+    mutationKey: ['put-post'],
+    mutationFn: async ({
+      payload,
+      id,
+    }: {
+      payload: TPutPostPayload;
+      id: number;
+    }) => {
+      const response = await putPostRequest({ payload, id });
+      if (!response) {
+        throw new Error('Invalid response');
+      }
+      return response;
+    },
+  });
+};
+
+export const usePutPhotoPost = (): UseMutationResult<
+  TDataPutPostPhotoResponse,
+  TMetaErrorResponse,
+  { payload: TPutPostPhotoPayload; id: number }
+> => {
+  return useMutation<
+    TDataPutPostPhotoResponse,
+    TMetaErrorResponse,
+    { payload: TPutPostPhotoPayload; id: number }
+  >({
+    mutationKey: ['put-post-photo'],
+    mutationFn: async ({
+      payload,
+      id,
+    }: {
+      payload: TPutPostPhotoPayload;
+      id: number;
+    }) => {
+      const response = await putPostPhotoRequest({ payload, id });
+      if (!response) {
+        throw new Error('Invalid response');
+      }
+      return response;
+    },
+  });
+};

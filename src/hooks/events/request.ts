@@ -5,6 +5,7 @@ import {
   TDataGetDetailEventResponse,
   TGetAllEventParams,
 } from '@/types/events';
+import { TUserParams } from '@/types/users';
 
 export const getAllEvents = async (
   params: TGetAllEventParams
@@ -36,6 +37,16 @@ export const getDetailEvent = async (
   id: number
 ): Promise<TDataGetDetailEventResponse> => {
   const { data } = await api.get(`v1/events/${id}`);
+
+  return data;
+};
+
+export const getEventOptionRequest = async (
+  params: TUserParams
+): Promise<TDataGetAllEventResponse> => {
+  const { data } = await api.get('v1/events', {
+    params,
+  });
 
   return data;
 };

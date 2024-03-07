@@ -7,7 +7,7 @@ const ACCEPTED_MEDIA_TYPES = [
   'image/png',
   'image/webp',
 ];
-
+const ACCEPTED_MEDIA_TYPES_TRANSCRIPT = ['application/pdf'];
 export const ValidationSchemaAddNewsForm = z.object({
   title: z
     .string({
@@ -39,13 +39,14 @@ export const ValidationSchemaAddNewsForm = z.object({
       message: 'Content should be filled with minimum 5 character',
     }),
   //create a new schema for the hashtag that is array of string and can accept only 3 hashtag
-  hashtag: z
+  tags: z
     .array(
       z
         .string({
           required_error: 'Hashtag should be filled',
         })
         .min(1, 'Hashtag should be filled')
+        .max(4, 'Maximum of 4 Hastag only')
     )
     .nonempty('Hashtag should be filled'),
   cover: z
@@ -80,6 +81,8 @@ export const ValidationSchemaAddNewsForm = z.object({
           }
         }
       }
+
+      return true;
     }, 'Maximum file size is 3mb.')
     .refine((files: File[]) => {
       // accept only ACCEPTED_MEDIA_TYPES
@@ -90,16 +93,18 @@ export const ValidationSchemaAddNewsForm = z.object({
           }
         }
       }
+
+      return true;
     }, 'Accepts only .jpg, .jpeg, .png, and .webp')
     .refine(
       (files: File[]) => files !== undefined && files?.length <= 4,
       'Maximum file is 4.'
     )
     .optional(),
-  caption_othersPhoto_1: z.string({}).optional(),
-  caption_othersPhoto_2: z.string({}).optional(),
-  caption_othersPhoto_3: z.string({}).optional(),
-  caption_othersPhoto_4: z.string({}).optional(),
+  caption_other1: z.string({}).optional(),
+  caption_other2: z.string({}).optional(),
+  caption_other3: z.string({}).optional(),
+  caption_other4: z.string({}).optional(),
   attachment: z
     .any()
     // make sure that the file is uploaded with maximum 5 files
@@ -113,16 +118,20 @@ export const ValidationSchemaAddNewsForm = z.object({
           }
         }
       }
+
+      return true;
     }, 'Maximum file size is 3mb.')
     .refine((files: File[]) => {
       // accept only ACCEPTED_MEDIA_TYPES
       if (files !== undefined) {
         for (let i = 0; i < files.length; i++) {
-          if (!ACCEPTED_MEDIA_TYPES.includes(files[i].type)) {
+          if (!ACCEPTED_MEDIA_TYPES_TRANSCRIPT.includes(files[i].type)) {
             return false;
           }
         }
       }
+
+      return true;
     }, 'Accepts only .jpg, .jpeg, .png, and .webp')
     .refine(
       (files: File[]) => files !== undefined && files?.length <= 4,

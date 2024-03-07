@@ -11,13 +11,11 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
-import logger from '@/lib/logger';
 import { ValidationSchemaAddNewsForm } from '@/lib/validations/news';
 import { useGetOptionDepartments } from '@/hooks/departments/hook';
-import { useGetPostTypes } from '@/hooks/posts/hook';
+import { useAddPost, useGetPostTypes } from '@/hooks/posts/hook';
 
 import { DraggableImageInput } from '@/components/input/draggable-input';
-import { SelectField } from '@/components/input/select';
 import InputTag from '@/components/input/tag';
 import { UploadField } from '@/components/input/upload-file';
 import { Button } from '@/components/ui/button';
@@ -35,6 +33,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 
 import {
   addNewsDefaultValues,
+  createFormData,
   usersGetOptionParams,
 } from '@/modules/admin/news/add/constant';
 // import { department_idData } from '@/modules/admin/news/constant';
@@ -51,8 +50,10 @@ const DraftEditor = dynamic(() => import('@/components/text-editor'), {
 import { Check, ChevronsUpDown } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
+import { useGetEventOptions } from '@/hooks/events/hook';
 import { useGetUserOptions } from '@/hooks/users/hook';
 
+import { LoadingSpinner } from '@/components/loading-spinner';
 import {
   Command,
   CommandEmpty,
@@ -66,11 +67,20 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 
 import {
   userOptionsAtomDataState,
   userOptionSelectorDataState,
 } from '@/recoils/admin/users/atom';
+
+import { TAddPostPayload } from '@/types/posts/crud';
 
 const FormAddNewsSection = () => {
   const form = useForm<z.infer<typeof ValidationSchemaAddNewsForm>>({
@@ -86,6 +96,9 @@ const FormAddNewsSection = () => {
   const { data: dataDepartmentOption } = useGetOptionDepartments();
   const { data: dataPostType } = useGetPostTypes();
   const { data: dataUser } = useGetUserOptions(usersGetOptionParams);
+  const { data: dataEventOption } = useGetEventOptions(usersGetOptionParams);
+
+  const { mutate, status } = useAddPost();
 
   const [, setTags] = useRecoilState(inputTagState);
   const [, setNameUpload] = useRecoilState(inputUploadState);
@@ -113,13 +126,22 @@ const FormAddNewsSection = () => {
   };
 
   const onSubmit = (data: z.infer<typeof ValidationSchemaAddNewsForm>) => {
-    toast.success(`Berhasil menambahkan berita ${data.title}`);
-    logger(data);
-    setTags([]);
-    setNameUpload('');
-    setEditorState(EditorState.createEmpty());
-    form.clearErrors();
-    form.reset(addNewsDefaultValues);
+    const formData = createFormData(data);
+
+    mutate(formData as unknown as TAddPostPayload, {
+      onSuccess: (data) => {
+        toast.success(`Berhasil menambahkan berita ${data.data.post.title}`);
+
+        setTags([]);
+        setNameUpload('');
+        setEditorState(EditorState.createEmpty());
+        form.clearErrors();
+        form.reset(addNewsDefaultValues);
+      },
+      onError: (error) => {
+        toast.error(error.message);
+      },
+    });
   };
 
   useEffect(() => {
@@ -199,16 +221,40 @@ const FormAddNewsSection = () => {
               />
             </div>
             <div className='col-span-2 lg:col-span-1'>
-              <SelectField
-                error={form.formState.errors.department_id?.message}
-                variant='md'
+              <FormField
                 control={form.control}
-                options={departmentData}
                 name='department_id'
-                label='Department'
-                required
-                placeholder='Select Department'
-                styletext='!text-black text-[10px]'
+                render={({ field }) => {
+                  return (
+                    <FormItem>
+                      <FormLabel>Select Department *</FormLabel>
+                      <Select
+                        // defaultValue={String(field.value)}
+                        onValueChange={(e) => field.onChange(Number(e))}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder='Select Department ' />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {departmentData?.map((item, index) => {
+                            return (
+                              <SelectItem
+                                key={index}
+                                value={String(item.value)}
+                              >
+                                {item.label}
+                              </SelectItem>
+                            );
+                          })}
+                        </SelectContent>
+                      </Select>
+
+                      <FormMessage />
+                    </FormItem>
+                  );
+                }}
               />
             </div>
 
@@ -289,22 +335,43 @@ const FormAddNewsSection = () => {
             <div className='col-span-2 lg:col-span-1'>
               <InputTag
                 control={form.control}
-                name='hashtag'
+                name='tags'
                 label='Hashtag'
-                message={form.formState.errors.hashtag?.[0]?.message}
+                message={form.formState.errors.tags?.message}
               />
             </div>
             <div className='col-span-2 lg:col-span-1'>
-              <SelectField
-                error={form.formState.errors.event_id?.message}
-                variant='md'
+              <FormField
                 control={form.control}
-                options={departmentData}
                 name='event_id'
-                label='Select Event'
-                required
-                placeholder=' Select Event'
-                styletext='!text-black text-[10px]'
+                render={({ field }) => {
+                  return (
+                    <FormItem>
+                      <FormLabel>Select Event *</FormLabel>
+                      <Select
+                        // defaultValue={String(field.value)}
+                        onValueChange={(e) => field.onChange(Number(e))}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder='Select Event ' />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {dataEventOption?.data?.map((item, index) => {
+                            return (
+                              <SelectItem key={index} value={String(item.id)}>
+                                {item.title}
+                              </SelectItem>
+                            );
+                          })}
+                        </SelectContent>
+                      </Select>
+
+                      <FormMessage />
+                    </FormItem>
+                  );
+                }}
               />
             </div>
             <div className='w-full col-span-2 lg:col-span-1'>
@@ -425,7 +492,7 @@ const FormAddNewsSection = () => {
                 type='submit'
                 className='rounded-full text-white px-6 py-2.5 font-semibold border-primary-main bg-primary-main hover:bg-primary-dark transition-colors duration-200 ease-in-out'
               >
-                Simpan
+                {status === 'pending' ? <LoadingSpinner /> : 'Simpan'}
               </Button>
             </div>
           </div>

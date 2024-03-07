@@ -99,7 +99,7 @@ export const addPostRequest = async (
     headers: {
       'Content-Type': 'multipart/form-data',
     },
-    data: serialize(payload),
+    data: payload,
   });
   return data;
 };

@@ -3,6 +3,7 @@ import { useQuery, UseQueryResult } from '@tanstack/react-query';
 import {
   getAllEvents,
   getDetailEvent,
+  getEventOptionRequest,
   getSearchEvent,
 } from '@/hooks/events/request';
 
@@ -11,6 +12,7 @@ import {
   TDataGetAllEventResponse,
   TDataGetDetailEventResponse,
 } from '@/types/events';
+import { TUserParams } from '@/types/users';
 
 export const useGetAllEvent = ({
   sort,
@@ -50,3 +52,13 @@ export const useGetDetailEvent = ({
     queryKey: ['get-detail-post', id],
     queryFn: async () => await getDetailEvent(id),
   });
+
+export const useGetEventOptions = (
+  params: TUserParams
+): UseQueryResult<TDataGetAllEventResponse, TMetaErrorResponse> => {
+  const { sort, type, limit, page, options } = params;
+  return useQuery({
+    queryKey: ['all-event-options', sort, type, limit, page, options],
+    queryFn: async () => await getEventOptionRequest(params),
+  });
+};
