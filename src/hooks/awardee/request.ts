@@ -55,11 +55,6 @@ export const putAwardeeRequest = async ({
   payload: TAwardeePutPayload;
   id: number;
 }): Promise<TDataPutAwardeeResponse | undefined> => {
-  // const { data } = await api.put<TDataPutAwardeeResponse>(
-  //   `v1/awardees/${id}`,
-  //   payload
-  // );
-
   const { data } = await api({
     method: 'put',
     url: `v1/awardees/${id}`,
@@ -71,6 +66,7 @@ export const putAwardeeRequest = async ({
 
   return data;
 };
+
 export const deleteAwardeeRequest = async (
   id: number
 ): Promise<TDataPutAwardeeResponse | undefined> => {
