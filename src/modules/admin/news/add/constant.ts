@@ -1,4 +1,5 @@
 import { TAddPostPayload } from '@/types/posts/add';
+import { TUserParams } from '@/types/users';
 
 export const breadcrumbAddNewsData = [
   {
@@ -31,4 +32,12 @@ export const addNewsDefaultValues: TAddPostPayload = {
   caption_other3: '',
   caption_other4: '',
   attachment: undefined,
+};
+
+export const usersGetOptionParams: TUserParams = {
+  page: 1,
+  options: true,
+  sort: 'created_at',
+  type: 'desc',
+  limit: 10,
 };

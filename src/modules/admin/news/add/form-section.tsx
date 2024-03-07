@@ -33,7 +33,10 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 
-import { addNewsDefaultValues } from '@/modules/admin/news/add/constant';
+import {
+  addNewsDefaultValues,
+  usersGetOptionParams,
+} from '@/modules/admin/news/add/constant';
 // import { department_idData } from '@/modules/admin/news/constant';
 import { inputTagState, inputUploadState } from '@/recoils/admin/atom';
 import {
@@ -44,6 +47,30 @@ import {
 const DraftEditor = dynamic(() => import('@/components/text-editor'), {
   ssr: false,
 });
+
+import { Check, ChevronsUpDown } from 'lucide-react';
+
+import { cn } from '@/lib/utils';
+import { useGetUserOptions } from '@/hooks/users/hook';
+
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+} from '@/components/ui/command';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
+import { ScrollArea } from '@/components/ui/scroll-area';
+
+import {
+  userOptionsAtomDataState,
+  userOptionSelectorDataState,
+} from '@/recoils/admin/users/atom';
 
 const FormAddNewsSection = () => {
   const form = useForm<z.infer<typeof ValidationSchemaAddNewsForm>>({
@@ -58,13 +85,17 @@ const FormAddNewsSection = () => {
 
   const { data: dataDepartmentOption } = useGetOptionDepartments();
   const { data: dataPostType } = useGetPostTypes();
+  const { data: dataUser } = useGetUserOptions(usersGetOptionParams);
 
   const [, setTags] = useRecoilState(inputTagState);
   const [, setNameUpload] = useRecoilState(inputUploadState);
   const [, setDepartmentOption] = useRecoilState(
     dataAddDepartmentAtomNewsState
   );
+  const [, setUserOption] = useRecoilState(userOptionsAtomDataState);
+
   const departmentData = useRecoilValue(dataDepartmentSelectorNewsState);
+  const usersOptionData = useRecoilValue(userOptionSelectorDataState);
 
   const otherPhotoLength = form.watch('other')?.length;
 
@@ -96,6 +127,12 @@ const FormAddNewsSection = () => {
       setDepartmentOption(dataDepartmentOption.data);
     }
   }, [dataDepartmentOption, setDepartmentOption]);
+
+  useEffect(() => {
+    if (dataUser) {
+      setUserOption(dataUser.data);
+    }
+  }, [dataUser, setUserOption]);
 
   return (
     <div className='border rounded-3xl px-6 py-6 my-10 shadow-sm'>
@@ -175,6 +212,71 @@ const FormAddNewsSection = () => {
               />
             </div>
 
+            <div className='col-span-2 lg:col-span-1'>
+              <FormField
+                control={form.control}
+                name='author_id'
+                render={({ field }) => (
+                  <FormItem className='flex flex-col gap-2'>
+                    <FormLabel>
+                      Author <span className='text-error-main'>*</span>
+                    </FormLabel>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <FormControl>
+                          <Button
+                            variant='outline'
+                            role='combobox'
+                            className={cn(
+                              'justify-between',
+                              !field.value && 'text-muted-foreground'
+                            )}
+                          >
+                            {field.value
+                              ? usersOptionData.find(
+                                  (language) => language.value === field.value
+                                )?.label
+                              : 'Select Author'}
+                            <ChevronsUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
+                          </Button>
+                        </FormControl>
+                      </PopoverTrigger>
+                      <PopoverContent className='w-full p-0'>
+                        <Command>
+                          <CommandInput placeholder='Search Study Program...' />
+                          <CommandEmpty>No Study Program found.</CommandEmpty>
+                          <ScrollArea className='h-[200px]'>
+                            <CommandGroup>
+                              {usersOptionData.map((item) => (
+                                <CommandItem
+                                  value={item.label}
+                                  key={item.value}
+                                  onSelect={() => {
+                                    form.setValue('author_id', item.value);
+                                  }}
+                                >
+                                  <Check
+                                    className={cn(
+                                      'mr-2 h-4 w-4',
+                                      item.value === field.value
+                                        ? 'opacity-100'
+                                        : 'opacity-0'
+                                    )}
+                                  />
+                                  {item.label}
+                                </CommandItem>
+                              ))}
+                            </CommandGroup>
+                          </ScrollArea>
+                        </Command>
+                      </PopoverContent>
+                    </Popover>
+
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
             <div className='col-span-2'>
               <DraftEditor
                 editorState={editorState}
