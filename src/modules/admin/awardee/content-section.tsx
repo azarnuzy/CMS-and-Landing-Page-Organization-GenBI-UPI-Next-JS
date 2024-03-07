@@ -51,7 +51,7 @@ const ContentAwardeeSection = () => {
     search: searchParams.get('search') || '',
   });
 
-  const [, setOpenDialog] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false);
 
   const [dataAwardees, setDataAwardees] = useRecoilState(awardeesDataState);
   const [parentRef] = useRecoilState(parentRefAdminAwardeesState);
@@ -178,7 +178,7 @@ const ContentAwardeeSection = () => {
                     <Link href={`/admin/awardee/edit/${item?.id}`}>
                       <TbEdit className='text-warning-main text-2xl' />
                     </Link>
-                    <Dialog onOpenChange={setOpenDialog}>
+                    <Dialog open={openDialog} onOpenChange={setOpenDialog}>
                       <DialogTrigger>
                         <MdDelete className='text-2xl text-error-main' />
                       </DialogTrigger>
@@ -205,14 +205,12 @@ const ContentAwardeeSection = () => {
                               </Button>
                             </DialogClose>
                             <Button
-                              asChild
                               type='button'
                               variant='destructive'
                               className='border-neutral-main bg-neutral-main rounded-full text-neutral-100  px-6 py-2.5 font-semibold w-full'
+                              onClick={() => handleRemoveData(item.id)}
                             >
-                              <div onClick={() => handleRemoveData(item.id)}>
-                                Hapus
-                              </div>
+                              Hapus
                             </Button>
                           </div>
                         </DialogHeader>
