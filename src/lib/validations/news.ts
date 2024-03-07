@@ -62,11 +62,11 @@ export const ValidationSchemaAddNewsForm = z.object({
       (files: File[]) => ACCEPTED_MEDIA_TYPES.includes(files?.[0]?.type),
       'Accepts only .jpg, .jpeg, .png, and .webp'
     ),
-  caption_thumbnail: z
+  caption_cover: z
     .string({
-      required_error: 'Hashtag should be filled',
+      required_error: 'Caption cover should be filled',
     })
-    .min(1, 'Hashtag should be filled')
+    .min(1, 'Caption cover should be filled')
     .optional(),
   other: z
     .any()

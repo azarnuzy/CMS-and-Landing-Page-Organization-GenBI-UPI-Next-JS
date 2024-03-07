@@ -4,11 +4,12 @@ import {
   getAllPost,
   getComments,
   getDetailPost,
+  getPostTypes,
   getSearchPost,
   updateVisitorPost,
 } from '@/hooks/posts/request';
 
-import { TMetaErrorResponse } from '@/types';
+import { TMetaErrorResponse, TMetaResponse } from '@/types';
 import {
   TDataCommentPostResponse,
   TDataGetAllPostResponse,
@@ -81,4 +82,13 @@ export const useGetSearchPost = ({
     queryKey: ['get-search-post', sort, type, limit, page, keyword],
     queryFn: async () =>
       await getSearchPost({ sort, type, limit, page, keyword }),
+  });
+
+export const useGetPostTypes = (): UseQueryResult<
+  TMetaResponse<string>,
+  TMetaErrorResponse
+> =>
+  useQuery({
+    queryKey: ['get-post-types'],
+    queryFn: async () => await getPostTypes(),
   });

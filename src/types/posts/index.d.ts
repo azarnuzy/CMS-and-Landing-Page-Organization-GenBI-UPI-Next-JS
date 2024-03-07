@@ -164,3 +164,4 @@ export type TDataGetAllPostResponse = TMetaResponse<TPostsData>;
 export type TDataVisitorPostResponse = TMetaResponseSingle<TVisitorPostData>;
 export type TDataGetDetailPostResponse = TMetaResponseSingle<TPostDetailData>;
 export type TDataCommentPostResponse = TMetaResponse<TCommentData>;
+export type TDataPostTypesResponse = TMetaResponse<string>;

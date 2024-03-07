@@ -5,14 +5,16 @@ import { convertToRaw, EditorState } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
 import logger from '@/lib/logger';
 import { ValidationSchemaAddNewsForm } from '@/lib/validations/news';
+import { useGetOptionDepartments } from '@/hooks/departments/hook';
+import { useGetPostTypes } from '@/hooks/posts/hook';
 
 import { DraggableImageInput } from '@/components/input/draggable-input';
 import { SelectField } from '@/components/input/select';
@@ -32,8 +34,12 @@ import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 
 import { addNewsDefaultValues } from '@/modules/admin/news/add/constant';
-import { departmentData } from '@/modules/admin/news/constant';
+// import { department_idData } from '@/modules/admin/news/constant';
 import { inputTagState, inputUploadState } from '@/recoils/admin/atom';
+import {
+  dataAddDepartmentAtomNewsState,
+  dataDepartmentSelectorNewsState,
+} from '@/recoils/admin/news/atom';
 
 const DraftEditor = dynamic(() => import('@/components/text-editor'), {
   ssr: false,
@@ -50,8 +56,17 @@ const FormAddNewsSection = () => {
   );
   const [getThumbnailName, setThumbnailName] = useState<string>('');
 
+  const { data: dataDepartmentOption } = useGetOptionDepartments();
+  const { data: dataPostType } = useGetPostTypes();
+
   const [, setTags] = useRecoilState(inputTagState);
   const [, setNameUpload] = useRecoilState(inputUploadState);
+  const [, setDepartmentOption] = useRecoilState(
+    dataAddDepartmentAtomNewsState
+  );
+  const departmentData = useRecoilValue(dataDepartmentSelectorNewsState);
+
+  const otherPhotoLength = form.watch('other')?.length;
 
   const handleEditorChange = (editorState: EditorState) => {
     setEditorState(editorState);
@@ -66,8 +81,6 @@ const FormAddNewsSection = () => {
     });
   };
 
-  const othersPhotoLength = form.watch('othersPhoto')?.length;
-
   const onSubmit = (data: z.infer<typeof ValidationSchemaAddNewsForm>) => {
     toast.success(`Berhasil menambahkan berita ${data.title}`);
     logger(data);
@@ -75,22 +88,14 @@ const FormAddNewsSection = () => {
     setNameUpload('');
     setEditorState(EditorState.createEmpty());
     form.clearErrors();
-    form.reset();
-    form.setValue('title', '');
-    form.setValue('content', '<p></p>\n');
-    form.setValue('department', '');
-    form.setValue('type', '');
-    form.setValue('event', '');
-
-    form.setValue('hashtag', ['']);
-    form.setValue('thumbnail', undefined);
-    form.setValue('othersPhoto', undefined);
-    form.setValue('caption_othersPhoto_1', '');
-    form.setValue('caption_othersPhoto_2', '');
-    form.setValue('caption_othersPhoto_3', '');
-    form.setValue('caption_othersPhoto_4', '');
-    form.setValue('caption_othersPhoto_5', '');
+    form.reset(addNewsDefaultValues);
   };
+
+  useEffect(() => {
+    if (dataDepartmentOption) {
+      setDepartmentOption(dataDepartmentOption.data);
+    }
+  }, [dataDepartmentOption, setDepartmentOption]);
 
   return (
     <div className='border rounded-3xl px-6 py-6 my-10 shadow-sm'>
@@ -131,26 +136,24 @@ const FormAddNewsSection = () => {
                         onValueChange={field.onChange}
                         className='flex gap-2 items-center'
                       >
-                        <FormItem className='flex items-center space-x-3 space-y-0'>
-                          <FormControl>
-                            <RadioGroupItem
-                              value='artikel'
-                              checked={field.value === 'artikel'}
-                            />
-                          </FormControl>
-                          <FormLabel className='font-normal'>Artikel</FormLabel>
-                        </FormItem>
-                        <FormItem className='flex items-center space-x-3 space-y-0'>
-                          <FormControl>
-                            <RadioGroupItem
-                              value='press-release'
-                              checked={field.value === 'press-release'}
-                            />
-                          </FormControl>
-                          <FormLabel className='font-normal'>
-                            Press Release
-                          </FormLabel>
-                        </FormItem>
+                        {dataPostType?.data?.map((item, index) => {
+                          return (
+                            <FormItem
+                              key={index}
+                              className='flex items-center space-x-3 space-y-0'
+                            >
+                              <FormControl>
+                                <RadioGroupItem
+                                  value={item}
+                                  checked={field.value === item}
+                                />
+                              </FormControl>
+                              <FormLabel className='font-normal'>
+                                {item}
+                              </FormLabel>
+                            </FormItem>
+                          );
+                        })}
                       </RadioGroup>
                     </FormControl>
                     <FormMessage />
@@ -160,11 +163,11 @@ const FormAddNewsSection = () => {
             </div>
             <div className='col-span-2 lg:col-span-1'>
               <SelectField
-                error={form.formState.errors.department?.message}
+                error={form.formState.errors.department_id?.message}
                 variant='md'
                 control={form.control}
                 options={departmentData}
-                name='department'
+                name='department_id'
                 label='Department'
                 required
                 placeholder='Select Department'
@@ -192,11 +195,11 @@ const FormAddNewsSection = () => {
             </div>
             <div className='col-span-2 lg:col-span-1'>
               <SelectField
-                error={form.formState.errors.event?.message}
+                error={form.formState.errors.event_id?.message}
                 variant='md'
                 control={form.control}
                 options={departmentData}
-                name='event'
+                name='event_id'
                 label='Select Event'
                 required
                 placeholder=' Select Event'
@@ -206,9 +209,7 @@ const FormAddNewsSection = () => {
             <div className='w-full col-span-2 lg:col-span-1'>
               <FormLabel
                 className={`${
-                  form.formState?.errors?.thumbnail
-                    ? 'text-red-500'
-                    : 'text-black'
+                  form.formState?.errors?.cover ? 'text-red-500' : 'text-black'
                 }`}
               >
                 Thumbnail <span className='text-error-main'>*</span>
@@ -217,17 +218,17 @@ const FormAddNewsSection = () => {
                 getname={getThumbnailName}
                 setname={setThumbnailName}
                 control={form.control}
-                name='thumbnail'
+                name='cover'
                 accepted='.jpg, .jpeg, .png'
                 variant='sm'
-                message={form?.formState?.errors?.thumbnail?.message?.toString()}
-                status={form?.formState?.errors?.thumbnail ? 'error' : 'none'}
+                message={form?.formState?.errors?.cover?.message?.toString()}
+                status={form?.formState?.errors?.cover ? 'error' : 'none'}
               />
             </div>
             <div className='col-span-2 lg:col-span-1'>
               <FormField
                 control={form.control}
-                name='caption_thumbnail'
+                name='caption_cover'
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Caption Thumbnail</FormLabel>
@@ -243,32 +244,31 @@ const FormAddNewsSection = () => {
               />
             </div>
             <div className='col-span-2 lg:col-span-1'>
-              <Label htmlFor='othersPhoto'>Foto Lainnya (Maksimal 5)</Label>
+              <Label htmlFor='other'>Foto Lainnya (Maksimal 5)</Label>
               <DraggableImageInput
                 className='border-none min-h-[75px]'
-                name='othersPhoto'
+                name='other'
                 variant='lg'
                 control={form.control}
-                status={form.formState.errors.othersPhoto ? 'error' : undefined}
+                status={form.formState.errors.other ? 'error' : undefined}
               />
-              {form.formState.errors.othersPhoto &&
-                typeof form.formState.errors.othersPhoto.message ===
-                  'string' && (
+              {form.formState.errors.other &&
+                typeof form.formState.errors.other.message === 'string' && (
                   <span className='text-red-700 text-xs'>
-                    {form.formState.errors.othersPhoto.message}
+                    {form.formState.errors.other.message}
                   </span>
                 )}
             </div>
             <div className='col-span-2 lg:col-span-1 flex flex-col  w-full lg:pt-[155px] gap-4 lg:gap-8'>
-              {othersPhotoLength !== undefined &&
-                Array(othersPhotoLength)
+              {otherPhotoLength !== undefined &&
+                Array(otherPhotoLength)
                   .fill(0)
                   .map((_, index) => (
                     <div key={index} className='lg:h-40'>
                       <FormField
                         control={form.control}
                         name={
-                          `caption_othersPhoto_${index + 1}` as keyof z.infer<
+                          `caption_other_${index + 1}` as keyof z.infer<
                             typeof ValidationSchemaAddNewsForm
                           >
                         }
@@ -291,6 +291,23 @@ const FormAddNewsSection = () => {
                       />
                     </div>
                   ))}
+            </div>
+            <div className='col-span-2 lg:col-span-1'>
+              <Label htmlFor='attachment'>Dokumen Lainnya</Label>
+              <DraggableImageInput
+                className='border-none min-h-[75px]'
+                name='attachment'
+                variant='lg'
+                control={form.control}
+                status={form.formState.errors.attachment ? 'error' : undefined}
+              />
+              {form.formState.errors.attachment &&
+                typeof form.formState.errors.attachment.message ===
+                  'string' && (
+                  <span className='text-red-700 text-xs'>
+                    {form.formState.errors.attachment.message}
+                  </span>
+                )}
             </div>
           </div>
           <div className='flex justify-between'>

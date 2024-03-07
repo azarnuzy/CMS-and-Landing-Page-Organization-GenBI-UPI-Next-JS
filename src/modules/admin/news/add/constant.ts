@@ -1,3 +1,5 @@
+import { TAddPostPayload } from '@/types/posts/add';
+
 export const breadcrumbAddNewsData = [
   {
     name: 'Home',
@@ -13,18 +15,20 @@ export const breadcrumbAddNewsData = [
   },
 ];
 
-export const addNewsDefaultValues = {
+export const addNewsDefaultValues: TAddPostPayload = {
   title: '',
-  content: '<p></p>\n',
-  department: '',
   type: '',
-  event: '',
-  hashtag: [''],
-  thumbnail: undefined,
-  othersPhoto: undefined,
-  caption_othersPhoto_1: '',
-  caption_othersPhoto_2: '',
-  caption_othersPhoto_3: '',
-  caption_othersPhoto_4: '',
-  caption_othersPhoto_5: '',
+  content: '<p></p>\n',
+  department_id: undefined,
+  event_id: undefined,
+  author_id: undefined,
+  tags: [''],
+  cover: undefined,
+  caption_cover: '',
+  other: undefined,
+  caption_other1: '',
+  caption_other2: '',
+  caption_other3: '',
+  caption_other4: '',
+  attachment: undefined,
 };

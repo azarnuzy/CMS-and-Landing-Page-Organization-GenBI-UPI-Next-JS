@@ -73,3 +73,9 @@ export const getSearchPost = async (
 
   return data;
 };
+
+export const getPostTypes = async (): Promise<string[]> => {
+  const { data } = await api.get(`v1/posts/types`);
+
+  return data;
+};
