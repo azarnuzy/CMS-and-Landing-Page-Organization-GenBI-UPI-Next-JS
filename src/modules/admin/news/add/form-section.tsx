@@ -229,7 +229,7 @@ const FormAddNewsSection = () => {
                     <FormItem>
                       <FormLabel>Select Department *</FormLabel>
                       <Select
-                        // defaultValue={String(field.value)}
+                        value={String(field.value)}
                         onValueChange={(e) => field.onChange(Number(e))}
                       >
                         <FormControl>
@@ -349,7 +349,7 @@ const FormAddNewsSection = () => {
                     <FormItem>
                       <FormLabel>Select Event *</FormLabel>
                       <Select
-                        // defaultValue={String(field.value)}
+                        value={String(field.value)}
                         onValueChange={(e) => field.onChange(Number(e))}
                       >
                         <FormControl>

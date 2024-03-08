@@ -17,6 +17,7 @@ export const postDetailDataState = atom<TPostDetailData>({
       department_id: 0,
       department_name: '',
       author: {
+        id: 0,
         name: '',
         photo: {
           id: 0,
@@ -31,7 +32,10 @@ export const postDetailDataState = atom<TPostDetailData>({
         file_url: '',
         caption: '',
       },
-      event: '',
+      event: {
+        id: 0,
+        title: '',
+      },
       images: [],
       created_at: '',
       updated_at: '',

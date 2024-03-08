@@ -23,7 +23,7 @@ export const getDepartmentByIdRequest = async (
 
 export const getOptionDepartmentsRequest =
   async (): Promise<TDataGetDepartmentOptionResponse> => {
-    const { data } = await api.get(`/v1/departments?options=true`);
+    const { data } = await api.get(`/v1/departments?options=true&unique=false`);
 
     return data;
   };

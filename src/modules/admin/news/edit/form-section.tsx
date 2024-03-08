@@ -5,22 +5,33 @@ import { convertToRaw, EditorState } from 'draft-js';
 import { stateFromHTML } from 'draft-js-import-html';
 import draftToHtml from 'draftjs-to-html';
 import dynamic from 'next/dynamic';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useRecoilState } from 'recoil';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
-import logger from '@/lib/logger';
-import { ValidationSchemaAddNewsForm } from '@/lib/validations/news';
-import { useGetDepartmentsTags } from '@/hooks/departments/hook';
-import { useGetAllEvent } from '@/hooks/events/hook';
-import { useGetDetailPost } from '@/hooks/posts/hook';
+import { ValidationSchemaPutNewsForm } from '@/lib/validations/news';
+import { useGetOptionDepartments } from '@/hooks/departments/hook';
+import { useGetEventOptions } from '@/hooks/events/hook';
+import {
+  useGetDetailPost,
+  useGetPostTypes,
+  usePutPhotoPost,
+  usePutPost,
+} from '@/hooks/posts/hook';
 
 import { DraggableImageInput } from '@/components/input/draggable-input';
 import InputTag from '@/components/input/tag';
 import { UploadField } from '@/components/input/upload-file';
 import { Button } from '@/components/ui/button';
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+} from '@/components/ui/command';
 import {
   Form,
   FormControl,
@@ -31,6 +42,11 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import {
   Select,
@@ -40,27 +56,38 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 
-import { defaultValuesData } from '@/modules/admin/news/edit/constant';
+import {
+  defaultValuesPutPost,
+  putPayloadPost,
+} from '@/modules/admin/news/edit/constant';
 import { inputTagState } from '@/recoils/admin/atom';
 
 const DraftEditor = dynamic(() => import('@/components/text-editor'), {
   ssr: false,
 });
 
-import { urlToFile } from '@/lib/utils/general-function';
+import { Check, ChevronsUpDown } from 'lucide-react';
+import Link from 'next/link';
+
+import { cn } from '@/lib/utils';
+import { useGetUserOptions } from '@/hooks/users/hook';
+
+import { ScrollArea } from '@/components/ui/scroll-area';
+
+import { usersGetOptionParams } from '@/modules/admin/news/add/constant';
+import { postAdminDetailDataState } from '@/recoils/admin/news/atom';
+
+import { TUserOptionsData } from '@/types/users';
 
 const FormEditNewsSection = ({ id }: { id: string }) => {
   const { data } = useGetDetailPost({ id: Number(id) });
-  const { data: dataTags } = useGetDepartmentsTags();
-  const { data: dataEvent } = useGetAllEvent({
-    sort: 'created_at',
-    type: 'desc',
-    limit: 10,
-    page: 1,
-  });
-  const form = useForm<z.infer<typeof ValidationSchemaAddNewsForm>>({
-    resolver: zodResolver(ValidationSchemaAddNewsForm),
-    defaultValues: defaultValuesData,
+  const { data: dataDepartmentOption } = useGetOptionDepartments();
+  const { data: dataPostType } = useGetPostTypes();
+  const { data: dataUser } = useGetUserOptions(usersGetOptionParams);
+  const { data: dataEventOption } = useGetEventOptions(usersGetOptionParams);
+
+  const form = useForm<z.infer<typeof ValidationSchemaPutNewsForm>>({
+    resolver: zodResolver(ValidationSchemaPutNewsForm),
   });
 
   const [editorState, setEditorState] = useState<EditorState>(
@@ -69,77 +96,59 @@ const FormEditNewsSection = ({ id }: { id: string }) => {
   const [getThumbnailName, setThumbnailName] = useState<string>('');
 
   const [, setTags] = useRecoilState(inputTagState);
+  const [, setDataDetail] = useRecoilState(postAdminDetailDataState);
 
-  const handleEditorChange = (editorState: EditorState) => {
-    setEditorState(editorState);
+  const { mutate, status } = usePutPost();
+  const { status: photoStatus } = usePutPhotoPost();
 
-    const contentState = editorState.getCurrentContent();
-    const rawContentState = convertToRaw(contentState);
-    const htmlContent = draftToHtml(rawContentState);
+  const handleEditorChange = useCallback(
+    (editorState: EditorState) => {
+      setEditorState(editorState);
 
-    form.setValue('content', htmlContent, {
-      shouldDirty: true,
-      shouldValidate: true,
-    });
-  };
+      const contentState = editorState.getCurrentContent();
+      const rawContentState = convertToRaw(contentState);
+      const htmlContent = draftToHtml(rawContentState);
 
-  const othersPhotoLength = form.watch('othersPhoto')?.length;
+      form.setValue('content', htmlContent, {
+        shouldDirty: true,
+        shouldValidate: true,
+      });
+    },
+    [form]
+  );
 
-  const onSubmit = (data: z.infer<typeof ValidationSchemaAddNewsForm>) => {
+  const otherPhotoLength = form.watch('other')?.length;
+
+  const onSubmit = (data: z.infer<typeof ValidationSchemaPutNewsForm>) => {
     toast.success(`Berhasil menambahkan berita ${data.title}`);
-    logger(data);
+    try {
+      const payloadPost = putPayloadPost(data);
+
+      mutate(
+        { payload: payloadPost, id: Number(id) },
+        {
+          onSuccess: () => {
+            toast.success(`Berhasil mengubah data ${data.title}`);
+          },
+        }
+      );
+    } catch (error) {
+      toast.error('Gagal menambahkan berita');
+    }
   };
 
   useEffect(() => {
     if (data) {
-      const defaultValues = {
-        title: data.data.post.title || '',
-        type: data.data.post.type || '',
-        department: data.data.post.department_name || '',
-        content: data.data.post.content || '',
-        hashtag: data.data.post.tags || '',
-        // thumbnail: data.data.post.image_cover.file_url || '',
-        caption_thumbnail: data.data.post.image_cover.caption || '',
-        event: String(data.data.post.event.id) || 0,
-      };
-      setTags(data.data.post.tags);
-
+      setTags(data?.data?.post?.tags.filter((_, index) => index > 1));
+      setDataDetail(data?.data);
       setThumbnailName(data.data.post.image_cover.alt);
       const contentState = stateFromHTML(data.data.post.content);
       const editorState = EditorState.createWithContent(contentState);
       setEditorState(editorState);
 
-      const promise_thumbnail = urlToFile(data.data.post.image_cover.file_url);
-
-      promise_thumbnail
-        .then((file) => {
-          form.setValue('thumbnail', [file]);
-        })
-        .catch((error) => {
-          logger(error);
-        });
-
-      const promises = data.data.post.images.map((item) => {
-        return urlToFile(item.file_url);
-      });
-
-      Promise.all(promises)
-        .then((files) => {
-          // Once all promises are resolved, set the value in the form
-
-          form.setValue('othersPhoto', files);
-        })
-        .catch((error) => {
-          logger(error);
-        });
-
-      form.reset(defaultValues as z.infer<typeof ValidationSchemaAddNewsForm>);
+      form.reset(defaultValuesPutPost(data?.data));
     }
-  }, [data, form, form.reset, setTags]);
-
-  useEffect(() => {
-    logger(form.formState.errors);
-  }, [form.formState.errors]);
+  }, [data, form, form.reset, setDataDetail, setTags]);
 
   return (
     <div className='border rounded-3xl px-6 py-6 my-10 shadow-sm'>
@@ -170,59 +179,54 @@ const FormEditNewsSection = ({ id }: { id: string }) => {
               <FormField
                 control={form.control}
                 name='type'
-                render={({ field }) => {
-                  return (
-                    <FormItem className='space-y-3'>
-                      <FormLabel>
-                        Type <span className='text-error-main'>*</span>
-                      </FormLabel>
-                      <FormControl>
-                        <RadioGroup
-                          defaultValue={field.value}
-                          onValueChange={field.onChange}
-                          className='flex gap-2 items-center'
-                        >
-                          <FormItem className='flex items-center space-x-3 space-y-0'>
-                            <FormControl>
-                              <RadioGroupItem
-                                value='Article'
-                                checked={field.value === 'Article'}
-                              />
-                            </FormControl>
-                            <FormLabel className='font-normal'>
-                              Artikel
-                            </FormLabel>
-                          </FormItem>
-                          <FormItem className='flex items-center space-x-3 space-y-0'>
-                            <FormControl>
-                              <RadioGroupItem
-                                value='Press Release'
-                                checked={field.value === 'Press Release'}
-                              />
-                            </FormControl>
-                            <FormLabel className='font-normal'>
-                              Press Release
-                            </FormLabel>
-                          </FormItem>
-                        </RadioGroup>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  );
-                }}
+                render={({ field }) => (
+                  <FormItem className='space-y-3'>
+                    <FormLabel>
+                      Type <span className='text-error-main'>*</span>
+                    </FormLabel>
+                    <FormControl>
+                      <RadioGroup
+                        onValueChange={field.onChange}
+                        className='flex gap-2 items-center'
+                      >
+                        {dataPostType?.data?.map((item, index) => {
+                          return (
+                            <FormItem
+                              key={index}
+                              className='flex items-center space-x-3 space-y-0'
+                            >
+                              <FormControl>
+                                <RadioGroupItem
+                                  value={item}
+                                  checked={field.value === item}
+                                />
+                              </FormControl>
+                              <FormLabel className='font-normal'>
+                                {item}
+                              </FormLabel>
+                            </FormItem>
+                          );
+                        })}
+                      </RadioGroup>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
             </div>
             <div className='col-span-2 lg:col-span-1'>
               <FormField
                 control={form.control}
-                name='department'
+                name='department_id'
                 render={({ field }) => {
                   return (
                     <FormItem>
                       <FormLabel>Select Department *</FormLabel>
                       <Select
-                        value={field.value}
-                        onValueChange={field.onChange}
+                        value={String(field.value)}
+                        onValueChange={(e) => {
+                          field.onChange(Number(e));
+                        }}
                       >
                         <FormControl>
                           <SelectTrigger>
@@ -230,10 +234,10 @@ const FormEditNewsSection = ({ id }: { id: string }) => {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          {dataTags?.data?.map((item) => {
+                          {dataDepartmentOption?.data?.map((item, index) => {
                             return (
-                              <SelectItem key={item} value={item}>
-                                {item}
+                              <SelectItem key={index} value={String(item.id)}>
+                                {item.name}
                               </SelectItem>
                             );
                           })}
@@ -247,9 +251,73 @@ const FormEditNewsSection = ({ id }: { id: string }) => {
               />
             </div>
 
+            <div className='col-span-2 lg:col-span-1'>
+              <FormField
+                control={form.control}
+                name='author_id'
+                render={({ field }) => (
+                  <FormItem className='flex flex-col gap-2'>
+                    <FormLabel>
+                      Author <span className='text-error-main'>*</span>
+                    </FormLabel>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <FormControl>
+                          <Button
+                            variant='outline'
+                            role='combobox'
+                            className={cn(
+                              'justify-between',
+                              !field.value && 'text-muted-foreground'
+                            )}
+                          >
+                            {field.value
+                              ? dataUser?.data.find(
+                                  (item: TUserOptionsData) =>
+                                    item.id === field.value
+                                )?.awardee_name
+                              : 'Select Author'}
+                            <ChevronsUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
+                          </Button>
+                        </FormControl>
+                      </PopoverTrigger>
+                      <PopoverContent className='w-full p-0'>
+                        <Command>
+                          <CommandInput placeholder='Search Author...' />
+                          <CommandEmpty>No Author found.</CommandEmpty>
+                          <ScrollArea className='h-[200px]'>
+                            <CommandGroup>
+                              {dataUser?.data.map((item: TUserOptionsData) => (
+                                <CommandItem
+                                  value={item.awardee_name}
+                                  key={item.id}
+                                  onSelect={() => {
+                                    form.setValue('author_id', item.id);
+                                  }}
+                                >
+                                  <Check
+                                    className={cn(
+                                      'mr-2 h-4 w-4',
+                                      item.id === field.value
+                                        ? 'opacity-100'
+                                        : 'opacity-0'
+                                    )}
+                                  />
+                                  {item.awardee_name}
+                                </CommandItem>
+                              ))}
+                            </CommandGroup>
+                          </ScrollArea>
+                        </Command>
+                      </PopoverContent>
+                    </Popover>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
             <div className='col-span-2'>
               <DraftEditor
-                required
                 editorState={editorState}
                 setEditorState={(editorStateParams) => {
                   handleEditorChange(editorStateParams);
@@ -261,25 +329,22 @@ const FormEditNewsSection = ({ id }: { id: string }) => {
             <div className='col-span-2 lg:col-span-1'>
               <InputTag
                 control={form.control}
-                name='hashtag'
+                name='tags'
                 label='Hashtag'
-                message={form.formState.errors.hashtag?.[0]?.message}
-                required
+                message={form.formState.errors.tags?.message}
               />
             </div>
             <div className='col-span-2 lg:col-span-1'>
               <FormField
                 control={form.control}
-                name='event'
+                name='event_id'
                 render={({ field }) => {
                   return (
                     <FormItem>
-                      <FormLabel>
-                        Select Event <span className='text-error-main'>*</span>
-                      </FormLabel>
+                      <FormLabel>Select Event *</FormLabel>
                       <Select
-                        value={field.value?.toString() || 'Select Event'}
-                        onValueChange={field.onChange}
+                        value={String(field.value)}
+                        onValueChange={(e) => field.onChange(Number(e))}
                       >
                         <FormControl>
                           <SelectTrigger>
@@ -287,9 +352,9 @@ const FormEditNewsSection = ({ id }: { id: string }) => {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          {dataEvent?.data?.map((item, i) => {
+                          {dataEventOption?.data?.map((item, index) => {
                             return (
-                              <SelectItem key={i} value={item.id.toString()}>
+                              <SelectItem key={index} value={String(item.id)}>
                                 {item.title}
                               </SelectItem>
                             );
@@ -306,9 +371,7 @@ const FormEditNewsSection = ({ id }: { id: string }) => {
             <div className='w-full col-span-2 lg:col-span-1'>
               <FormLabel
                 className={`${
-                  form.formState?.errors?.thumbnail
-                    ? 'text-red-500'
-                    : 'text-black'
+                  form.formState?.errors?.cover ? 'text-red-500' : 'text-black'
                 }`}
               >
                 Thumbnail <span className='text-error-main'>*</span>
@@ -317,17 +380,17 @@ const FormEditNewsSection = ({ id }: { id: string }) => {
                 getname={getThumbnailName}
                 setname={setThumbnailName}
                 control={form.control}
-                name='thumbnail'
+                name='cover'
                 accepted='.jpg, .jpeg, .png'
                 variant='sm'
-                message={form?.formState?.errors?.thumbnail?.message?.toString()}
-                status={form?.formState?.errors?.thumbnail ? 'error' : 'none'}
+                message={form?.formState?.errors?.cover?.message?.toString()}
+                status={form?.formState?.errors?.cover ? 'error' : 'none'}
               />
             </div>
             <div className='col-span-2 lg:col-span-1'>
               <FormField
                 control={form.control}
-                name='caption_thumbnail'
+                name='caption_cover'
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Caption Thumbnail</FormLabel>
@@ -343,33 +406,32 @@ const FormEditNewsSection = ({ id }: { id: string }) => {
               />
             </div>
             <div className='col-span-2 lg:col-span-1'>
-              <Label htmlFor='othersPhoto'>Foto Lainnya (Maksimal 5)</Label>
+              <Label htmlFor='other'>Foto Lainnya (Maksimal 5)</Label>
               <DraggableImageInput
                 className='border-none min-h-[75px]'
-                name='othersPhoto'
+                name='other'
                 variant='lg'
                 control={form.control}
-                status={form.formState.errors.othersPhoto ? 'error' : undefined}
+                status={form.formState.errors.other ? 'error' : undefined}
               />
-              {form.formState.errors.othersPhoto &&
-                typeof form.formState.errors.othersPhoto.message ===
-                  'string' && (
+              {form.formState.errors.other &&
+                typeof form.formState.errors.other.message === 'string' && (
                   <span className='text-red-700 text-xs'>
-                    {form.formState.errors.othersPhoto.message}
+                    {form.formState.errors.other.message}
                   </span>
                 )}
             </div>
             <div className='col-span-2 lg:col-span-1 flex flex-col  w-full lg:pt-[155px] gap-4 lg:gap-8'>
-              {othersPhotoLength !== undefined &&
-                Array(othersPhotoLength)
+              {otherPhotoLength !== undefined &&
+                Array(otherPhotoLength)
                   .fill(0)
                   .map((_, index) => (
                     <div key={index} className='lg:h-40'>
                       <FormField
                         control={form.control}
                         name={
-                          `caption_othersPhoto_${index + 1}` as keyof z.infer<
-                            typeof ValidationSchemaAddNewsForm
+                          `caption_other_${index + 1}` as keyof z.infer<
+                            typeof ValidationSchemaPutNewsForm
                           >
                         }
                         render={({ field }) => (
@@ -392,50 +454,40 @@ const FormEditNewsSection = ({ id }: { id: string }) => {
                     </div>
                   ))}
             </div>
+            <div className='col-span-2 lg:col-span-1'>
+              <Label htmlFor='attachment'>Dokumen Lainnya</Label>
+              <DraggableImageInput
+                className='border-none min-h-[75px]'
+                name='attachment'
+                variant='lg'
+                control={form.control}
+                status={form.formState.errors.attachment ? 'error' : undefined}
+              />
+              {form.formState.errors.attachment &&
+                typeof form.formState.errors.attachment.message ===
+                  'string' && (
+                  <span className='text-red-700 text-xs'>
+                    {form.formState.errors.attachment.message}
+                  </span>
+                )}
+            </div>
           </div>
           <div className='flex justify-between'>
-            {/* <Dialog>
-              <DialogTrigger>
-                <Button
-                  type='button'
-                  variant='outline'
-                  className='border-primary-main rounded-full text-primary-main px-6 py-2.5 font-semibold '
-                >
-                  Batal
-                </Button>
-              </DialogTrigger>
-              <DialogContent className='max-w-[320px] rounded-3xl '>
-                <DialogHeader>
-                  <div className='flex flex-col gap-2'>
-                    <div className='w-7 h-7 bg-warning-100 rounded-full'>
-                      <IoAlertCircle className='text-warning-main w-5 h-5 mx-auto my-1' />
-                    </div>
-                    <h4 className='text-warning-main'>Batalkan Edit Data?</h4>
-                    <p className='text-neutral-600'>
-                      Jika Anda membatalkan, semua perubahan yang telah Anda
-                      buat akan hilang.
-                    </p>
-                  </div>
-                  <div className='mt-7 w-full'>
-                    <Button
-                      asChild
-                      type='button'
-                      variant='ghost'
-                      className='border-neutral-main bg-neutral-main rounded-full text-neutral-100  px-6 py-2.5 font-semibold mt-4 w-full'
-                    >
-                      <Link href='/admin/news'>Iya, Batalkan</Link>
-                    </Button>
-                  </div>
-                </DialogHeader>
-              </DialogContent>
-            </Dialog> */}
-
+            <Button
+              asChild
+              type='button'
+              variant='outline'
+              className='border-primary-main rounded-full text-primary-main px-6 py-2.5 font-semibold '
+            >
+              <Link href='/admin/news'>Batal</Link>
+            </Button>
             <div className='flex justify-end'>
               <Button
                 type='submit'
-                className='rounded-full text-white px-6 py-2.5 font-semibold border-primary-main bg-primary-main hover:bg-primary-dark transition-colors duration-200 ease-in-out'
+                disabled={status === 'pending' || photoStatus === 'pending'}
+                className='disabled:bg-neutral-300 disabled:border-neutral-300 rounded-full text-white px-6 py-2.5 font-semibold border-primary-main bg-primary-main hover:bg-primary-dark transition-colors duration-200 ease-in-out'
               >
-                Simpan
+                {status === 'pending' ? 'Loading...' : 'Simpan'}
               </Button>
             </div>
           </div>

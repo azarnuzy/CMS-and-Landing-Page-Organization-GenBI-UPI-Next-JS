@@ -17,7 +17,8 @@ export const UploadField = <T extends FieldValues>(
 
   const removeFile = () => {
     setFiles(undefined);
-    props.setname('');
+    // props.setname('');
+    // props.setname('')
     field.onChange(undefined);
   };
 

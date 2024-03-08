@@ -11,9 +11,7 @@ import { TTagInputProps } from '@/types/components/tag';
 
 const InputTag = <T extends FieldValues>(props: TTagInputProps<T>) => {
   const { field } = useController(props);
-  // const [tags, setTags] = useState<string[]>([]);
   const [tags, setTags] = useRecoilState(inputTagState);
-
   const [valueTag, setValueTag] = useState('');
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {

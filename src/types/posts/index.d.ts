@@ -47,7 +47,7 @@ export interface Post {
   tags: string[];
   department_id: number;
   department_name: string;
-  event: any;
+  event: Event;
   author: Author;
   image_cover: ImageCoverDetail;
   images: Image[];
@@ -69,6 +69,7 @@ export interface Attachments {
 }
 
 export interface Author {
+  id: number;
   name: string;
   photo: Photo;
 }

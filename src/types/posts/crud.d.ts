@@ -98,6 +98,27 @@ export interface TPutPostData {
   id: string;
 }
 
+export interface TPutFileData {
+  caption_cover?: string;
+  caption_other1?: string;
+  caption_other2?: string;
+  caption_other3?: string;
+  caption_other4?: string;
+  caption_other4?: string;
+  cover: File | undefined;
+  other?: Array<File> | undefined;
+  attachment?: Array<File> | undefined;
+}
+
+export interface TDataPhotoNewsState {
+  alt: string;
+  caption: string;
+  file_url: string;
+  id: number;
+  post_id: number;
+  category: string;
+}
+
 export type TDataAddPostResponse = TMetaResponseSingle<TAddPostResponse>;
 export type TDataGetPostTypeResponse = TMetaResponse<Array<string>>;
 export type TDataPutPostResponse = TMetaResponseSingle<TPutPostData>;
