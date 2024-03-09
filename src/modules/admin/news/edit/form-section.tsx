@@ -67,7 +67,9 @@ const DraftEditor = dynamic(() => import('@/components/text-editor'), {
 });
 
 import { Check, ChevronsUpDown } from 'lucide-react';
+import Image from 'next/image';
 import Link from 'next/link';
+import { AiOutlineCloseCircle } from 'react-icons/ai';
 
 import { cn } from '@/lib/utils';
 import { useGetUserOptions } from '@/hooks/users/hook';
@@ -117,7 +119,8 @@ const FormEditNewsSection = ({ id }: { id: string }) => {
     [form]
   );
 
-  const otherPhotoLength = form.watch('other')?.length;
+  // const otherPhotoLength = form.watch('other')?.length;
+  const coverData = form.watch('cover');
 
   const onSubmit = (data: z.infer<typeof ValidationSchemaPutNewsForm>) => {
     toast.success(`Berhasil menambahkan berita ${data.title}`);
@@ -386,6 +389,37 @@ const FormEditNewsSection = ({ id }: { id: string }) => {
                 message={form?.formState?.errors?.cover?.message?.toString()}
                 status={form?.formState?.errors?.cover ? 'error' : 'none'}
               />
+              {coverData === undefined &&
+                data?.data?.post?.image_cover?.file_url && (
+                  <div className='relative w-full max-w-[400px]'>
+                    <div className='m-2 w-full'>
+                      <div className='relative mx-auto w-full h-40 overflow-hidden rounded-lg shadow-md'>
+                        <Image
+                          src={
+                            data?.data?.post?.image_cover?.file_url ||
+                            '/images/no-photo-available.png'
+                          }
+                          alt='image'
+                          width={0}
+                          height={0}
+                          sizes='100vw'
+                          fill={true}
+                          className='object-cover w-full h-full'
+                        />
+                      </div>
+                      <div
+                        // onClick={() => removeFile()}
+                        className='absolute top-2 right-2 p-1 bg-white rounded-full cursor-pointer'
+                      >
+                        <AiOutlineCloseCircle
+                          color='#e63a3a'
+                          className='text-error-main'
+                          size={20}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                )}
             </div>
             <div className='col-span-2 lg:col-span-1'>
               <FormField
@@ -414,6 +448,36 @@ const FormEditNewsSection = ({ id }: { id: string }) => {
                 control={form.control}
                 status={form.formState.errors.other ? 'error' : undefined}
               />
+
+              <div className='flex flex-col gap-4'>
+                {data &&
+                  data?.data?.post?.images?.length > 0 &&
+                  data?.data?.post?.images.map((item, index) => (
+                    <div key={index} className='relative w-full max-w-[400px]'>
+                      <div className='m-2 w-full'>
+                        <div className='relative mx-auto w-full h-40 overflow-hidden rounded-lg shadow-md'>
+                          <Image
+                            src={
+                              item?.file_url || '/images/no-photo-available.png'
+                            }
+                            alt='image'
+                            width={0}
+                            height={0}
+                            sizes='100vw'
+                            fill={true}
+                            className='object-cover w-full h-full'
+                          />
+                        </div>
+                        <div
+                          // onClick={() => removeFile(index)}
+                          className='absolute top-2 right-2 p-1 bg-white rounded-full cursor-pointer'
+                        >
+                          <AiOutlineCloseCircle color='#e63a3a' size={20} />
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+              </div>
               {form.formState.errors.other &&
                 typeof form.formState.errors.other.message === 'string' && (
                   <span className='text-red-700 text-xs'>
@@ -422,8 +486,9 @@ const FormEditNewsSection = ({ id }: { id: string }) => {
                 )}
             </div>
             <div className='col-span-2 lg:col-span-1 flex flex-col  w-full lg:pt-[155px] gap-4 lg:gap-8'>
-              {otherPhotoLength !== undefined &&
-                Array(otherPhotoLength)
+              {data &&
+                data?.data?.post?.images?.length > 0 &&
+                Array(data?.data?.post?.images?.length)
                   .fill(0)
                   .map((_, index) => (
                     <div key={index} className='lg:h-40'>
@@ -470,6 +535,26 @@ const FormEditNewsSection = ({ id }: { id: string }) => {
                     {form.formState.errors.attachment.message}
                   </span>
                 )}
+              <div className='flex flex-col gap-4'>
+                {data &&
+                  data?.data?.post?.attachments?.length > 0 &&
+                  data?.data?.post?.attachments.map((item, index) => (
+                    <div
+                      key={index}
+                      className='m-2 w-full relative max-w-[400px]'
+                    >
+                      <div className='relative mx-auto w-full p-2 overflow-hidden rounded-lg shadow-md '>
+                        <p> {item?.file_name}</p>
+                      </div>
+                      <div
+                        //  onClick={() => removeFile(index)}
+                        className='absolute top-2 right-2 p-1 bg-white rounded-full cursor-pointer'
+                      >
+                        <AiOutlineCloseCircle color='#e63a3a' size={20} />
+                      </div>
+                    </div>
+                  ))}
+              </div>
             </div>
           </div>
           <div className='flex justify-between'>

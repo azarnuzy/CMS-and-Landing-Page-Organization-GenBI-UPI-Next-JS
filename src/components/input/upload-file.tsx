@@ -15,10 +15,13 @@ export const UploadField = <T extends FieldValues>(
   const [files, setFiles] = useState<File>();
   // const [props.getname, setname] = useRecoilState(inputUploadState);
 
+  const changeName = (name: string) => {
+    props.setname(name);
+  };
+
   const removeFile = () => {
     setFiles(undefined);
-    // props.setname('');
-    // props.setname('')
+
     field.onChange(undefined);
   };
 
@@ -104,7 +107,8 @@ export const UploadField = <T extends FieldValues>(
         {...props}
         onChange={(event) => {
           field.onChange(event.target.files);
-          props.setname(event.target?.files?.[0]?.name as string);
+          // props.setname(event.target?.files?.[0]?.name as string);
+          changeName(event.target?.files?.[0]?.name as string);
           setFiles(event.target.files?.[0]);
           props?.onChange?.(event);
         }}
