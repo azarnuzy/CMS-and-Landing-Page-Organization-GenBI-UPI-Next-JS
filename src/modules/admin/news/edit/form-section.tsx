@@ -65,12 +65,16 @@ const DraftEditor = dynamic(() => import('@/components/text-editor'), {
 });
 
 import { Check, ChevronsUpDown } from 'lucide-react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { AiOutlineCloseCircle } from 'react-icons/ai';
+import { IoMdAddCircle } from 'react-icons/io';
 
 import { cn } from '@/lib/utils';
+import { useAddPhoto } from '@/hooks/photos/hook';
 import { useGetUserOptions } from '@/hooks/users/hook';
 
+import MiniSpinner from '@/components/spinner';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
 import { usersGetOptionParams } from '@/modules/admin/news/add/constant';
@@ -94,11 +98,15 @@ const FormEditNewsSection = ({ id }: { id: string }) => {
     EditorState.createEmpty()
   );
   const [, setThumbnailName] = useState<string>('');
+  const [otherPhoto, setOtherPhoto] = useState<File | null>(null);
+  const [isAddPhoto, setIsAddPhoto] = useState(false);
+  const [captionOtherPhoto, setCaptionOtherPhoto] = useState('');
 
   const [, setTags] = useRecoilState(inputTagState);
   const [, setDataDetail] = useRecoilState(postAdminDetailDataState);
 
   const { mutate, status } = usePutPost();
+  const { mutate: mutateAddPhoto, status: statusAddPhoto } = useAddPhoto();
 
   const handleEditorChange = useCallback(
     (editorState: EditorState) => {
@@ -118,6 +126,14 @@ const FormEditNewsSection = ({ id }: { id: string }) => {
 
   const coverData = form.watch('cover');
 
+  const handleAddPhoto = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const fileList = event.target.files;
+    if (fileList && fileList.length > 0) {
+      setOtherPhoto(fileList[0]);
+    }
+    setIsAddPhoto(true);
+  };
+
   const onSubmit = (data: z.infer<typeof ValidationSchemaPutNewsForm>) => {
     try {
       const payloadPost = putPayloadPost(data);
@@ -135,6 +151,13 @@ const FormEditNewsSection = ({ id }: { id: string }) => {
       toast.error('Gagal menambahkan berita');
     }
   };
+
+  const onChangeAddCaptionOther = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setCaptionOtherPhoto(e.target.value);
+    },
+    []
+  );
 
   useEffect(() => {
     if (data) {
@@ -390,6 +413,7 @@ const FormEditNewsSection = ({ id }: { id: string }) => {
                       caption: data?.data?.post?.image_cover?.caption || '',
                       photo_id: data?.data?.post?.image_cover?.id,
                       post_id: data?.data?.post?.id,
+                      category: 'post_cover_image',
                     }}
                     invalidateQueryName='get-detail-post'
                   />
@@ -414,8 +438,95 @@ const FormEditNewsSection = ({ id }: { id: string }) => {
               />
             </div>
             <div className='col-span-2 lg:col-span-1'>
-              <Label htmlFor='other'>Foto Lainnya (Maksimal 5)</Label>
+              <div className='flex justify-between w-full'>
+                <Label htmlFor='other'>Foto Lainnya (Maksimal 5)</Label>
+                <label
+                  htmlFor='other-photo'
+                  className='cursor-pointer text-primary-main flex items-center gap-2'
+                >
+                  <input
+                    type='file'
+                    hidden
+                    id='other-photo'
+                    onChange={handleAddPhoto}
+                    className='hidden'
+                  />
+                  <span>Add Other Photo</span>
+                  <IoMdAddCircle className='text-primary-main' size={20} />
+                </label>
+              </div>
               <div className='flex flex-col gap-4'>
+                {isAddPhoto && (
+                  <>
+                    <div className='relative w-full max-w-[400px]'>
+                      <div className='m-2 w-full'>
+                        <div className='relative mx-auto w-full h-40 overflow-hidden rounded-lg shadow-md'>
+                          <Image
+                            src={URL.createObjectURL(otherPhoto as File)}
+                            alt='image'
+                            className='object-cover w-full h-full'
+                            width={0}
+                            height={0}
+                            sizes='50vw'
+                          />
+                        </div>
+                        <div
+                          onClick={() => {
+                            setIsAddPhoto(false);
+                            setOtherPhoto(null);
+                          }}
+                          className='absolute top-2 right-2 p-1 bg-white rounded-full cursor-pointer'
+                        >
+                          <AiOutlineCloseCircle color='#e63a3a' size={20} />
+                        </div>
+                      </div>
+                    </div>
+                    <Label>Caption Tambah Foto Lainnya</Label>
+                    <Input
+                      placeholder='Input Caption Thumbnail'
+                      onChange={onChangeAddCaptionOther}
+                    />
+                    <Button
+                      type='button'
+                      onClick={() => {
+                        if (otherPhoto) {
+                          mutateAddPhoto(
+                            {
+                              file: otherPhoto,
+                              caption: captionOtherPhoto,
+                              category: 'post_cover_image',
+                              featured: false,
+                              post_id: data?.data?.post?.id,
+                            },
+                            {
+                              onSuccess: () => {
+                                refetch();
+                                setIsAddPhoto(false);
+                                setOtherPhoto(null);
+                                toast.success(
+                                  'Berhasil menambahkan foto lainnya'
+                                );
+                              },
+                              onError: () => {
+                                toast.error('Gagal menambahkan foto lainnya');
+                              },
+                            }
+                          );
+                        }
+                      }}
+                      className='rounded-full text-white px-6 py-2.5 font-semibold border-primary-main bg-primary-main hover:bg-primary-dark transition-colors duration-200 ease-in-out'
+                    >
+                      {statusAddPhoto === 'pending' ? (
+                        <div className='flex justify-center gap-2 items-center'>
+                          <MiniSpinner />
+                          Loading...
+                        </div>
+                      ) : (
+                        'Tambah Foto Lainnya'
+                      )}
+                    </Button>
+                  </>
+                )}
                 {data &&
                   data?.data?.post?.images?.length > 0 &&
                   data?.data?.post?.images.map((item, index) => (
@@ -428,6 +539,7 @@ const FormEditNewsSection = ({ id }: { id: string }) => {
                           caption: item.caption || '',
                           photo_id: item.id,
                           post_id: data?.data?.post?.id,
+                          category: 'post_other_image',
                         }}
                         invalidateQueryName='get-detail-post'
                       />

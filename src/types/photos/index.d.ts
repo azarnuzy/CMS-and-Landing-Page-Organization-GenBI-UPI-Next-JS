@@ -4,6 +4,7 @@ export interface TPhotoPayload {
   caption: string;
   post_id: number | undefined;
   photo_id: number | undefined;
+  category: string;
 }
 
 export interface TPutPhotoPayload {

@@ -7,6 +7,7 @@ import { toast } from 'sonner';
 
 import { useDeletePhoto, usePutPhoto } from '@/hooks/photos/hook';
 
+import MiniSpinner from '@/components/spinner';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -44,7 +45,7 @@ const FilePreview = (props: TFileActionProps) => {
         id: payload?.photo_id as number,
         payload: {
           caption: payload?.caption || '',
-          category: 'awardee_photo',
+          category: payload?.category || '',
           featured: false,
           post_id: Number(payload?.post_id),
           file: file as File,
@@ -144,21 +145,17 @@ const FilePreview = (props: TFileActionProps) => {
           {props.isRemove && (
             <button
               onClick={handleDeletePhoto}
-              className='p-1 bg-white rounded-full cursor-pointer'
+              className='p-1 bg-white rounded-full cursor-pointer flex justify-center'
             >
               {statusDelete === 'pending' ? (
-                <div className='animate-spin w-5 h-5 mr-3 bg-neutral-50'></div>
+                <div className='flex justify-center w-full'>
+                  <MiniSpinner />
+                </div>
               ) : (
                 <FaRegTrashAlt className='text-error-main' size={20} />
               )}
             </button>
           )}
-
-          {/* {statusDelete === 'pending' && (
-            <div className='min-h-screen'>
-              <LoadingSpinner />
-            </div>
-          )} */}
         </div>
       </div>
     </div>
