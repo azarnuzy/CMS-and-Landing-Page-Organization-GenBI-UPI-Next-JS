@@ -65,7 +65,6 @@ const DraftEditor = dynamic(() => import('@/components/text-editor'), {
 });
 
 import { Check, ChevronsUpDown } from 'lucide-react';
-import Image from 'next/image';
 import Link from 'next/link';
 import { AiOutlineCloseCircle } from 'react-icons/ai';
 
@@ -416,50 +415,27 @@ const FormEditNewsSection = ({ id }: { id: string }) => {
             </div>
             <div className='col-span-2 lg:col-span-1'>
               <Label htmlFor='other'>Foto Lainnya (Maksimal 5)</Label>
-              <DraggableImageInput
-                className='border-none min-h-[75px]'
-                name='other'
-                variant='lg'
-                control={form.control}
-                status={form.formState.errors.other ? 'error' : undefined}
-              />
-
               <div className='flex flex-col gap-4'>
                 {data &&
                   data?.data?.post?.images?.length > 0 &&
                   data?.data?.post?.images.map((item, index) => (
                     <div key={index} className='relative w-full max-w-[400px]'>
-                      <div className='m-2 w-full'>
-                        <div className='relative mx-auto w-full h-40 overflow-hidden rounded-lg shadow-md'>
-                          <Image
-                            src={
-                              item?.file_url || '/images/no-photo-available.png'
-                            }
-                            alt='image'
-                            width={0}
-                            height={0}
-                            sizes='50vw'
-                            className='object-cover w-full h-full'
-                          />
-                        </div>
-                        <div
-                          // onClick={() => removeFile(index)}
-                          className='absolute top-2 right-2 p-1 bg-white rounded-full cursor-pointer'
-                        >
-                          <AiOutlineCloseCircle color='#e63a3a' size={20} />
-                        </div>
-                      </div>
+                      <FilePreview
+                        url={item.file_url}
+                        isEdit={true}
+                        isRemove={true}
+                        payload={{
+                          caption: item.caption || '',
+                          photo_id: item.id,
+                          post_id: data?.data?.post?.id,
+                        }}
+                        invalidateQueryName='get-detail-post'
+                      />
                     </div>
                   ))}
               </div>
-              {form.formState.errors.other &&
-                typeof form.formState.errors.other.message === 'string' && (
-                  <span className='text-red-700 text-xs'>
-                    {form.formState.errors.other.message}
-                  </span>
-                )}
             </div>
-            <div className='col-span-2 lg:col-span-1 flex flex-col  w-full lg:pt-[155px] gap-4 lg:gap-8'>
+            <div className='col-span-2 lg:col-span-1 flex flex-col  w-full md:pt-[20px] gap-4 lg:gap-8'>
               {data &&
                 data?.data?.post?.images?.length > 0 &&
                 Array(data?.data?.post?.images?.length)

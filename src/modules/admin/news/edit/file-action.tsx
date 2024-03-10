@@ -7,7 +7,6 @@ import { toast } from 'sonner';
 
 import { useDeletePhoto, usePutPhoto } from '@/hooks/photos/hook';
 
-import { LoadingSpinner } from '@/components/loading-spinner';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -53,8 +52,6 @@ const FilePreview = (props: TFileActionProps) => {
       },
       {
         onSuccess: () => {
-          setOpen(false);
-          setFile(null);
           toast.success('Photo updated successfully');
           queryClient.invalidateQueries({
             queryKey: [props.invalidateQueryName as string],
@@ -65,12 +62,17 @@ const FilePreview = (props: TFileActionProps) => {
         },
       }
     );
+    setOpen(false);
+    setFile(null);
   };
 
   const handleDeletePhoto = () => {
     mutateDelete(props?.payload?.photo_id as number, {
       onSuccess: () => {
         toast.success('Photo deleted successfully');
+        queryClient.invalidateQueries({
+          queryKey: [props.invalidateQueryName as string],
+        });
       },
       onError: (error) => {
         toast.error(error.response?.data.message || 'Failed to delete photo');
@@ -144,11 +146,19 @@ const FilePreview = (props: TFileActionProps) => {
               onClick={handleDeletePhoto}
               className='p-1 bg-white rounded-full cursor-pointer'
             >
-              <FaRegTrashAlt className='text-error-main' size={20} />
+              {statusDelete === 'pending' ? (
+                <div className='animate-spin w-5 h-5 mr-3 bg-neutral-50'></div>
+              ) : (
+                <FaRegTrashAlt className='text-error-main' size={20} />
+              )}
             </button>
           )}
 
-          {statusDelete === 'pending' && <LoadingSpinner />}
+          {/* {statusDelete === 'pending' && (
+            <div className='min-h-screen'>
+              <LoadingSpinner />
+            </div>
+          )} */}
         </div>
       </div>
     </div>
