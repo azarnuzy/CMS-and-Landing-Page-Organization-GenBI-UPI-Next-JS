@@ -5,6 +5,7 @@ import { FaRegTrashAlt } from 'react-icons/fa';
 import { MdOutlineEdit } from 'react-icons/md';
 import { toast } from 'sonner';
 
+import { ACCEPTED_MEDIA_TYPES } from '@/lib/validations/news';
 import { useDeletePhoto, usePutPhoto } from '@/hooks/photos/hook';
 
 import MiniSpinner from '@/components/spinner';
@@ -84,16 +85,23 @@ const FilePreview = (props: TFileActionProps) => {
   return (
     <div className='relative w-full max-w-[400px]'>
       <div className='m-2 w-full'>
-        <div className='relative mx-auto w-full h-40 overflow-hidden rounded-lg shadow-md'>
-          <Image
-            src={props.url || '/images/no-photo-available.png'}
-            alt='image'
-            width={0}
-            height={0}
-            sizes='100vw'
-            className='object-cover w-full h-full'
-          />
-        </div>
+        {ACCEPTED_MEDIA_TYPES.includes(props.typeFile as string) ? (
+          <div className='relative mx-auto w-full h-40 overflow-hidden rounded-lg shadow-md'>
+            <Image
+              src={props.url || '/images/no-photo-available.png'}
+              alt='image'
+              width={0}
+              height={0}
+              sizes='100vw'
+              className='object-cover w-full h-full'
+            />
+          </div>
+        ) : (
+          <div className='relative mx-auto w-full p-2 overflow-hidden rounded-lg shadow-md '>
+            <p className='max-w-[80%] text-ellipsis'> {props.nameFile}</p>
+          </div>
+        )}
+
         <div className='max-h-content flex gap-4 items-center absolute top-2 right-2'>
           <Dialog open={open} onOpenChange={setOpen}>
             <label htmlFor='input-edit' className='cursor-pointer'>

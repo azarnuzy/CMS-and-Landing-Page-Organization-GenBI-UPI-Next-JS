@@ -1,14 +1,14 @@
 import { TPutPostData } from '@/types/posts/crud';
 
 export interface TPhotoPayload {
-  caption: string;
+  caption?: string;
   post_id: number | undefined;
   photo_id: number | undefined;
   category: string;
 }
 
 export interface TPutPhotoPayload {
-  caption: string;
+  caption?: string;
   category: string;
   featured: boolean;
   post_id: number | undefined;
@@ -17,6 +17,8 @@ export interface TPutPhotoPayload {
 
 export interface TFileActionProps {
   url: string;
+  nameFile?: string;
+  typeFile?: string;
   isEdit?: boolean;
   isRemove?: boolean;
   handleEdit?: () => void;

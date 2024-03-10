@@ -20,7 +20,6 @@ import {
   usePutPost,
 } from '@/hooks/posts/hook';
 
-import { DraggableImageInput } from '@/components/input/draggable-input';
 import InputTag from '@/components/input/tag';
 import { Button } from '@/components/ui/button';
 import {
@@ -99,7 +98,9 @@ const FormEditNewsSection = ({ id }: { id: string }) => {
   );
   const [, setThumbnailName] = useState<string>('');
   const [otherPhoto, setOtherPhoto] = useState<File | null>(null);
+  const [docs, setDocs] = useState<File | null>(null);
   const [isAddPhoto, setIsAddPhoto] = useState(false);
+  const [isAddDocs, setIsAddDocs] = useState(false);
   const [captionOtherPhoto, setCaptionOtherPhoto] = useState('');
 
   const [, setTags] = useRecoilState(inputTagState);
@@ -132,6 +133,13 @@ const FormEditNewsSection = ({ id }: { id: string }) => {
       setOtherPhoto(fileList[0]);
     }
     setIsAddPhoto(true);
+  };
+  const handleAddDocs = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const fileList = event.target.files;
+    if (fileList && fileList.length > 0) {
+      setDocs(fileList[0]);
+    }
+    setIsAddDocs(true);
   };
 
   const onSubmit = (data: z.infer<typeof ValidationSchemaPutNewsForm>) => {
@@ -416,6 +424,7 @@ const FormEditNewsSection = ({ id }: { id: string }) => {
                       category: 'post_cover_image',
                     }}
                     invalidateQueryName='get-detail-post'
+                    typeFile='image/jpeg'
                   />
                 )}
             </div>
@@ -439,7 +448,7 @@ const FormEditNewsSection = ({ id }: { id: string }) => {
             </div>
             <div className='col-span-2 lg:col-span-1'>
               <div className='flex justify-between w-full'>
-                <Label htmlFor='other'>Foto Lainnya (Maksimal 5)</Label>
+                <Label htmlFor='other'>Other Photos (Maximum 5)</Label>
                 <label
                   htmlFor='other-photo'
                   className='cursor-pointer text-primary-main flex items-center gap-2'
@@ -481,7 +490,7 @@ const FormEditNewsSection = ({ id }: { id: string }) => {
                         </div>
                       </div>
                     </div>
-                    <Label>Caption Tambah Foto Lainnya</Label>
+                    <Label>Caption Add Other Photo</Label>
                     <Input
                       placeholder='Input Caption Thumbnail'
                       onChange={onChangeAddCaptionOther}
@@ -503,12 +512,10 @@ const FormEditNewsSection = ({ id }: { id: string }) => {
                                 refetch();
                                 setIsAddPhoto(false);
                                 setOtherPhoto(null);
-                                toast.success(
-                                  'Berhasil menambahkan foto lainnya'
-                                );
+                                toast.success('Success add other photo');
                               },
                               onError: () => {
-                                toast.error('Gagal menambahkan foto lainnya');
+                                toast.error('Fail add other photo');
                               },
                             }
                           );
@@ -522,7 +529,7 @@ const FormEditNewsSection = ({ id }: { id: string }) => {
                           Loading...
                         </div>
                       ) : (
-                        'Tambah Foto Lainnya'
+                        'Add Other Photo'
                       )}
                     </Button>
                   </>
@@ -564,7 +571,7 @@ const FormEditNewsSection = ({ id }: { id: string }) => {
                         render={({ field }) => (
                           <FormItem>
                             <FormLabel>
-                              Caption Foto Lainnya {index + 1}
+                              Caption Other Photo {index + 1}
                             </FormLabel>
                             <FormControl>
                               <Input
@@ -582,38 +589,95 @@ const FormEditNewsSection = ({ id }: { id: string }) => {
                   ))}
             </div>
             <div className='col-span-2 lg:col-span-1'>
-              <Label htmlFor='attachment'>Dokumen Lainnya</Label>
-              <DraggableImageInput
-                className='border-none min-h-[75px]'
-                name='attachment'
-                variant='lg'
-                control={form.control}
-                status={form.formState.errors.attachment ? 'error' : undefined}
-              />
-              {form.formState.errors.attachment &&
-                typeof form.formState.errors.attachment.message ===
-                  'string' && (
-                  <span className='text-red-700 text-xs'>
-                    {form.formState.errors.attachment.message}
-                  </span>
-                )}
+              <div className='flex justify-between w-full'>
+                <Label htmlFor='other'>Other Documents </Label>
+                <label
+                  htmlFor='other-docs'
+                  className='cursor-pointer text-primary-main flex items-center gap-2'
+                >
+                  <input
+                    type='file'
+                    hidden
+                    id='other-docs'
+                    onChange={handleAddDocs}
+                    className='hidden'
+                  />
+                  <span>Add Other Documents</span>
+                  <IoMdAddCircle className='text-primary-main' size={20} />
+                </label>
+              </div>
               <div className='flex flex-col gap-4'>
-                {data &&
-                  data?.data?.post?.attachments?.length > 0 &&
-                  data?.data?.post?.attachments.map((item, index) => (
-                    <div
-                      key={index}
-                      className='m-2 w-full relative max-w-[400px]'
-                    >
+                {isAddDocs && (
+                  <>
+                    <div className='m-2 w-full max-w-[400px]'>
                       <div className='relative mx-auto w-full p-2 overflow-hidden rounded-lg shadow-md '>
-                        <p> {item?.file_name}</p>
+                        <p> {docs?.name}</p>
                       </div>
                       <div
-                        //  onClick={() => removeFile(index)}
+                        onClick={() => {
+                          setIsAddDocs(false);
+                          setDocs(null);
+                        }}
                         className='absolute top-2 right-2 p-1 bg-white rounded-full cursor-pointer'
                       >
                         <AiOutlineCloseCircle color='#e63a3a' size={20} />
                       </div>
+                    </div>
+                    <Button
+                      type='button'
+                      onClick={() => {
+                        if (docs) {
+                          mutateAddPhoto(
+                            {
+                              file: docs,
+                              category: 'post_cover_image',
+                              featured: false,
+                              post_id: data?.data?.post?.id,
+                            },
+                            {
+                              onSuccess: () => {
+                                refetch();
+                                setIsAddDocs(false);
+                                setDocs(null);
+                                toast.success('Success add other documents');
+                              },
+                              onError: () => {
+                                toast.error('Fail add other documents');
+                              },
+                            }
+                          );
+                        }
+                      }}
+                      className='rounded-full text-white px-6 py-2.5 font-semibold border-primary-main bg-primary-main hover:bg-primary-dark transition-colors duration-200 ease-in-out'
+                    >
+                      {statusAddPhoto === 'pending' ? (
+                        <div className='flex justify-center gap-2 items-center'>
+                          <MiniSpinner />
+                          Loading...
+                        </div>
+                      ) : (
+                        'Add Other Document'
+                      )}
+                    </Button>
+                  </>
+                )}
+                {data &&
+                  data?.data?.post?.attachments?.length > 0 &&
+                  data?.data?.post?.attachments.map((item, index) => (
+                    <div key={index} className='relative w-full max-w-[400px]'>
+                      <FilePreview
+                        url={item.file_url}
+                        isEdit={true}
+                        isRemove={true}
+                        payload={{
+                          photo_id: item.id,
+                          post_id: data?.data?.post?.id,
+                          category: 'post_other_image',
+                        }}
+                        invalidateQueryName='get-detail-post'
+                        nameFile={item.file_name}
+                        typeFile='application/pdf'
+                      />
                     </div>
                   ))}
               </div>
@@ -626,7 +690,7 @@ const FormEditNewsSection = ({ id }: { id: string }) => {
               variant='outline'
               className='border-primary-main rounded-full text-primary-main px-6 py-2.5 font-semibold '
             >
-              <Link href='/admin/news'>Batal</Link>
+              <Link href='/admin/news'>Cancel</Link>
             </Button>
             <div className='flex justify-end'>
               <Button
@@ -634,7 +698,7 @@ const FormEditNewsSection = ({ id }: { id: string }) => {
                 disabled={status === 'pending'}
                 className='disabled:bg-neutral-300 disabled:border-neutral-300 rounded-full text-white px-6 py-2.5 font-semibold border-primary-main bg-primary-main hover:bg-primary-dark transition-colors duration-200 ease-in-out'
               >
-                {status === 'pending' ? 'Loading...' : 'Simpan'}
+                {status === 'pending' ? 'Loading...' : 'Submit'}
               </Button>
             </div>
           </div>
