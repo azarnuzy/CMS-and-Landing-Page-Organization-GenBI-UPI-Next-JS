@@ -12,7 +12,6 @@ import {
   getDetailPost,
   getPostTypes,
   getSearchPost,
-  putPostPhotoRequest,
   putPostRequest,
   updateVisitorPost,
 } from '@/hooks/posts/request';
@@ -27,10 +26,8 @@ import {
 import {
   TAddPostPayload,
   TDataAddPostResponse,
-  TDataPutPostPhotoResponse,
   TDataPutPostResponse,
   TPutPostPayload,
-  TPutPostPhotoPayload,
 } from '@/types/posts/crud';
 
 export const useGetAllPost = ({
@@ -147,33 +144,6 @@ export const usePutPost = (): UseMutationResult<
       id: number;
     }) => {
       const response = await putPostRequest({ payload, id });
-      if (!response) {
-        throw new Error('Invalid response');
-      }
-      return response;
-    },
-  });
-};
-
-export const usePutPhotoPost = (): UseMutationResult<
-  TDataPutPostPhotoResponse,
-  TMetaErrorResponse,
-  { payload: TPutPostPhotoPayload; id: number }
-> => {
-  return useMutation<
-    TDataPutPostPhotoResponse,
-    TMetaErrorResponse,
-    { payload: TPutPostPhotoPayload; id: number }
-  >({
-    mutationKey: ['put-post-photo'],
-    mutationFn: async ({
-      payload,
-      id,
-    }: {
-      payload: TPutPostPhotoPayload;
-      id: number;
-    }) => {
-      const response = await putPostPhotoRequest({ payload, id });
       if (!response) {
         throw new Error('Invalid response');
       }

@@ -1,5 +1,3 @@
-import { serialize } from 'object-to-formdata';
-
 import { api } from '@/lib/api';
 
 import {
@@ -13,10 +11,8 @@ import {
 import {
   TAddPostPayload,
   TDataAddPostResponse,
-  TDataPutPostPhotoResponse,
   TDataPutPostResponse,
   TPutPostPayload,
-  TPutPostPhotoPayload,
 } from '@/types/posts/crud';
 
 export const getAllPost = async (
@@ -112,25 +108,6 @@ export const putPostRequest = async ({
   id: number;
 }): Promise<TDataPutPostResponse> => {
   const { data } = await api.put(`v1/posts/${id}`, payload);
-
-  return data;
-};
-
-export const putPostPhotoRequest = async ({
-  payload,
-  id,
-}: {
-  payload: TPutPostPhotoPayload;
-  id: number;
-}): Promise<TDataPutPostPhotoResponse | undefined> => {
-  const { data } = await api({
-    method: 'put',
-    url: `v1/photos/${id}`,
-    headers: {
-      'Content-Type': 'multipart/form-data',
-    },
-    data: serialize(payload),
-  });
 
   return data;
 };

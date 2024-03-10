@@ -17,13 +17,11 @@ import { useGetEventOptions } from '@/hooks/events/hook';
 import {
   useGetDetailPost,
   useGetPostTypes,
-  usePutPhotoPost,
   usePutPost,
 } from '@/hooks/posts/hook';
 
 import { DraggableImageInput } from '@/components/input/draggable-input';
 import InputTag from '@/components/input/tag';
-import { UploadField } from '@/components/input/upload-file';
 import { Button } from '@/components/ui/button';
 import {
   Command,
@@ -77,12 +75,13 @@ import { useGetUserOptions } from '@/hooks/users/hook';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
 import { usersGetOptionParams } from '@/modules/admin/news/add/constant';
+import FilePreview from '@/modules/admin/news/edit/file-action';
 import { postAdminDetailDataState } from '@/recoils/admin/news/atom';
 
 import { TUserOptionsData } from '@/types/users';
 
 const FormEditNewsSection = ({ id }: { id: string }) => {
-  const { data } = useGetDetailPost({ id: Number(id) });
+  const { data, refetch } = useGetDetailPost({ id: Number(id) });
   const { data: dataDepartmentOption } = useGetOptionDepartments();
   const { data: dataPostType } = useGetPostTypes();
   const { data: dataUser } = useGetUserOptions(usersGetOptionParams);
@@ -95,13 +94,12 @@ const FormEditNewsSection = ({ id }: { id: string }) => {
   const [editorState, setEditorState] = useState<EditorState>(
     EditorState.createEmpty()
   );
-  const [getThumbnailName, setThumbnailName] = useState<string>('');
+  const [, setThumbnailName] = useState<string>('');
 
   const [, setTags] = useRecoilState(inputTagState);
   const [, setDataDetail] = useRecoilState(postAdminDetailDataState);
 
   const { mutate, status } = usePutPost();
-  const { status: photoStatus } = usePutPhotoPost();
 
   const handleEditorChange = useCallback(
     (editorState: EditorState) => {
@@ -119,11 +117,9 @@ const FormEditNewsSection = ({ id }: { id: string }) => {
     [form]
   );
 
-  // const otherPhotoLength = form.watch('other')?.length;
   const coverData = form.watch('cover');
 
   const onSubmit = (data: z.infer<typeof ValidationSchemaPutNewsForm>) => {
-    toast.success(`Berhasil menambahkan berita ${data.title}`);
     try {
       const payloadPost = putPayloadPost(data);
 
@@ -132,6 +128,7 @@ const FormEditNewsSection = ({ id }: { id: string }) => {
         {
           onSuccess: () => {
             toast.success(`Berhasil mengubah data ${data.title}`);
+            refetch();
           },
         }
       );
@@ -142,7 +139,11 @@ const FormEditNewsSection = ({ id }: { id: string }) => {
 
   useEffect(() => {
     if (data) {
-      setTags(data?.data?.post?.tags.filter((_, index) => index > 1));
+      setTags(
+        data?.data?.post?.tags.filter(
+          (item, index) => index > 0 && item !== null
+        )
+      );
       setDataDetail(data?.data);
       setThumbnailName(data.data.post.image_cover.alt);
       const contentState = stateFromHTML(data.data.post.content);
@@ -379,46 +380,20 @@ const FormEditNewsSection = ({ id }: { id: string }) => {
               >
                 Thumbnail <span className='text-error-main'>*</span>
               </FormLabel>
-              <UploadField
-                getname={getThumbnailName}
-                setname={setThumbnailName}
-                control={form.control}
-                name='cover'
-                accepted='.jpg, .jpeg, .png'
-                variant='sm'
-                message={form?.formState?.errors?.cover?.message?.toString()}
-                status={form?.formState?.errors?.cover ? 'error' : 'none'}
-              />
+
               {coverData === undefined &&
                 data?.data?.post?.image_cover?.file_url && (
-                  <div className='relative w-full max-w-[400px]'>
-                    <div className='m-2 w-full'>
-                      <div className='relative mx-auto w-full h-40 overflow-hidden rounded-lg shadow-md'>
-                        <Image
-                          src={
-                            data?.data?.post?.image_cover?.file_url ||
-                            '/images/no-photo-available.png'
-                          }
-                          alt='image'
-                          width={0}
-                          height={0}
-                          sizes='100vw'
-                          fill={true}
-                          className='object-cover w-full h-full'
-                        />
-                      </div>
-                      <div
-                        // onClick={() => removeFile()}
-                        className='absolute top-2 right-2 p-1 bg-white rounded-full cursor-pointer'
-                      >
-                        <AiOutlineCloseCircle
-                          color='#e63a3a'
-                          className='text-error-main'
-                          size={20}
-                        />
-                      </div>
-                    </div>
-                  </div>
+                  <FilePreview
+                    url={data?.data?.post?.image_cover?.file_url}
+                    isEdit={true}
+                    isRemove={false}
+                    payload={{
+                      caption: data?.data?.post?.image_cover?.caption || '',
+                      photo_id: data?.data?.post?.image_cover?.id,
+                      post_id: data?.data?.post?.id,
+                    }}
+                    invalidateQueryName='get-detail-post'
+                  />
                 )}
             </div>
             <div className='col-span-2 lg:col-span-1'>
@@ -463,8 +438,7 @@ const FormEditNewsSection = ({ id }: { id: string }) => {
                             alt='image'
                             width={0}
                             height={0}
-                            sizes='100vw'
-                            fill={true}
+                            sizes='50vw'
                             className='object-cover w-full h-full'
                           />
                         </div>
@@ -569,7 +543,7 @@ const FormEditNewsSection = ({ id }: { id: string }) => {
             <div className='flex justify-end'>
               <Button
                 type='submit'
-                disabled={status === 'pending' || photoStatus === 'pending'}
+                disabled={status === 'pending'}
                 className='disabled:bg-neutral-300 disabled:border-neutral-300 rounded-full text-white px-6 py-2.5 font-semibold border-primary-main bg-primary-main hover:bg-primary-dark transition-colors duration-200 ease-in-out'
               >
                 {status === 'pending' ? 'Loading...' : 'Simpan'}

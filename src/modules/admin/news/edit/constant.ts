@@ -3,6 +3,7 @@ import { z } from 'zod';
 import logger from '@/lib/logger';
 import { ValidationSchemaAddNewsForm } from '@/lib/validations/news';
 
+import { TPhotoPayload } from '@/types/photos';
 import { TPostDetailData } from '@/types/posts';
 import { TPutFileData, TPutPostPayload } from '@/types/posts/crud';
 
@@ -99,3 +100,12 @@ export function createFormDataPutPostPayload({
 
   return formData;
 }
+
+export const photoPayload = (data: TPhotoPayload) => {
+  return {
+    caption: data?.caption || '',
+    category: 'awardee_photo',
+    featured: false,
+    post_id: Number(data?.post_id),
+  };
+};

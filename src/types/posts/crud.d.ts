@@ -86,14 +86,6 @@ export interface TPutPostPayload {
   tags?: string[];
 }
 
-export interface TPutPostPhotoPayload {
-  file: File;
-  caption: string;
-  category: string;
-  featured: boolean;
-  post_id: number | undefined;
-}
-
 export interface TPutPostData {
   id: string;
 }
@@ -122,4 +114,3 @@ export interface TDataPhotoNewsState {
 export type TDataAddPostResponse = TMetaResponseSingle<TAddPostResponse>;
 export type TDataGetPostTypeResponse = TMetaResponse<Array<string>>;
 export type TDataPutPostResponse = TMetaResponseSingle<TPutPostData>;
-export type TDataPutPostPhotoResponse = TMetaResponseSingle<TPutPostData>;
