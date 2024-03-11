@@ -43,7 +43,7 @@ const Sidebar: FC = () => {
             } pb-[10px] flex gap-4 items-center justify-between`}
           >
             {!isMinimize ? (
-              <div className='flex gap-4 items-center'>
+              <Link href='/' className='flex gap-4 items-center'>
                 <Image
                   alt='Logo BI'
                   src='/images/logo-bi.png'
@@ -59,7 +59,7 @@ const Sidebar: FC = () => {
                 <p className='text-xl font-bold text-white hidden xl:block'>
                   GenBI UPI
                 </p>
-              </div>
+              </Link>
             ) : (
               <></>
             )}

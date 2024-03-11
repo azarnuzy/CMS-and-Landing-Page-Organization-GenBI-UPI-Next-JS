@@ -190,12 +190,6 @@ const ContentNewsManagementSection = () => {
                       {news.department_name}
                     </div>
                   </TableCell>
-                  {/* <TableCell>
-                  <Avatar className='w-10 h-10'>
-                    <AvatarImage src={news.} />
-                    <AvatarFallback>CN</AvatarFallback>
-                  </Avatar>
-                </TableCell> */}
                   <TableCell>{news.visitors}</TableCell>
                   <TableCell className='flex gap-2 h-full '>
                     <Link href={`/admin/news/edit/${news.id}`}>

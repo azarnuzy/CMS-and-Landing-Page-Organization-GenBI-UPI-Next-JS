@@ -1,10 +1,13 @@
 'use client';
 
-import { User } from 'lucide-react';
+import { Home } from 'lucide-react';
+import Link from 'next/link';
 import { signOut } from 'next-auth/react';
 import React from 'react';
 import { LuLogOut } from 'react-icons/lu';
 import { useRecoilState } from 'recoil';
+
+import { useGetWhoAmI } from '@/hooks/auth/hook';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
@@ -19,7 +22,7 @@ import { sidebarMinimizeState } from '@/recoils/sidebar/atom';
 
 const NavbarAdmin = () => {
   const [isMinimize] = useRecoilState(sidebarMinimizeState);
-
+  const { data } = useGetWhoAmI();
   return (
     <div
       className={`${
@@ -29,28 +32,36 @@ const NavbarAdmin = () => {
       <div className=''></div>
       <div className='flex justify-end gap-4'>
         <Badge className='bg-error-300 hover:bg-error-400 border-error-400 py-1 px-4 text-sm'>
-          Admin
+          {data?.data?.awardee?.department || 'Admin'}
         </Badge>
         <Menubar>
           <MenubarMenu>
             <MenubarTrigger className='cursor-pointer'>
               <Avatar className='w-10 h-10'>
-                <AvatarImage src='/images/profile-no-photo.png' />
+                <AvatarImage
+                  src={
+                    data?.data?.awardee?.photo?.file_url ||
+                    '/images/profile-no-photo.png'
+                  }
+                  className='bg-white'
+                />
                 <AvatarFallback>CN</AvatarFallback>
               </Avatar>
             </MenubarTrigger>
             <MenubarContent>
               <div className='p-4 flex flex-col bg-primary-main'>
                 <p className='font-semibold text-neutral-100'>
-                  Nadira Arevia Hermawan
+                  {data?.data?.awardee?.name || 'Admin'}
                 </p>
-                <p className=' text-neutral-100 text-sm'>@nadiraarevia</p>
+                <p className=' text-neutral-100 text-sm'>
+                  {data?.data?.username || '@admin123'}
+                </p>
               </div>
               <div className='py-2 px-4 flex flex-col'>
-                <div className='flex gap-2 items-center py-2'>
-                  <User className='w-4 h-4 text-primary-900' />{' '}
-                  <p className='text-primary-900'>Profile</p>
-                </div>
+                <Link href='/' className='flex gap-2 items-center py-2'>
+                  <Home className='w-4 h-4 text-primary-900' />{' '}
+                  <p className='text-primary-900'>Home</p>
+                </Link>
                 <div
                   className='flex gap-2 items-center py-2 cursor-pointer'
                   onClick={() => {

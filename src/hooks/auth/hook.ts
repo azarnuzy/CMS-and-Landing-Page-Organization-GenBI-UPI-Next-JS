@@ -1,9 +1,19 @@
-import { useMutation, UseMutationResult } from '@tanstack/react-query';
+import {
+  useMutation,
+  UseMutationResult,
+  useQuery,
+  UseQueryResult,
+} from '@tanstack/react-query';
+import { useSession } from 'next-auth/react';
 
-import { loginRequest } from '@/hooks/auth/request';
+import { getWhoAmI, loginRequest } from '@/hooks/auth/request';
 
 import { TMetaErrorResponse } from '@/types';
-import { TDataLoginResponse, TLoginPayload } from '@/types/auth';
+import {
+  TDataLoginResponse,
+  TDataWhoAmIResponse,
+  TLoginPayload,
+} from '@/types/auth';
 
 export const useLogin = (): UseMutationResult<
   TDataLoginResponse,
@@ -19,5 +29,17 @@ export const useLogin = (): UseMutationResult<
       }
       return response;
     },
+  });
+};
+
+export const useGetWhoAmI = (): UseQueryResult<
+  TDataWhoAmIResponse,
+  TMetaErrorResponse
+> => {
+  const { data: session } = useSession();
+  return useQuery({
+    enabled: !!session,
+    queryKey: ['get-who-am-i'],
+    queryFn: async () => await getWhoAmI(),
   });
 };
