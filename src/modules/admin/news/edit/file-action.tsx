@@ -6,6 +6,7 @@ import { MdOutlineEdit } from 'react-icons/md';
 import { toast } from 'sonner';
 
 import { ACCEPTED_MEDIA_TYPES } from '@/lib/validations/news';
+import { useDeleteDocument, usePutDocument } from '@/hooks/documents/hook';
 import { useDeletePhoto, usePutPhoto } from '@/hooks/photos/hook';
 
 import MiniSpinner from '@/components/spinner';
@@ -27,6 +28,9 @@ const FilePreview = (props: TFileActionProps) => {
 
   const { mutate, status } = usePutPhoto();
   const { mutate: mutateDelete, status: statusDelete } = useDeletePhoto();
+  const { mutate: mutateDocument, status: statusDocument } = usePutDocument();
+  const { mutate: mutateDeleteDocument, status: statusDeleteDocument } =
+    useDeleteDocument();
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const fileList = event.target.files;
@@ -40,46 +44,87 @@ const FilePreview = (props: TFileActionProps) => {
 
   const handleEditPhoto = () => {
     const { payload } = props;
-
-    mutate(
-      {
-        id: payload?.photo_id as number,
-        payload: {
-          caption: payload?.caption || '',
-          category: payload?.category || '',
-          featured: false,
-          post_id: Number(payload?.post_id),
-          file: file as File,
-        },
-      },
-      {
-        onSuccess: () => {
-          toast.success('Photo updated successfully');
-          queryClient.invalidateQueries({
-            queryKey: [props.invalidateQueryName as string],
-          });
-        },
-        onError: (error) => {
-          toast.error(error.response?.data.message || 'Failed to update photo');
-        },
-      }
-    );
+    ACCEPTED_MEDIA_TYPES.includes(props.typeFile as string)
+      ? mutate(
+          {
+            id: payload?.photo_id as number,
+            payload: {
+              caption: payload?.caption || '',
+              category: payload?.category || '',
+              featured: false,
+              post_id: Number(payload?.post_id),
+              file: file as File,
+            },
+          },
+          {
+            onSuccess: () => {
+              toast.success('Photo updated successfully');
+              queryClient.invalidateQueries({
+                queryKey: [props.invalidateQueryName as string],
+              });
+            },
+            onError: (error) => {
+              toast.error(
+                error.response?.data.message || 'Failed to update photo'
+              );
+            },
+          }
+        )
+      : mutateDocument(
+          {
+            id: payload?.photo_id as number,
+            payload: {
+              file: file as File,
+              category: payload?.category || '',
+              post_id: Number(payload?.post_id),
+            },
+          },
+          {
+            onSuccess: () => {
+              toast.success('Document updated successfully');
+              queryClient.invalidateQueries({
+                queryKey: [props.invalidateQueryName as string],
+              });
+            },
+            onError: (error) => {
+              toast.error(
+                error.response?.data.message || 'Failed to update document'
+              );
+            },
+          }
+        );
     setOpen(false);
     setFile(null);
   };
 
   const handleDeletePhoto = () => {
-    mutateDelete(props?.payload?.photo_id as number, {
-      onSuccess: () => {
-        toast.success('Photo deleted successfully');
-        queryClient.invalidateQueries({
-          queryKey: [props.invalidateQueryName as string],
+    ACCEPTED_MEDIA_TYPES.includes(props.typeFile as string)
+      ? mutateDelete(props?.payload?.photo_id as number, {
+          onSuccess: () => {
+            toast.success('Photo deleted successfully');
+            queryClient.invalidateQueries({
+              queryKey: [props.invalidateQueryName as string],
+            });
+          },
+          onError: (error) => {
+            toast.error(
+              error.response?.data.message || 'Failed to delete photo'
+            );
+          },
+        })
+      : mutateDeleteDocument(props?.payload?.photo_id as number, {
+          onSuccess: () => {
+            toast.success('Document deleted successfully');
+            queryClient.invalidateQueries({
+              queryKey: [props.invalidateQueryName as string],
+            });
+          },
+          onError: (error) => {
+            toast.error(
+              error.response?.data.message || 'Failed to delete document'
+            );
+          },
         });
-      },
-      onError: (error) => {
-        toast.error(error.response?.data.message || 'Failed to delete photo');
-      },
-    });
   };
 
   return (
@@ -143,7 +188,9 @@ const FilePreview = (props: TFileActionProps) => {
                       </Button>
                     </DialogClose>
                     <Button type='button' onClick={handleEditPhoto}>
-                      {status === 'pending' ? 'Loading...' : 'Edit'}
+                      {status === 'pending' || statusDocument === 'pending'
+                        ? 'Loading...'
+                        : 'Edit'}
                     </Button>
                   </div>
                 </DialogFooter>
@@ -155,7 +202,8 @@ const FilePreview = (props: TFileActionProps) => {
               onClick={handleDeletePhoto}
               className='p-1 bg-white rounded-full cursor-pointer flex justify-center'
             >
-              {statusDelete === 'pending' ? (
+              {statusDelete === 'pending' ||
+              statusDeleteDocument === 'pending' ? (
                 <div className='flex justify-center w-full'>
                   <MiniSpinner />
                 </div>

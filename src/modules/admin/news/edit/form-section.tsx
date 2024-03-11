@@ -70,6 +70,7 @@ import { AiOutlineCloseCircle } from 'react-icons/ai';
 import { IoMdAddCircle } from 'react-icons/io';
 
 import { cn } from '@/lib/utils';
+import { useAddDocument } from '@/hooks/documents/hook';
 import { useAddPhoto } from '@/hooks/photos/hook';
 import { useGetUserOptions } from '@/hooks/users/hook';
 
@@ -108,6 +109,8 @@ const FormEditNewsSection = ({ id }: { id: string }) => {
 
   const { mutate, status } = usePutPost();
   const { mutate: mutateAddPhoto, status: statusAddPhoto } = useAddPhoto();
+  const { mutate: mutateAddDocument, status: statusAddDocument } =
+    useAddDocument();
 
   const handleEditorChange = useCallback(
     (editorState: EditorState) => {
@@ -549,6 +552,7 @@ const FormEditNewsSection = ({ id }: { id: string }) => {
                           category: 'post_other_image',
                         }}
                         invalidateQueryName='get-detail-post'
+                        typeFile='image/jpeg'
                       />
                     </div>
                   ))}
@@ -612,27 +616,26 @@ const FormEditNewsSection = ({ id }: { id: string }) => {
                     <div className='m-2 w-full max-w-[400px]'>
                       <div className='relative mx-auto w-full p-2 overflow-hidden rounded-lg shadow-md '>
                         <p> {docs?.name}</p>
-                      </div>
-                      <div
-                        onClick={() => {
-                          setIsAddDocs(false);
-                          setDocs(null);
-                        }}
-                        className='absolute top-2 right-2 p-1 bg-white rounded-full cursor-pointer'
-                      >
-                        <AiOutlineCloseCircle color='#e63a3a' size={20} />
+                        <div
+                          onClick={() => {
+                            setIsAddDocs(false);
+                            setDocs(null);
+                          }}
+                          className='absolute top-2 right-2 p-1 bg-white rounded-full cursor-pointer'
+                        >
+                          <AiOutlineCloseCircle color='#e63a3a' size={20} />
+                        </div>
                       </div>
                     </div>
                     <Button
                       type='button'
                       onClick={() => {
                         if (docs) {
-                          mutateAddPhoto(
+                          mutateAddDocument(
                             {
                               file: docs,
-                              category: 'post_cover_image',
-                              featured: false,
-                              post_id: data?.data?.post?.id,
+                              category: 'post_attachment',
+                              post_id: data?.data?.post?.id as number,
                             },
                             {
                               onSuccess: () => {
@@ -650,7 +653,7 @@ const FormEditNewsSection = ({ id }: { id: string }) => {
                       }}
                       className='rounded-full text-white px-6 py-2.5 font-semibold border-primary-main bg-primary-main hover:bg-primary-dark transition-colors duration-200 ease-in-out'
                     >
-                      {statusAddPhoto === 'pending' ? (
+                      {statusAddDocument === 'pending' ? (
                         <div className='flex justify-center gap-2 items-center'>
                           <MiniSpinner />
                           Loading...
@@ -672,7 +675,7 @@ const FormEditNewsSection = ({ id }: { id: string }) => {
                         payload={{
                           photo_id: item.id,
                           post_id: data?.data?.post?.id,
-                          category: 'post_other_image',
+                          category: 'post_attachment',
                         }}
                         invalidateQueryName='get-detail-post'
                         nameFile={item.file_name}
