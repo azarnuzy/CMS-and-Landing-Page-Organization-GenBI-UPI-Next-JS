@@ -5,9 +5,7 @@ import Link from 'next/link';
 import React, { FC } from 'react';
 import { BiMenu, BiSolidBookAlt } from 'react-icons/bi';
 import { BiMenuAltRight } from 'react-icons/bi';
-import { FaCalendarCheck, FaLayerGroup, FaRegUser } from 'react-icons/fa6';
 import { HiMiniUsers } from 'react-icons/hi2';
-import { RiHome6Fill } from 'react-icons/ri';
 import { useRecoilState } from 'recoil';
 
 import './index.css';
@@ -139,11 +137,11 @@ const dataSideBar = [
   {
     title: '',
     children: [
-      {
-        title: 'Dashboard',
-        link: '/admin',
-        icon: <RiHome6Fill className='w-6 h-6  text-white' />,
-      },
+      // {
+      //   title: 'Dashboard',
+      //   link: '/admin',
+      //   icon: <RiHome6Fill className='w-6 h-6  text-white' />,
+      // },
       // {
       //   title: 'Scholarship Registration',
       //   link: '/admin',
@@ -164,21 +162,21 @@ const dataSideBar = [
         link: '/admin/news',
         icon: <BiSolidBookAlt className='w-6 h-6  text-white' />,
       },
-      {
-        title: 'Event',
-        link: '/admin',
-        icon: <FaCalendarCheck className='w-6 h-6  text-white' />,
-      },
-      {
-        title: 'Role',
-        link: '/admin',
-        icon: <FaRegUser className='w-6 h-6  text-white' />,
-      },
-      {
-        title: 'Department',
-        link: '/admin/department',
-        icon: <FaLayerGroup className='w-6 h-6  text-white' />,
-      },
+      // {
+      //   title: 'Event',
+      //   link: '/admin',
+      //   icon: <FaCalendarCheck className='w-6 h-6  text-white' />,
+      // },
+      // {
+      //   title: 'Role',
+      //   link: '/admin',
+      //   icon: <FaRegUser className='w-6 h-6  text-white' />,
+      // },
+      // {
+      //   title: 'Department',
+      //   link: '/admin/department',
+      //   icon: <FaLayerGroup className='w-6 h-6  text-white' />,
+      // },
     ],
   },
 ];
