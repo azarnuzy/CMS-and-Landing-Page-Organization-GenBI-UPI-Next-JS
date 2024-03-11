@@ -86,7 +86,7 @@ const GallerySection = () => {
                         <h4>{gallery?.caption}</h4>
                       </div>
                     </DialogTrigger>
-                    <DialogContent className='max-h-[90vh] flex items-center  '>
+                    <DialogContent className='max-h-[90vh] flex items-center  justify-center'>
                       <DialogHeader>
                         <DialogTitle>{gallery.caption}</DialogTitle>
                         <DialogDescription>

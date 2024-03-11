@@ -137,7 +137,7 @@ const Navbar = () => {
               </Link>
             </div>
             {data ? (
-              <div className='flex justify-end gap-4'>
+              <div className='sm:flex justify-end gap-4 hidden '>
                 <Badge className='bg-error-300 hover:bg-error-400 border-error-400 py-1 px-4 text-sm'>
                   {data?.data?.awardee?.department || 'Admin'}
                 </Badge>
