@@ -14,8 +14,8 @@ import { toast } from 'sonner';
 import { useDeleteAwardee, useGetAllAwardees } from '@/hooks/awardee/hook';
 
 import BadgeTag from '@/components/badge';
-import { LoadingSpinner } from '@/components/loading-spinner';
 import Pagination from '@/components/pagination';
+import MiniSpinner from '@/components/spinner';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -220,7 +220,13 @@ const ContentAwardeeSection = () => {
                                 setId(0);
                               }}
                             >
-                              Hapus
+                              {status === 'pending' ? (
+                                <div className='flex gap-2 items-center'>
+                                  <MiniSpinner /> Loading...
+                                </div>
+                              ) : (
+                                `Hapus`
+                              )}
                             </Button>
                           </div>
                         </DialogHeader>
@@ -263,11 +269,6 @@ const ContentAwardeeSection = () => {
           />
         </div>
       </div>
-      {status === 'pending' && (
-        <div className='absolute min-h-screen w-full bottom-0 right-0 z-10'>
-          <LoadingSpinner />
-        </div>
-      )}
     </div>
   );
 };

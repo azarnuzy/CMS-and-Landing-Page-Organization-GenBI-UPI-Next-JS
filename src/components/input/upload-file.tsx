@@ -1,5 +1,6 @@
 'use client';
 
+import { File } from 'lucide-react';
 import Image from 'next/image';
 import { ReactElement, useEffect, useState } from 'react';
 import { FieldValues, useController } from 'react-hook-form';
@@ -21,7 +22,7 @@ export const UploadField = <T extends FieldValues>(
 
   const removeFile = () => {
     setFiles(undefined);
-
+    props.setname('');
     field.onChange(undefined);
   };
 
@@ -139,7 +140,7 @@ export const UploadField = <T extends FieldValues>(
            rounded-lg p-4 outline-none focus:outline-none sr-only
         `}
       />
-      {files && (
+      {field.value && files && !props.accepted?.includes('.pdf') && (
         <div className='relative w-full max-w-[400px]'>
           <div className='m-2 w-full'>
             <div className='relative mx-auto w-full h-40 overflow-hidden rounded-lg shadow-md'>
@@ -162,6 +163,20 @@ export const UploadField = <T extends FieldValues>(
                 className='text-error-main'
                 size={20}
               />
+            </div>
+          </div>
+        </div>
+      )}
+      {field.value && files && props.accepted?.includes('.pdf') && (
+        <div className='m-2 w-full max-w-[400px]'>
+          <div className='relative mx-auto w-full p-2 overflow-hidden rounded-lg shadow-md flex gap-2 items-center'>
+            <File />
+            <p> {files?.name}</p>
+            <div
+              onClick={() => removeFile()}
+              className='absolute top-2 right-2 p-1 bg-white rounded-full cursor-pointer'
+            >
+              <AiOutlineCloseCircle color='#e63a3a' size={20} />
             </div>
           </div>
         </div>

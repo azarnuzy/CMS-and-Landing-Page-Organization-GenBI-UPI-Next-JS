@@ -63,7 +63,7 @@ const DraftEditor = dynamic(() => import('@/components/text-editor'), {
   ssr: false,
 });
 
-import { Check, ChevronsUpDown } from 'lucide-react';
+import { Check, ChevronsUpDown, File } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { AiOutlineCloseCircle } from 'react-icons/ai';
@@ -614,7 +614,8 @@ const FormEditNewsSection = ({ id }: { id: string }) => {
                 {isAddDocs && (
                   <>
                     <div className='m-2 w-full max-w-[400px]'>
-                      <div className='relative mx-auto w-full p-2 overflow-hidden rounded-lg shadow-md '>
+                      <div className='relative mx-auto w-full p-2 overflow-hidden rounded-lg shadow-md flex gap-2 items-center'>
+                        <File />
                         <p> {docs?.name}</p>
                         <div
                           onClick={() => {
