@@ -57,7 +57,7 @@ const GallerySection = () => {
   }, [data, galleriesData, searchParams, setGalleriesData]);
 
   return (
-    <div className='-mt-[50px] sm:-mt-[75px] lg:-mt-[200px]  pb-10 relative z-10'>
+    <div className='-mt-[50px]   lg:-mt-[200px]  pb-10 relative z-10'>
       <BaseLayout>
         <>
           <div ref={parentRef} className='grid grid-cols-3 gap-4 mx-auto'>
