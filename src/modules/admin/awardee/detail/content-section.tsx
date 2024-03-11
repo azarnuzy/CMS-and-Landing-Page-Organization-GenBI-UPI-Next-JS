@@ -75,13 +75,13 @@ const ContentDetailAwardeeAdminSection = () => {
               <tr>
                 <td className='min-w-36 font-semibold'>Birth Date</td>
                 <td className='min-w-3'>: </td>
-                <td>{formatDate(dataDetail?.birth_date.toString()) || '-'}</td>
+                <td>{formatDate(dataDetail?.birth_date?.toString()) || '-'}</td>
               </tr>
               <tr>
                 <td className='min-w-36 font-semibold'>Member Since</td>
                 <td className='min-w-3'>: </td>
                 <td>
-                  {formatDate(dataDetail?.member_since.toString()) || '-'}
+                  {formatDate(dataDetail?.member_since?.toString()) || '-'}
                 </td>
               </tr>
               <tr>
@@ -143,20 +143,22 @@ const ContentDetailAwardeeAdminSection = () => {
               <tr>
                 <td className='min-w-36 font-semibold'>Transcript</td>
               </tr>
-              <tr className='mt-4'>
-                <td className='min-w-36 font-medium'></td>
-                <td className='min-w-3'> </td>
-                <td>
-                  <Link
-                    className='min-w-80 font-semibold p-4 border border-primary-main rounded-xl  flex gap-2'
-                    target='_blank'
-                    href={dataDetail?.transcript?.file_url || '#'}
-                  >
-                    <GrDocument className='text-primary-main text-2xl' />
-                    <span>{dataDetail?.transcript?.file_name}</span>
-                  </Link>
-                </td>
-              </tr>
+              {dataDetail?.transcript?.file_url && (
+                <tr className='mt-4'>
+                  <td className='min-w-36 font-medium'></td>
+                  <td className='min-w-3'> </td>
+                  <td>
+                    <Link
+                      className='min-w-80 font-semibold p-4 border border-primary-main rounded-xl  flex gap-2'
+                      target='_blank'
+                      href={dataDetail?.transcript?.file_url || '#'}
+                    >
+                      <GrDocument className='text-primary-main text-2xl' />
+                      <span>{dataDetail?.transcript?.file_name}</span>
+                    </Link>
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
         )}
