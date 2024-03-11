@@ -1,19 +1,33 @@
 'use client';
 
+import { Trash } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BiLinkExternal } from 'react-icons/bi';
 import { LuPlus } from 'react-icons/lu';
 import { MdDelete } from 'react-icons/md';
 import { TbEdit } from 'react-icons/tb';
 import { useRecoilState } from 'recoil';
+import { toast } from 'sonner';
 
 import { badgeColor } from '@/lib/utils/badge-color';
-import { useGetAllPost, useGetSearchPost } from '@/hooks/posts/hook';
+import {
+  useDeletePost,
+  useGetAllPost,
+  useGetSearchPost,
+} from '@/hooks/posts/hook';
 
 import Pagination from '@/components/pagination';
+import MiniSpinner from '@/components/spinner';
 import { Button } from '@/components/ui/button';
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogHeader,
+  DialogTrigger,
+} from '@/components/ui/dialog';
 import {
   Table,
   TableBody,
@@ -52,6 +66,11 @@ const ContentNewsManagementSection = () => {
     }
   );
 
+  const [open, setOpen] = useState(false);
+  const [getId, setId] = useState(0);
+
+  const { mutate, status } = useDeletePost();
+
   const [dataPost, setDataPost] = useRecoilState(postsDataState);
   const [parentRef] = useRecoilState(parentRefAdminNewsState);
 
@@ -80,6 +99,21 @@ const ContentNewsManagementSection = () => {
 
     router.replace(`/admin/news?page=${page}${filter}${search}`, {
       scroll: false,
+    });
+  };
+
+  const handleRemoveData = () => {
+    // console.log(id);
+
+    mutate(getId, {
+      onSuccess: () => {
+        refetch();
+        setOpen(false);
+        toast.success('Berhasil menghapus data');
+      },
+      onError: () => {
+        toast.error('Gagal menghapus data');
+      },
     });
   };
 
@@ -167,7 +201,57 @@ const ContentNewsManagementSection = () => {
                     <Link href={`/admin/news/edit/${news.id}`}>
                       <TbEdit className='text-warning-main text-2xl' />
                     </Link>
-                    <MdDelete className='text-error-main text-2xl' />
+                    <Dialog open={open} onOpenChange={setOpen}>
+                      <DialogTrigger
+                        onClick={() => {
+                          setId(news.id);
+                        }}
+                      >
+                        <MdDelete className='text-2xl text-error-main' />
+                      </DialogTrigger>
+                      <DialogContent className='max-w-[320px] rounded-3xl '>
+                        <DialogHeader>
+                          <div className='flex flex-col gap-2'>
+                            <div className='w-7 h-7 bg-error-100 rounded-full'>
+                              <Trash className='text-error-main w-5 h-5 mx-auto my-1' />
+                            </div>
+                            <h4 className='text-error-main'>Hapus Data?</h4>
+                            <p className='text-neutral-600'>
+                              Data yang sudah dihapus tidak dapat dikembalikan
+                              lagi harap periksa data sebelum menghapus
+                            </p>
+                          </div>
+                          <div className='mt-7 w-full flex justify-between items-center gap-3'>
+                            <DialogClose asChild>
+                              <Button
+                                className='rounded-full w-full'
+                                type='button'
+                                variant='secondary'
+                              >
+                                Batal
+                              </Button>
+                            </DialogClose>
+                            <Button
+                              type='button'
+                              variant='destructive'
+                              className='border-neutral-main bg-neutral-main rounded-full text-neutral-100  px-6 py-2.5 font-semibold w-full'
+                              onClick={() => {
+                                handleRemoveData();
+                                setId(0);
+                              }}
+                            >
+                              {status === 'pending' ? (
+                                <div className='flex gap-2 items-center'>
+                                  <MiniSpinner /> Loading...
+                                </div>
+                              ) : (
+                                `Hapus`
+                              )}
+                            </Button>
+                          </div>
+                        </DialogHeader>
+                      </DialogContent>
+                    </Dialog>
                     <Link
                       target='_blank'
                       href={`berita/${news.id}/${news.slug}`}

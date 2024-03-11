@@ -7,6 +7,7 @@ import {
 
 import {
   addPostRequest,
+  deletePostRequest,
   getAllPost,
   getComments,
   getDetailPost,
@@ -17,6 +18,7 @@ import {
 } from '@/hooks/posts/request';
 
 import { TMetaErrorResponse, TMetaResponse } from '@/types';
+import { TDataPutPostPhotoResponse } from '@/types/photos';
 import {
   TDataCommentPostResponse,
   TDataGetAllPostResponse,
@@ -144,6 +146,23 @@ export const usePutPost = (): UseMutationResult<
       id: number;
     }) => {
       const response = await putPostRequest({ payload, id });
+      if (!response) {
+        throw new Error('Invalid response');
+      }
+      return response;
+    },
+  });
+};
+
+export const useDeletePost = (): UseMutationResult<
+  TDataPutPostPhotoResponse,
+  TMetaErrorResponse,
+  number
+> => {
+  return useMutation<TDataPutPostPhotoResponse, TMetaErrorResponse, number>({
+    mutationKey: ['delete-post'],
+    mutationFn: async (id) => {
+      const response = await deletePostRequest(id);
       if (!response) {
         throw new Error('Invalid response');
       }

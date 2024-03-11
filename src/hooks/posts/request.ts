@@ -111,3 +111,11 @@ export const putPostRequest = async ({
 
   return data;
 };
+
+export const deletePostRequest = async (
+  id: number
+): Promise<TDataPutPostResponse | undefined> => {
+  const { data } = await api.delete<TDataPutPostResponse>(`v1/posts/${id}`);
+
+  return data;
+};
