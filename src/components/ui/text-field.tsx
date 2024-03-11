@@ -80,8 +80,7 @@ export const TextField = <T extends FieldValues>({
       status === 'success',
     'focus:ring-1 focus:ring-warning-base bg-warning-100 text-sm':
       status === 'warning',
-    'border-[0.5px] border-neutral-400 shadow-sm':
-      status === 'none' || status === undefined,
+    'border-[0.5px]  shadow-sm': status === 'none' || status === undefined,
   });
 
   const inputVariant = clsx({
@@ -139,7 +138,7 @@ export const TextField = <T extends FieldValues>({
           <textarea
             rows={textAreaRow}
             {...{ ...props, ...field }}
-            className={`w-full ${inputStatus}  ${props.className} `}
+            className={`w-full ${inputStatus}  ${props.className} flex min-h-[75px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50`}
           ></textarea>
         )}
 

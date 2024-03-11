@@ -43,6 +43,17 @@ export type TCreateReplyPayload = {
   content: string;
 };
 
+export type TPutCommentPayload = {
+  name?: string;
+  content: string;
+};
+
+export type TPutCommentData = {
+  id: number;
+};
+
+export type TDataPutCommentResposne = TMetaResponseSingle<TPutCommentData>;
+export type TDataDeleteCommentResposne = TMetaResponseSingle<null>;
 export type TDataCreateCommentResponse =
   TMetaResponseSingle<TCreateCommentData>;
 export type TDataCreateReplyResponse = TMetaResponseSingle<TCreateReplyData>;

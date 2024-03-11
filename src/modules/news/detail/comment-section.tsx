@@ -3,18 +3,33 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import Image from 'next/image';
 import { useParams } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 import React, { Fragment, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { BsThreeDotsVertical } from 'react-icons/bs';
+import { FaRegEdit, FaRegTrashAlt } from 'react-icons/fa';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
 import { getTimeDifference } from '@/lib/utils/general-function';
 import { ValidationSchemaAddCommentForm } from '@/lib/validations/comment';
-import { useCreateComment, useCreateReply } from '@/hooks/comments/hook';
+import {
+  useCreateComment,
+  useCreateReply,
+  useDeleteComment,
+  usePutComment,
+} from '@/hooks/comments/hook';
 import { useGetCommentPost } from '@/hooks/posts/hook';
 
+import MiniSpinner from '@/components/spinner';
 import { Button } from '@/components/ui/button';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import {
   Form,
   FormControl,
@@ -25,6 +40,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
+import { TextField } from '@/components/ui/text-field';
 import { Textarea } from '@/components/ui/textarea';
 
 import {
@@ -35,6 +51,8 @@ import {
 const CommentsSection = () => {
   const params = useParams();
   const { id } = params;
+
+  const session = useSession();
 
   const form = useForm<z.infer<typeof ValidationSchemaAddCommentForm>>({
     resolver: zodResolver(ValidationSchemaAddCommentForm),
@@ -52,14 +70,43 @@ const CommentsSection = () => {
     },
   });
 
+  const formEditReply = useForm<z.infer<typeof ValidationSchemaAddCommentForm>>(
+    {
+      resolver: zodResolver(ValidationSchemaAddCommentForm),
+      defaultValues: {
+        name: '',
+        content: '',
+      },
+    }
+  );
+
+  const formEditComment = useForm<
+    z.infer<typeof ValidationSchemaAddCommentForm>
+  >({
+    resolver: zodResolver(ValidationSchemaAddCommentForm),
+    defaultValues: {
+      name: '',
+      content: '',
+    },
+  });
+
   const { data, refetch } = useGetCommentPost({ id: Number(id) });
-  const { mutate } = useCreateComment();
-  const { mutate: mutateReply } = useCreateReply();
+  const { mutate, status } = useCreateComment();
+  const { mutate: mutateReply, status: statusMutateReply } = useCreateReply();
+  const { mutate: mutateEditComment, status: statusEditComment } =
+    usePutComment();
+  const { mutate: mutateDeleteComment } = useDeleteComment();
 
   const [getComments, setComments] = useRecoilState(commentsDataState);
   const totalComments = useRecoilValue(totalCommentsSelector);
 
   const [formReplyOpen, setFormReplyOpen] = useState<number | null>(null);
+  const [formEditCommentOpen, setFormEditCommentOpen] = useState<number | null>(
+    null
+  );
+  const [formEditReplyOpen, setFormEditReplyOpen] = useState<number | null>(
+    null
+  );
 
   const onSubmit = (data: z.infer<typeof ValidationSchemaAddCommentForm>) => {
     mutate(
@@ -106,6 +153,46 @@ const CommentsSection = () => {
         },
       }
     );
+  };
+
+  const onSubmitEditComment = (
+    data: z.infer<typeof ValidationSchemaAddCommentForm>
+  ) => {
+    mutateEditComment(
+      {
+        id: formEditCommentOpen as number,
+        payload: data,
+      },
+      {
+        onSuccess: () => {
+          refetch();
+          formEditComment.reset();
+          setFormEditCommentOpen(null);
+          formEditComment.setValue('name', '');
+          formEditComment.setValue('content', '');
+          toast.success('Komentar berhasil diubah');
+        },
+        onError: (error) => {
+          toast.error(error.message);
+        },
+      }
+    );
+  };
+
+  const onSubmitEditReply = () => {
+    return '';
+  };
+
+  const handleDeleteComment = (id: number) => {
+    mutateDeleteComment(id, {
+      onSuccess: () => {
+        refetch();
+        toast.success('Berhasil menghapus komentar');
+      },
+      onError: () => {
+        toast.error('Gagal menghapus komentar');
+      },
+    });
   };
 
   useEffect(() => {
@@ -160,7 +247,13 @@ const CommentsSection = () => {
               type='submit'
               className='bg-primary-main text-neutral-100 rounded-full'
             >
-              Send
+              {status === 'pending' ? (
+                <div className='flex gap-2 items-center'>
+                  <MiniSpinner /> Loading...
+                </div>
+              ) : (
+                `Send`
+              )}
             </Button>
           </div>
         </form>
@@ -170,15 +263,117 @@ const CommentsSection = () => {
           <Fragment key={i}>
             <Separator />
             <div key={i} className='flex flex-col gap-3'>
-              <div className='flex flex-col'>
-                <h5 className='text-primary-main font-bold'>
-                  {comment?.commenter || 'Anonim'}
-                </h5>
-                <p className='text-sm text-neutral-600'>
-                  {getTimeDifference(comment?.updated_at)}
-                </p>
+              <div className='flex flex-col gap-3'>
+                <div className='flex w-full justify-between items-center'>
+                  <div className='flex flex-col'>
+                    <h5 className='text-primary-main font-bold'>
+                      {comment?.commenter || 'Anonim'}
+                    </h5>
+                    <p className='text-sm text-neutral-600'>
+                      {getTimeDifference(comment?.updated_at)}
+                    </p>
+                  </div>
+                  {session?.data && (
+                    <div className='flex items-center h-full '>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger>
+                          <BsThreeDotsVertical className='text-neutral-800' />
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent>
+                          <DropdownMenuItem
+                            onClick={() => {
+                              setFormEditCommentOpen(comment.id);
+                              formEditComment.setValue(
+                                'name',
+                                comment.commenter
+                              );
+                              formEditComment.setValue(
+                                'content',
+                                comment.content
+                              );
+                            }}
+                            className='flex gap-2 cursor-pointer'
+                          >
+                            <FaRegEdit /> Edit
+                          </DropdownMenuItem>
+                          <DropdownMenuItem
+                            onClick={() => {
+                              handleDeleteComment(comment.id);
+                            }}
+                            className='flex gap-2 cursor-pointer'
+                          >
+                            <FaRegTrashAlt /> Delete
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </div>
+                  )}
+                </div>
+                <p>{comment.content}</p>
               </div>
-              <p>{comment.content}</p>
+              {formEditCommentOpen === comment.id && (
+                <Form {...formEditComment}>
+                  <form
+                    onSubmit={formEditComment.handleSubmit(onSubmitEditComment)}
+                    className='w-full flex flex-col gap-2'
+                  >
+                    <FormField
+                      control={formEditComment.control}
+                      name='name'
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Nama</FormLabel>
+                          <FormControl>
+                            <Input placeholder='Masukkan Nama...' {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <TextField
+                      labelClassName='!text-sm text-left !font-normal'
+                      type='text'
+                      variant='md'
+                      control={formEditComment.control}
+                      name='content'
+                      placeholder='Edit Balasan...'
+                      className='h-[80px] text-sm  py-2'
+                      isTextArea={true}
+                      status={
+                        formEditComment.formState?.errors?.content
+                          ? 'error'
+                          : undefined
+                      }
+                      message={
+                        formEditComment.formState?.errors?.content?.message
+                      }
+                    />
+                    <div className='w-full flex justify-end'>
+                      <div className='flex gap-4 items-center'>
+                        <Button
+                          type='button'
+                          className='bg-neutral-100 text-primary-main border-primary-main rounded-full border hover:bg-primary-main hover:text-neutral-100'
+                          onClick={() => setFormEditCommentOpen(null)}
+                        >
+                          Cancel
+                        </Button>
+                        <Button
+                          type='submit'
+                          className='bg-primary-main border-primary-main text-neutral-100 rounded-full'
+                        >
+                          {statusEditComment === 'pending' ? (
+                            <div className='flex gap-2 items-center'>
+                              <MiniSpinner /> Loading...
+                            </div>
+                          ) : (
+                            `Edit`
+                          )}
+                        </Button>
+                      </div>
+                    </div>
+                  </form>
+                </Form>
+              )}
               <div className='flex w-full justify-between'>
                 <div className='flex gap-1 items-center'>
                   <Image
@@ -248,7 +443,13 @@ const CommentsSection = () => {
                           type='submit'
                           className='bg-primary-main border-primary-main text-neutral-100 rounded-full'
                         >
-                          Send
+                          {statusMutateReply === 'pending' ? (
+                            <div className='flex gap-2 items-center'>
+                              <MiniSpinner /> Loading...
+                            </div>
+                          ) : (
+                            `Send`
+                          )}
                         </Button>
                       </div>
                     </div>
@@ -258,15 +459,112 @@ const CommentsSection = () => {
               <div className='pl-6 border-l border-neutral-300 flex flex-col gap-4'>
                 {comment?.replies?.map((reply, i) => (
                   <div key={i} className='flex flex-col gap-3'>
-                    <div className='flex flex-col'>
-                      <h5 className='text-primary-main font-bold'>
-                        {reply?.commenter || 'Anonim'}
-                      </h5>
-                      <p className='text-sm text-neutral-600'>
-                        {getTimeDifference(reply?.updated_at)}
-                      </p>
+                    <div className='flex flex-col gap-3'>
+                      <div className='w-full flex justify-between items-center'>
+                        <div className='flex flex-col'>
+                          <h5 className='text-primary-main font-bold'>
+                            {reply?.commenter || 'Anonim'}
+                          </h5>
+
+                          <p className='text-sm text-neutral-600'>
+                            {getTimeDifference(reply?.updated_at)}
+                          </p>
+                        </div>
+                        {session?.data && (
+                          <div className='flex items-center h-full '>
+                            <DropdownMenu>
+                              <DropdownMenuTrigger>
+                                <BsThreeDotsVertical className='text-neutral-800' />
+                              </DropdownMenuTrigger>
+                              <DropdownMenuContent>
+                                <DropdownMenuItem
+                                  onClick={() => {
+                                    setFormEditReplyOpen(reply.id);
+                                    formEditReply.setValue(
+                                      'name',
+                                      reply.commenter
+                                    );
+                                    formEditReply.setValue(
+                                      'content',
+                                      reply.content
+                                    );
+                                  }}
+                                  className='flex gap-2 cursor-pointer'
+                                >
+                                  <FaRegEdit /> Edit
+                                </DropdownMenuItem>
+                                <DropdownMenuItem className='flex gap-2 cursor-pointer'>
+                                  <FaRegTrashAlt /> Delete
+                                </DropdownMenuItem>
+                              </DropdownMenuContent>
+                            </DropdownMenu>
+                          </div>
+                        )}
+                      </div>
+                      <p>{reply?.content}</p>
                     </div>
-                    <p>{reply?.content}</p>
+                    {formEditReplyOpen === reply.id && (
+                      <Form {...formEditReply}>
+                        <form
+                          onSubmit={formEditReply.handleSubmit(
+                            onSubmitEditReply
+                          )}
+                          className='w-full flex flex-col gap-2'
+                        >
+                          <FormField
+                            control={formEditReply.control}
+                            name='name'
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>Nama</FormLabel>
+                                <FormControl>
+                                  <Input
+                                    placeholder='Masukkan Nama...'
+                                    {...field}
+                                  />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                          <TextField
+                            labelClassName='!text-sm text-left !font-normal'
+                            type='text'
+                            variant='md'
+                            control={formEditReply.control}
+                            name='content'
+                            placeholder='Berikan Balasan...'
+                            className='h-[80px] text-sm  py-2'
+                            isTextArea={true}
+                            status={
+                              formEditReply.formState?.errors?.content
+                                ? 'error'
+                                : undefined
+                            }
+                            message={
+                              formEditReply.formState?.errors?.content?.message
+                            }
+                          />
+                          <div className='w-full flex justify-end'>
+                            <div className='flex gap-4 items-center'>
+                              <Button
+                                type='button'
+                                className='bg-neutral-100 text-primary-main border-primary-main rounded-full border hover:bg-primary-main hover:text-neutral-100'
+                                onClick={() => setFormEditReplyOpen(null)}
+                              >
+                                Cancel
+                              </Button>
+                              <Button
+                                type='submit'
+                                className='bg-primary-main border-primary-main text-neutral-100 rounded-full'
+                              >
+                                Send
+                              </Button>
+                            </div>
+                          </div>
+                        </form>
+                      </Form>
+                    )}
                   </div>
                 ))}
               </div>

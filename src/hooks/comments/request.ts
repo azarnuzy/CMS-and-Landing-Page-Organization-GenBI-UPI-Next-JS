@@ -5,6 +5,9 @@ import {
   TCreateReplyPayload,
   TDataCreateCommentResponse,
   TDataCreateReplyResponse,
+  TDataDeleteCommentResposne,
+  TDataPutCommentResposne,
+  TPutCommentPayload,
 } from '@/types/comments';
 
 export const createCommentRequest = async (
@@ -29,5 +32,24 @@ export const createReplyRequest = async (
     }
   );
 
+  return data;
+};
+
+export const putCommentRequest = async ({
+  payload,
+  id,
+}: {
+  payload: TPutCommentPayload;
+  id: number;
+}): Promise<TDataPutCommentResposne | undefined> => {
+  const { data } = await api.put(`v1/comments/${id}`, payload);
+
+  return data;
+};
+
+export const deleteCommentRequest = async (
+  id: number
+): Promise<TDataDeleteCommentResposne> => {
+  const { data } = await api.delete(`v1/comments/${id}`);
   return data;
 };
