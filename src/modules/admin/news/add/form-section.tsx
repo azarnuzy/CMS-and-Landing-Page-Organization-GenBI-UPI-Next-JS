@@ -157,7 +157,7 @@ const FormAddNewsSection = () => {
   }, [dataUser, setUserOption]);
 
   return (
-    <div className='border rounded-3xl px-6 py-6 my-10 shadow-sm'>
+    <div className='border rounded-3xl px-6 py-6 sm:my-10 shadow-sm'>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
@@ -229,8 +229,14 @@ const FormAddNewsSection = () => {
                     <FormItem>
                       <FormLabel>Select Department *</FormLabel>
                       <Select
-                        value={String(field.value)}
-                        onValueChange={(e) => field.onChange(Number(e))}
+                        // value={String(field.value)}
+                        onValueChange={(e) => {
+                          if (e.length > 0) {
+                            field.onChange(Number(e));
+                          } else {
+                            field.onChange(undefined);
+                          }
+                        }}
                       >
                         <FormControl>
                           <SelectTrigger>
@@ -349,8 +355,14 @@ const FormAddNewsSection = () => {
                     <FormItem>
                       <FormLabel>Select Event *</FormLabel>
                       <Select
-                        value={String(field.value)}
-                        onValueChange={(e) => field.onChange(Number(e))}
+                        // value={String(field.value)}
+                        onValueChange={(e) => {
+                          if (e.length > 0) {
+                            field.onChange(Number(e));
+                          } else {
+                            field.onChange(undefined);
+                          }
+                        }}
                       >
                         <FormControl>
                           <SelectTrigger>

@@ -22,21 +22,13 @@ import {
 import { sidebarMinimizeState } from '@/recoils/sidebar/atom';
 
 const NavbarAdmin = () => {
-  const [isMinimize, setIsMinimize] = useRecoilState(sidebarMinimizeState);
+  const [, setIsMinimize] = useRecoilState(sidebarMinimizeState);
   const { data } = useGetWhoAmI();
   return (
-    <div
-      className={`${
-        isMinimize ? 'w-full' : 'w-[calc(100vw-300px)]'
-      }  py-[15px] px-9 flex justify-between gap-4 items-center border-b border-b-neutral-200 shadow-sm transition-all transform duration-300 ease-in-out`}
-    >
-      {isMinimize ? (
-        <button type='button' onClick={() => setIsMinimize(false)} className=''>
-          <BiMenu className='text-neutral-800 text-3xl' />
-        </button>
-      ) : (
-        <div></div>
-      )}
+    <div className='w-full py-[15px] px-9 flex justify-between gap-4 items-center border-b border-b-neutral-200 shadow-sm transition-all transform duration-300 ease-in-out'>
+      <button type='button' onClick={() => setIsMinimize(false)} className=''>
+        <BiMenu className='text-neutral-800 text-3xl' />
+      </button>
 
       <div className='flex justify-end gap-4'>
         <Badge className='bg-error-300 hover:bg-error-400 border-error-400 py-1 px-4 text-sm'>

@@ -1,5 +1,6 @@
 import React, { Suspense } from 'react';
 
+import BaseLayout from '@/components/layouts/base';
 import { LoadingSpinner } from '@/components/loading-spinner';
 
 import ContentNewsManagementSection from '@/modules/admin/news/content-section';
@@ -9,8 +10,12 @@ const NewsManagementPage = () => {
   return (
     <Suspense fallback={<LoadingSpinner />}>
       <main>
-        <HeaderNewsSection />
-        <ContentNewsManagementSection />
+        <BaseLayout>
+          <>
+            <HeaderNewsSection />
+            <ContentNewsManagementSection />
+          </>
+        </BaseLayout>
       </main>
     </Suspense>
   );

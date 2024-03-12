@@ -71,7 +71,7 @@ const HeaderNewsSection = () => {
       <BreadCrumb items={breadcrumbNewsData} textColor='text-primary-main' />
       <div className='flex flex-col lg:flex-row justify-between lg:items-center gap-y-4'>
         <h3 className='text-primary-900'>News Management</h3>
-        <div className='flex gap-4 items-center'>
+        <div className='flex gap-4 items-center justify-between'>
           <div className='rounded-full border border-neutral-300 py-2.5 px-6 flex gap-2'>
             <label
               className=' rounded-full  flex items-center justify-center'
@@ -86,7 +86,7 @@ const HeaderNewsSection = () => {
               value={inputSearch}
               onChange={(e) => setInputSearch(e.target.value)}
               onKeyDown={handleKeyDownSearch}
-              className='w-full min-w-[300px] bg-transparent outline-none'
+              className='w-full sm:min-w-[300px] bg-transparent outline-none'
             />
           </div>
           <Popover>

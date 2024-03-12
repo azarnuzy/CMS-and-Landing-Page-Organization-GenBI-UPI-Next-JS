@@ -128,7 +128,7 @@ const ContentNewsManagementSection = () => {
   }, [data, dataSearchPost, dataStatus, setDataPost]);
 
   return (
-    <div className='pt-5 border rounded-3xl w-full mt-10 mb-5'>
+    <div className='pt-5 border rounded-3xl w-full sm:mt-10 mb-5'>
       <div className='flex justify-end px-6 pb-5'>
         <Button
           asChild
@@ -258,7 +258,7 @@ const ContentNewsManagementSection = () => {
             })}
         </TableBody>
       </Table>
-      <div className='flex justify-between items-center py-2'>
+      <div className='flex flex-col sm:flex-row justify-between items-center py-2'>
         <div className='w-full flex justify-center '>
           <p className='text-sm'>
             Showing {((data?.pagination?.currentPage || 0) - 1) * 10 + 1} to{' '}

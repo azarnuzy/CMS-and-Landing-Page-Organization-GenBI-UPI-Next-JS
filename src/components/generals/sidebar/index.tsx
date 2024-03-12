@@ -27,12 +27,12 @@ const Sidebar: FC = () => {
     <>
       <div
         className={`z-20 fixed top-0 left-0 ${
-          isMinimize ? '-left-96 w-[75px]' : 'w-[300px]'
+          isMinimize ? '-left-[300px] w-[75px]' : 'w-[300px]'
         }  min-h-full  bg-primary-main  transition-all transform duration-300 ease-in-out`}
       >
         <div
           className={`fixed top-0 left-0 h-screen bg-primary-main overflow-y-hidden pb-10 pt-4 ${
-            isMinimize ? 'w-[75px]' : 'w-[300px]'
+            isMinimize ? '-left-[300px] w-[75px]' : 'w-[300px]'
           }  transition-all transform duration-300 ease-in-out`}
         >
           <div

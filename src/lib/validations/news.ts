@@ -13,7 +13,7 @@ export const ValidationSchemaAddNewsForm = z.object({
     .string({
       required_error: 'Title should be filled',
     })
-    .min(1, 'Title should be filled'),
+    .min(10, 'Title should be filled with minimum 10 character'),
   type: z
     .string({
       required_error: 'Type should be filled',
@@ -32,11 +32,13 @@ export const ValidationSchemaAddNewsForm = z.object({
     .optional(),
   content: z
     .string({
-      required_error: 'Content should be filled with minimum 5 character',
+      required_error: 'Content should be filled with minimum 150 character',
     })
-    .min(5, { message: 'Content should be filled with minimum 5 character' })
+    .min(150, {
+      message: 'Content should be filled with minimum 150 character',
+    })
     .refine((value) => value.trim() !== '<p></p>', {
-      message: 'Content should be filled with minimum 5 character',
+      message: 'Content should be filled with minimum 150 character',
     }),
   //create a new schema for the hashtag that is array of string and can accept only 3 hashtag
   tags: z
