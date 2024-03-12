@@ -132,7 +132,7 @@ const EditAwardeeFormSection = ({ id }: { id: string }) => {
   };
 
   return (
-    <div className='relative border rounded-3xl px-6 py-6 my-10 shadow-sm'>
+    <div className='relative border rounded-3xl px-6 py-6 sm:my-10 shadow-sm'>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}

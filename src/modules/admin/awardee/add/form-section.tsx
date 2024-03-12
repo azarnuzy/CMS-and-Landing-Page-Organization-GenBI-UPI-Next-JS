@@ -103,7 +103,7 @@ const AddAwardeeFormSection = () => {
   }, [data, setStudyProgram]);
 
   return (
-    <div className='border rounded-3xl px-6 py-6 my-10 shadow-sm'>
+    <div className='border rounded-3xl px-6 py-6  sm:my-10 shadow-sm'>
       {/* {status === 'pending' && toast.loading('Loading...')} */}
       <Form {...form}>
         <form
