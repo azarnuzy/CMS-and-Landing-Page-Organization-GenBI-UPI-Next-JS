@@ -26,4 +26,31 @@ export interface TAppreciationsParams {
   page: numbers;
 }
 
+export interface TPostAppreciationData {
+  id: number;
+  title: string;
+  cover_id: number;
+  given_date: string;
+  instagram_url: string;
+  post_id: number;
+  caption: string;
+  updatedAt: string;
+  createdAt: string;
+}
+
+export interface TPostAppreciationPayload {
+  cover: File;
+  title: string;
+  given_date: string;
+  instagram_url: string;
+  caption: string;
+}
+
+export interface TPutAppreciationData {
+  id: string;
+}
+
 export type TDataAppreciationsResponse = TMetaResponse<TAppreciationsData>;
+export type TDataPostAppreciationResponse =
+  TMetaResponse<TPostAppreciationData>;
+export type TDataPutAppreciationResponse = TMetaResponse<TPutAppreciationData>;

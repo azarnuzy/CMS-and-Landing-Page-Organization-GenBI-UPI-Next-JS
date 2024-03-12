@@ -1,8 +1,13 @@
+import { serialize } from 'object-to-formdata';
+
 import { api } from '@/lib/api';
 
 import {
   TAppreciationsParams,
   TDataAppreciationsResponse,
+  TDataPostAppreciationResponse,
+  TDataPutAppreciationResponse,
+  TPostAppreciationPayload,
 } from '@/types/appreciations';
 
 export const getAppreciations = async (
@@ -19,5 +24,44 @@ export const getAppreciations = async (
     },
   });
 
+  return data;
+};
+
+export const postAppreciations = async (
+  payload: TPostAppreciationPayload
+): Promise<TDataPostAppreciationResponse> => {
+  const { data } = await api({
+    method: 'post',
+    url: 'v1/appreciations',
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+    data: serialize(payload),
+  });
+  return data;
+};
+
+export const putAppreciations = async ({
+  id,
+  payload,
+}: {
+  id: number;
+  payload: TPostAppreciationPayload;
+}): Promise<TDataPutAppreciationResponse> => {
+  const { data } = await api({
+    method: 'put',
+    url: `v1/appreciations/${id}`,
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+    data: serialize(payload),
+  });
+  return data;
+};
+
+export const deleteAppreciations = async (
+  id: number
+): Promise<TDataPutAppreciationResponse> => {
+  const { data } = await api.delete(`v1/appreciations/${id}`);
   return data;
 };
