@@ -262,7 +262,9 @@ const FormEditNewsSection = ({ id }: { id: string }) => {
                       <Select
                         value={String(field.value)}
                         onValueChange={(e) => {
-                          field.onChange(Number(e));
+                          if (e.length > 0) {
+                            field.onChange(Number(e));
+                          }
                         }}
                       >
                         <FormControl>
@@ -381,7 +383,11 @@ const FormEditNewsSection = ({ id }: { id: string }) => {
                       <FormLabel>Select Event *</FormLabel>
                       <Select
                         value={String(field.value)}
-                        onValueChange={(e) => field.onChange(Number(e))}
+                        onValueChange={(e) => {
+                          if (e.length > 0) {
+                            field.onChange(Number(e));
+                          }
+                        }}
                       >
                         <FormControl>
                           <SelectTrigger>
@@ -552,11 +558,11 @@ const FormEditNewsSection = ({ id }: { id: string }) => {
                           payload={{
                             caption:
                               form.getValues(
-                                `caption_other_${index + 1}` as keyof z.infer<
+                                `caption_ohter_${index + 1}` as keyof z.infer<
                                   typeof ValidationSchemaPutNewsForm
                                 >
                               ) ||
-                              `Other photos from ${data?.data?.post?.title}`,
+                              `Other Photos from ${data?.data?.post?.title}`,
                             photo_id: item.id,
                             post_id: data?.data?.post?.id,
                             category: 'post_other_image',
