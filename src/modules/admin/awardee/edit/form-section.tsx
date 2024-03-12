@@ -121,7 +121,7 @@ const EditAwardeeFormSection = ({ id }: { id: string }) => {
             toast.success(`Berhasil Edit Awardee ${data.name}`);
           },
           onError: (error) => {
-            toast.error('Error Edit Awardee');
+            toast.error(error?.response?.data?.message || 'Error Edit Awardee');
             logger(error);
           },
         }

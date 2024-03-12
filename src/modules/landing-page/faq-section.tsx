@@ -68,7 +68,7 @@ const FaqSection = () => {
         form.setValue('message', '');
       },
       onError: (error) => {
-        toast.error(error.message);
+        toast.error(error?.response?.data?.message || 'Gagal mengirim pesan');
       },
     });
   };

@@ -111,7 +111,9 @@ const CommentsSection = () => {
           toast.success('Komentar berhasil ditambahkan');
         },
         onError: (error) => {
-          toast.error(error.message);
+          toast.error(
+            error?.response?.data?.message || 'Gagal menambahkan komentar'
+          );
         },
       }
     );
@@ -136,7 +138,9 @@ const CommentsSection = () => {
           toast.success('Balasan berhasil ditambahkan');
         },
         onError: (error) => {
-          toast.error(error.message);
+          toast.error(
+            error?.response?.data?.message || 'Gagal menambahkan balasan'
+          );
         },
       }
     );
@@ -160,7 +164,9 @@ const CommentsSection = () => {
           toast.success('Komentar berhasil diubah');
         },
         onError: (error) => {
-          toast.error(error.message);
+          toast.error(
+            error?.response?.data?.message || 'Gagal mengubah komentar'
+          );
         },
       }
     );
@@ -172,8 +178,10 @@ const CommentsSection = () => {
         refetch();
         toast.success('Berhasil menghapus komentar');
       },
-      onError: () => {
-        toast.error('Gagal menghapus komentar');
+      onError: (error) => {
+        toast.error(
+          error?.response?.data?.message || 'Gagal menghapus komentar'
+        );
       },
     });
   };

@@ -102,8 +102,8 @@ const ContentAwardeeSection = () => {
         setOpen(false);
         toast.success('Berhasil menghapus data');
       },
-      onError: () => {
-        toast.error('Gagal menghapus data');
+      onError: (error) => {
+        toast.error(error?.response?.data?.message || 'Gagal menghapus data');
       },
     });
   };

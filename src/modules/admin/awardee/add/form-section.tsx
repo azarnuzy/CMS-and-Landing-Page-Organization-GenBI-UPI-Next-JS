@@ -86,7 +86,9 @@ const AddAwardeeFormSection = () => {
         onError: (error) => {
           logger(data);
           logger('Add Awardee Error:', error.response?.data.message);
-          toast.error('Failed to add awardee');
+          toast.error(
+            error?.response?.data?.message || 'Failed to add awardee'
+          );
         },
       });
     } catch (error) {

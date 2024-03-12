@@ -156,6 +156,12 @@ const FormEditNewsSection = ({ id }: { id: string }) => {
             toast.success(`Berhasil mengubah data ${data.title}`);
             refetch();
           },
+          onError: (error) => {
+            toast.error(
+              error?.response?.data?.message ||
+                `Gagal mengubah data ${data.title}`
+            );
+          },
         }
       );
     } catch (error) {
@@ -523,8 +529,11 @@ const FormEditNewsSection = ({ id }: { id: string }) => {
                                 setOtherPhoto(null);
                                 toast.success('Success add other photo');
                               },
-                              onError: () => {
-                                toast.error('Fail add other photo');
+                              onError: (error) => {
+                                toast.error(
+                                  error?.response?.data?.message ||
+                                    'Fail add other photo'
+                                );
                               },
                             }
                           );
