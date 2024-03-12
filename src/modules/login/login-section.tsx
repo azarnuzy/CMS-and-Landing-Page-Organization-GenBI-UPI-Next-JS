@@ -48,7 +48,7 @@ const LoginSection = () => {
 
       if (response?.ok && response?.url !== null) {
         toast.success(`Login Success. Welcome ${data.username}`);
-        router.push('/admin');
+        router.push('/admin/awardee');
         // router.push('/beranda');
       } else {
         setError(response?.error);
