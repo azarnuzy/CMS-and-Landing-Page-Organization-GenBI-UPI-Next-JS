@@ -421,7 +421,7 @@ const FormEditNewsSection = ({ id }: { id: string }) => {
                     isEdit={true}
                     isRemove={false}
                     payload={{
-                      caption: data?.data?.post?.image_cover?.caption || '',
+                      caption: form.getValues('caption_cover') || '',
                       photo_id: data?.data?.post?.image_cover?.id,
                       post_id: data?.data?.post?.id,
                       category: 'post_cover_image',
@@ -539,23 +539,34 @@ const FormEditNewsSection = ({ id }: { id: string }) => {
                 )}
                 {data &&
                   data?.data?.post?.images?.length > 0 &&
-                  data?.data?.post?.images.map((item, index) => (
-                    <div key={index} className='relative w-full max-w-[400px]'>
-                      <FilePreview
-                        url={item.file_url}
-                        isEdit={true}
-                        isRemove={true}
-                        payload={{
-                          caption: item.caption || '',
-                          photo_id: item.id,
-                          post_id: data?.data?.post?.id,
-                          category: 'post_other_image',
-                        }}
-                        invalidateQueryName='get-detail-post'
-                        typeFile='image/jpeg'
-                      />
-                    </div>
-                  ))}
+                  data?.data?.post?.images.map((item, index) => {
+                    return (
+                      <div
+                        key={index}
+                        className='relative w-full max-w-[400px]'
+                      >
+                        <FilePreview
+                          url={item.file_url}
+                          isEdit={true}
+                          isRemove={true}
+                          payload={{
+                            caption:
+                              form.getValues(
+                                `caption_other_${index + 1}` as keyof z.infer<
+                                  typeof ValidationSchemaPutNewsForm
+                                >
+                              ) ||
+                              `Other photos from ${data?.data?.post?.title}`,
+                            photo_id: item.id,
+                            post_id: data?.data?.post?.id,
+                            category: 'post_other_image',
+                          }}
+                          invalidateQueryName='get-detail-post'
+                          typeFile='image/jpeg'
+                        />
+                      </div>
+                    );
+                  })}
               </div>
             </div>
             <div className='col-span-2 lg:col-span-1 flex flex-col  w-full md:pt-[20px] gap-4 lg:gap-8'>

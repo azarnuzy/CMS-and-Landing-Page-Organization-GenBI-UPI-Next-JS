@@ -139,7 +139,7 @@ const FormAddNewsSection = () => {
         form.reset(addNewsDefaultValues);
       },
       onError: (error) => {
-        toast.error(error.message);
+        toast.error(error?.response?.data?.message || 'Failed to add news');
       },
     });
   };

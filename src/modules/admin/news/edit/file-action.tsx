@@ -20,11 +20,12 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 
-import { TFileActionProps } from '@/types/photos';
+import { TFileActionProps, TPhotoPayload } from '@/types/photos';
 
 const FilePreview = (props: TFileActionProps) => {
   const [file, setFile] = useState<File | null>(null);
   const [open, setOpen] = useState(false);
+  const [getId, setId] = useState<number | null>(null);
 
   const { mutate, status } = usePutPhoto();
   const { mutate: mutateDelete, status: statusDelete } = useDeletePhoto();
@@ -32,11 +33,15 @@ const FilePreview = (props: TFileActionProps) => {
   const { mutate: mutateDeleteDocument, status: statusDeleteDocument } =
     useDeleteDocument();
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    payload: TPhotoPayload
+  ) => {
     const fileList = event.target.files;
     if (fileList && fileList.length > 0) {
       setFile(fileList[0]);
     }
+    setId(payload.photo_id as number);
     setOpen(true);
   };
 
@@ -44,10 +49,11 @@ const FilePreview = (props: TFileActionProps) => {
 
   const handleEditPhoto = () => {
     const { payload } = props;
+
     ACCEPTED_MEDIA_TYPES.includes(props.typeFile as string)
       ? mutate(
           {
-            id: payload?.photo_id as number,
+            id: getId as number,
             payload: {
               caption: payload?.caption || '',
               category: payload?.category || '',
@@ -72,7 +78,7 @@ const FilePreview = (props: TFileActionProps) => {
         )
       : mutateDocument(
           {
-            id: payload?.photo_id as number,
+            id: getId as number,
             payload: {
               file: file as File,
               category: payload?.category || '',
@@ -94,6 +100,7 @@ const FilePreview = (props: TFileActionProps) => {
           }
         );
     setOpen(false);
+    setId(null);
     setFile(null);
   };
 
@@ -149,17 +156,28 @@ const FilePreview = (props: TFileActionProps) => {
 
         <div className='max-h-content flex gap-4 items-center absolute top-2 right-2'>
           <Dialog open={open} onOpenChange={setOpen}>
-            <label htmlFor='input-edit' className='cursor-pointer'>
+            <label
+              htmlFor={`file-${props.payload?.photo_id}`}
+              className='cursor-pointer'
+            >
               <input
                 type='file'
                 hidden
-                id='input-edit'
-                onChange={handleFileChange}
+                id={`file-${props.payload?.photo_id}`}
+                onChange={(e) => {
+                  handleFileChange(e, props.payload as TPhotoPayload);
+                }}
                 // onCha
                 className='hidden'
               />
               <div className='p-1 bg-white rounded-full'>
-                <MdOutlineEdit className='text-warning-main' size={20} />
+                {status === 'pending' || statusDocument === 'pending' ? (
+                  <div className='flex justify-center w-full'>
+                    <MiniSpinner />
+                  </div>
+                ) : (
+                  <MdOutlineEdit className='text-warning-main' size={20} />
+                )}
               </div>
             </label>
 
@@ -168,14 +186,14 @@ const FilePreview = (props: TFileActionProps) => {
                 <DialogTitle>Edit File</DialogTitle>
 
                 {file && (
-                  <div className='w-full h-full'>
+                  <div className='w-full h-full max-h-[400px]'>
                     <Image
                       width={0}
                       height={0}
                       sizes='50vw'
                       src={URL.createObjectURL(file)}
                       alt='Preview'
-                      className='w-full h-auto mt-4 object-contain'
+                      className='w-full h-full mt-4 object-contain'
                     />
                   </div>
                 )}
