@@ -4,6 +4,7 @@ import { Home } from 'lucide-react';
 import Link from 'next/link';
 import { signOut } from 'next-auth/react';
 import React from 'react';
+import { BiMenu } from 'react-icons/bi';
 import { LuLogOut } from 'react-icons/lu';
 import { useRecoilState } from 'recoil';
 
@@ -21,15 +22,22 @@ import {
 import { sidebarMinimizeState } from '@/recoils/sidebar/atom';
 
 const NavbarAdmin = () => {
-  const [isMinimize] = useRecoilState(sidebarMinimizeState);
+  const [isMinimize, setIsMinimize] = useRecoilState(sidebarMinimizeState);
   const { data } = useGetWhoAmI();
   return (
     <div
       className={`${
-        isMinimize ? 'w-[calc(100vw-100px)]' : 'w-[calc(100vw-300px)]'
+        isMinimize ? 'w-full' : 'w-[calc(100vw-300px)]'
       }  py-[15px] px-9 flex justify-between gap-4 items-center border-b border-b-neutral-200 shadow-sm transition-all transform duration-300 ease-in-out`}
     >
-      <div className=''></div>
+      {isMinimize ? (
+        <button type='button' onClick={() => setIsMinimize(false)} className=''>
+          <BiMenu className='text-neutral-800 text-3xl' />
+        </button>
+      ) : (
+        <div></div>
+      )}
+
       <div className='flex justify-end gap-4'>
         <Badge className='bg-error-300 hover:bg-error-400 border-error-400 py-1 px-4 text-sm'>
           {data?.data?.awardee?.department || 'Admin'}

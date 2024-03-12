@@ -58,9 +58,7 @@ const RootBaseLayout: FC<{ children: ReactNode }> = ({ children }) => {
         <Sidebar />
         <div
           className={`flex flex-col gap-4 ${
-            isMinimize
-              ? 'w-[calc(100vw-100px)] ml-[75px]'
-              : 'w-[calc(100vw-300px)] ml-[300px]'
+            isMinimize ? 'w-full' : 'w-[calc(100vw-300px)] ml-[300px]'
           }`}
         >
           <NavbarAdmin />

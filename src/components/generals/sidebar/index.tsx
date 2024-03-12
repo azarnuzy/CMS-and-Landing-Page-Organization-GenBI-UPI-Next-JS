@@ -27,7 +27,7 @@ const Sidebar: FC = () => {
     <>
       <div
         className={`z-20 fixed top-0 left-0 ${
-          isMinimize ? 'w-[75px]' : 'w-[300px]'
+          isMinimize ? '-left-96 w-[75px]' : 'w-[300px]'
         }  min-h-full  bg-primary-main  transition-all transform duration-300 ease-in-out`}
       >
         <div
