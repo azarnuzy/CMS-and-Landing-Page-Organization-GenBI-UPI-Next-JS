@@ -9,5 +9,5 @@ export const ValidationSchemaAddCommentForm = z.object({
     .string({
       required_error: 'Komentar harus diisi',
     })
-    .min(1, 'Komentar harus diisi'),
+    .min(5, 'Komentar minimal 5 karakter'),
 });

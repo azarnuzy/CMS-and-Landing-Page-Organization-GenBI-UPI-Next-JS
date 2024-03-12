@@ -70,16 +70,6 @@ const CommentsSection = () => {
     },
   });
 
-  const formEditReply = useForm<z.infer<typeof ValidationSchemaAddCommentForm>>(
-    {
-      resolver: zodResolver(ValidationSchemaAddCommentForm),
-      defaultValues: {
-        name: '',
-        content: '',
-      },
-    }
-  );
-
   const formEditComment = useForm<
     z.infer<typeof ValidationSchemaAddCommentForm>
   >({
@@ -102,9 +92,6 @@ const CommentsSection = () => {
 
   const [formReplyOpen, setFormReplyOpen] = useState<number | null>(null);
   const [formEditCommentOpen, setFormEditCommentOpen] = useState<number | null>(
-    null
-  );
-  const [formEditReplyOpen, setFormEditReplyOpen] = useState<number | null>(
     null
   );
 
@@ -177,10 +164,6 @@ const CommentsSection = () => {
         },
       }
     );
-  };
-
-  const onSubmitEditReply = () => {
-    return '';
   };
 
   const handleDeleteComment = (id: number) => {
@@ -479,12 +462,12 @@ const CommentsSection = () => {
                               <DropdownMenuContent>
                                 <DropdownMenuItem
                                   onClick={() => {
-                                    setFormEditReplyOpen(reply.id);
-                                    formEditReply.setValue(
+                                    setFormEditCommentOpen(reply.id);
+                                    formEditComment.setValue(
                                       'name',
                                       reply.commenter
                                     );
-                                    formEditReply.setValue(
+                                    formEditComment.setValue(
                                       'content',
                                       reply.content
                                     );
@@ -493,7 +476,12 @@ const CommentsSection = () => {
                                 >
                                   <FaRegEdit /> Edit
                                 </DropdownMenuItem>
-                                <DropdownMenuItem className='flex gap-2 cursor-pointer'>
+                                <DropdownMenuItem
+                                  onClick={() => {
+                                    handleDeleteComment(reply.id);
+                                  }}
+                                  className='flex gap-2 cursor-pointer'
+                                >
                                   <FaRegTrashAlt /> Delete
                                 </DropdownMenuItem>
                               </DropdownMenuContent>
@@ -503,16 +491,16 @@ const CommentsSection = () => {
                       </div>
                       <p>{reply?.content}</p>
                     </div>
-                    {formEditReplyOpen === reply.id && (
-                      <Form {...formEditReply}>
+                    {formEditCommentOpen === reply.id && (
+                      <Form {...formEditComment}>
                         <form
-                          onSubmit={formEditReply.handleSubmit(
-                            onSubmitEditReply
+                          onSubmit={formEditComment.handleSubmit(
+                            onSubmitEditComment
                           )}
                           className='w-full flex flex-col gap-2'
                         >
                           <FormField
-                            control={formEditReply.control}
+                            control={formEditComment.control}
                             name='name'
                             render={({ field }) => (
                               <FormItem>
@@ -531,18 +519,19 @@ const CommentsSection = () => {
                             labelClassName='!text-sm text-left !font-normal'
                             type='text'
                             variant='md'
-                            control={formEditReply.control}
+                            control={formEditComment.control}
                             name='content'
                             placeholder='Berikan Balasan...'
                             className='h-[80px] text-sm  py-2'
                             isTextArea={true}
                             status={
-                              formEditReply.formState?.errors?.content
+                              formEditComment.formState?.errors?.content
                                 ? 'error'
                                 : undefined
                             }
                             message={
-                              formEditReply.formState?.errors?.content?.message
+                              formEditComment.formState?.errors?.content
+                                ?.message
                             }
                           />
                           <div className='w-full flex justify-end'>
@@ -550,7 +539,7 @@ const CommentsSection = () => {
                               <Button
                                 type='button'
                                 className='bg-neutral-100 text-primary-main border-primary-main rounded-full border hover:bg-primary-main hover:text-neutral-100'
-                                onClick={() => setFormEditReplyOpen(null)}
+                                onClick={() => setFormEditCommentOpen(null)}
                               >
                                 Cancel
                               </Button>
@@ -558,7 +547,13 @@ const CommentsSection = () => {
                                 type='submit'
                                 className='bg-primary-main border-primary-main text-neutral-100 rounded-full'
                               >
-                                Send
+                                {statusEditComment === 'pending' ? (
+                                  <div className='flex gap-2 items-center'>
+                                    <MiniSpinner /> Loading...
+                                  </div>
+                                ) : (
+                                  `Edit`
+                                )}
                               </Button>
                             </div>
                           </div>
