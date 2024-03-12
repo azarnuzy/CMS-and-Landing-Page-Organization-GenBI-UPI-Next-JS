@@ -12,4 +12,14 @@ const BaseLayout: FC<TBaseLayout> = ({ children }): ReactElement => {
   );
 };
 
+export const WideBaseLayout: FC<TBaseLayout> = ({ children }): ReactElement => {
+  return (
+    <div className='w-full px-5 sm:px-6 md:px-8 lg:px-16'>
+      <div className='max-w-[1920px] mx-auto'>
+        <>{children}</>
+      </div>
+    </div>
+  );
+};
+
 export default BaseLayout;

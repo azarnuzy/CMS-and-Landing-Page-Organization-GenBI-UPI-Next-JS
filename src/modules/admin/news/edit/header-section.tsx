@@ -1,13 +1,13 @@
 import React from 'react';
 
 import { BreadCrumb } from '@/components/breadcrumbs';
-import BaseLayout from '@/components/layouts/base';
+import { WideBaseLayout } from '@/components/layouts/base';
 
 import { breadcrumbEditNewsData } from '@/modules/admin/news/edit/constant';
 
 const HeaderEditNewsSection = ({ id }: { id: string }) => {
   return (
-    <BaseLayout>
+    <WideBaseLayout>
       <div className='flex flex-col  border-b pb-5'>
         <BreadCrumb
           items={breadcrumbEditNewsData(id)}
@@ -17,7 +17,7 @@ const HeaderEditNewsSection = ({ id }: { id: string }) => {
           <h3 className='text-primary-900'>Edit News</h3>
         </div>
       </div>
-    </BaseLayout>
+    </WideBaseLayout>
   );
 };
 

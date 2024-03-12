@@ -1,6 +1,6 @@
 import React, { Suspense } from 'react';
 
-import BaseLayout from '@/components/layouts/base';
+import { WideBaseLayout } from '@/components/layouts/base';
 import { LoadingSpinner } from '@/components/loading-spinner';
 
 import ContentAwardeeSection from '@/modules/admin/awardee/content-section';
@@ -10,12 +10,12 @@ const AwardeeAdminPage = () => {
   return (
     <Suspense fallback={<LoadingSpinner />}>
       <main>
-        <BaseLayout>
+        <WideBaseLayout>
           <>
             <HeaderAwardeetSection />
             <ContentAwardeeSection />
           </>
-        </BaseLayout>
+        </WideBaseLayout>
       </main>
     </Suspense>
   );

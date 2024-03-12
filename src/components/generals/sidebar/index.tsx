@@ -5,6 +5,7 @@ import Link from 'next/link';
 import React, { FC } from 'react';
 import { BiMenu, BiSolidBookAlt } from 'react-icons/bi';
 import { BiMenuAltRight } from 'react-icons/bi';
+import { FaAward } from 'react-icons/fa6';
 import { HiMiniUsers } from 'react-icons/hi2';
 import { useRecoilState } from 'recoil';
 
@@ -165,6 +166,11 @@ const dataSideBar = [
         title: 'News',
         link: '/admin/news',
         icon: <BiSolidBookAlt className='w-6 h-6  text-white' />,
+      },
+      {
+        title: 'Appreciations',
+        link: '/admin/appreciations',
+        icon: <FaAward className='w-6 h-6  text-white' />,
       },
       // {
       //   title: 'Event',
