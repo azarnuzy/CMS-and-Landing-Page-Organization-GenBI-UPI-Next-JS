@@ -194,7 +194,7 @@ const FormEditNewsSection = ({ id }: { id: string }) => {
   }, [data, form, form.reset, setDataDetail, setTags]);
 
   return (
-    <div className='border rounded-3xl px-6 py-6 my-10 shadow-sm'>
+    <div className='border rounded-3xl px-6 py-6 sm:my-10 shadow-sm'>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
@@ -230,7 +230,7 @@ const FormEditNewsSection = ({ id }: { id: string }) => {
                     <FormControl>
                       <RadioGroup
                         onValueChange={field.onChange}
-                        className='flex gap-2 items-center'
+                        className='flex gap-2 items-center flex-wrap'
                       >
                         {dataPostType?.data?.map((item, index) => {
                           return (
@@ -671,8 +671,11 @@ const FormEditNewsSection = ({ id }: { id: string }) => {
                                 setDocs(null);
                                 toast.success('Success add other documents');
                               },
-                              onError: () => {
-                                toast.error('Fail add other documents');
+                              onError: (error) => {
+                                toast.error(
+                                  error?.response?.data?.message ||
+                                    'Fail add other documents'
+                                );
                               },
                             }
                           );

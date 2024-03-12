@@ -199,7 +199,7 @@ const FormAddNewsSection = () => {
                           return (
                             <FormItem
                               key={index}
-                              className='flex items-center space-x-3 space-y-0'
+                              className='flex items-center space-x-3 space-y-0 flex-wrap'
                             >
                               <FormControl>
                                 <RadioGroupItem
