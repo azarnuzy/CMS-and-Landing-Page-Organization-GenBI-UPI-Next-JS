@@ -25,7 +25,7 @@ const NavbarAdmin = () => {
   const [, setIsMinimize] = useRecoilState(sidebarMinimizeState);
   const { data } = useGetWhoAmI();
   return (
-    <div className='w-full py-[15px] px-9 flex justify-between gap-4 items-center border-b border-b-neutral-200 shadow-sm transition-all transform duration-300 ease-in-out'>
+    <div className='w-full py-[15px] px-5 sm:px-6 md:px-8 lg:px-16 flex justify-between gap-4 items-center border-b border-b-neutral-200 shadow-sm transition-all transform duration-300 ease-in-out'>
       <button type='button' onClick={() => setIsMinimize(false)} className=''>
         <BiMenu className='text-neutral-800 text-3xl' />
       </button>
