@@ -75,6 +75,7 @@ const ContenAppreciationsSection = () => {
       onSuccess: () => {
         refetch();
         setOpen(false);
+        setId(0);
         toast.success('Berhasil menghapus data');
       },
       onError: (error) => {

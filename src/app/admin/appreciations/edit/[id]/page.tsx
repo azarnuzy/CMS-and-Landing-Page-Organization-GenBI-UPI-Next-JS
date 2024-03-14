@@ -1,7 +1,20 @@
 import React from 'react';
 
-const EditAppreciationsAdminPage = () => {
-  return <div>EditAppreciationsAdminPage</div>;
+import { WideBaseLayout } from '@/components/layouts/base';
+
+import FormEditAppreciationSection from '@/modules/admin/appreciations/edit/form-section';
+import HeaderPutAppreciationSection from '@/modules/admin/appreciations/edit/header-section';
+
+const EditAppreciationsPage = ({ params }: { params: { id: string } }) => {
+  const { id } = params;
+  return (
+    <WideBaseLayout>
+      <>
+        <HeaderPutAppreciationSection id={id} />
+        <FormEditAppreciationSection />
+      </>
+    </WideBaseLayout>
+  );
 };
 
-export default EditAppreciationsAdminPage;
+export default EditAppreciationsPage;

@@ -7,6 +7,7 @@ import {
 
 import {
   deleteAppreciations,
+  getAppreciationDetail,
   getAppreciations,
   postAppreciations,
   putAppreciations,
@@ -15,6 +16,7 @@ import {
 import { TMetaErrorResponse } from '@/types';
 import {
   TDataAppreciationsResponse,
+  TDataDetailAppreciationResponse,
   TDataPostAppreciationResponse,
   TDataPutAppreciationResponse,
   TPostAppreciationPayload,
@@ -34,6 +36,14 @@ export const useGetAppreciations = ({
   useQuery({
     queryKey: ['all-event', sort, type, limit, page],
     queryFn: async () => await getAppreciations({ sort, type, limit, page }),
+  });
+
+export const useGetAppreciationDetail = (
+  id: number
+): UseQueryResult<TDataDetailAppreciationResponse, TMetaErrorResponse> =>
+  useQuery({
+    queryKey: ['get-detail-appreciation', id],
+    queryFn: async () => await getAppreciationDetail(id),
   });
 
 export const useAddAppreciations = (): UseMutationResult<

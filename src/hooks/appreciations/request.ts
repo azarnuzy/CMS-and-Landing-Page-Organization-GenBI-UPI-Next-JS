@@ -5,6 +5,7 @@ import { api } from '@/lib/api';
 import {
   TAppreciationsParams,
   TDataAppreciationsResponse,
+  TDataDetailAppreciationResponse,
   TDataPostAppreciationResponse,
   TDataPutAppreciationResponse,
   TPostAppreciationPayload,
@@ -24,6 +25,13 @@ export const getAppreciations = async (
     },
   });
 
+  return data;
+};
+
+export const getAppreciationDetail = async (
+  id: number
+): Promise<TDataDetailAppreciationResponse> => {
+  const { data } = await api.get(`v1/appreciations/${id}`);
   return data;
 };
 

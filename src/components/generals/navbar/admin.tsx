@@ -23,7 +23,7 @@ import {
 import { sidebarMinimizeState } from '@/recoils/sidebar/atom';
 
 const NavbarAdmin = () => {
-  const [, setIsMinimize] = useRecoilState(sidebarMinimizeState);
+  const [isMinimize, setIsMinimize] = useRecoilState(sidebarMinimizeState);
   const { data } = useGetWhoAmI();
   return (
     <div className='w-full py-[15px] border-b border-b-neutral-200 shadow-sm transition-all transform duration-300 ease-in-out'>
@@ -31,7 +31,7 @@ const NavbarAdmin = () => {
         <div className=' flex justify-between gap-4 items-center'>
           <button
             type='button'
-            onClick={() => setIsMinimize(false)}
+            onClick={() => setIsMinimize(!isMinimize)}
             className=''
           >
             <BiMenu className='text-neutral-800 text-3xl' />
