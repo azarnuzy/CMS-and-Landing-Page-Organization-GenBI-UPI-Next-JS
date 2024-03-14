@@ -34,7 +34,7 @@ export const ValidationSchemaAddNewsForm = z.object({
     .string({
       required_error: 'Content should be filled with minimum 150 character',
     })
-    .min(150, {
+    .min(200, {
       message: 'Content should be filled with minimum 150 character',
     })
     .refine((value) => value.trim() !== '<p></p>', {

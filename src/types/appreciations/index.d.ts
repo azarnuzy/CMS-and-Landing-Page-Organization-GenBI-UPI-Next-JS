@@ -39,9 +39,9 @@ export interface TPostAppreciationData {
 }
 
 export interface TPostAppreciationPayload {
-  cover: File;
+  cover?: File;
   title: string;
-  given_date: string;
+  given_date?: Date;
   instagram_url: string;
   caption: string;
 }
