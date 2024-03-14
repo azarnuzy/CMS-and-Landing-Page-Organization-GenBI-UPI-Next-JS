@@ -248,7 +248,7 @@ const ContentNewsManagementSection = () => {
                     </Dialog>
                     <Link
                       target='_blank'
-                      href={`berita/${news.id}/${news.slug}`}
+                      href={`/berita/${news.id}/${news.slug}`}
                     >
                       <BiLinkExternal className='text-primary-main text-2xl' />
                     </Link>
