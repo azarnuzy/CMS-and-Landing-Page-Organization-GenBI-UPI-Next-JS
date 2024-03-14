@@ -140,7 +140,7 @@ export const UploadField = <T extends FieldValues>(
            rounded-lg p-4 outline-none focus:outline-none sr-only
         `}
       />
-      {field.value && files && !props.accepted?.includes('.pdf') && (
+      {field.value && files && props.accepted?.includes('.jpg') && (
         <div className='relative w-full max-w-[400px]'>
           <div className='m-2 w-full'>
             <div className='relative mx-auto w-full h-40 overflow-hidden rounded-lg shadow-md'>
@@ -180,6 +180,14 @@ export const UploadField = <T extends FieldValues>(
             </div>
           </div>
         </div>
+      )}
+      {field.value && files && props.accepted?.includes('.mp4') && (
+        <video
+          width={400}
+          controls
+          height={400}
+          src={URL.createObjectURL(files)}
+        />
       )}
     </section>
   );

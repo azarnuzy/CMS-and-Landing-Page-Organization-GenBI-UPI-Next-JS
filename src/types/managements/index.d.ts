@@ -125,17 +125,21 @@ export interface TPostManagementData {
   createdAt: string;
 }
 
+export interface Mission {
+  value: string;
+}
+
 export interface TPostManagamentPayload {
-  photo: File;
-  video: File;
-  name: string;
-  description: string;
-  vision: string;
-  mission: string[];
-  period_year: string;
-  period_start_date: string;
-  period_end_date: string;
-  is_active: boolean;
+  photo?: File;
+  video?: File;
+  name?: string;
+  description?: string;
+  vision?: string;
+  mission?: Mission[];
+  period_year?: string;
+  period_start_date?: Date;
+  period_end_date?: Date;
+  is_active?: boolean;
 }
 export interface TPutManagamentPayload {
   photo?: File;

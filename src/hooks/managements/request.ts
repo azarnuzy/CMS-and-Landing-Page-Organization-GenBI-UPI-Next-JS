@@ -57,7 +57,7 @@ export const addManagementRequest = async (
     headers: {
       'Content-Type': 'multipart/form-data',
     },
-    data: serialize(payload),
+    data: payload,
   });
 
   return data;
