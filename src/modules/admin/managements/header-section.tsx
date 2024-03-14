@@ -4,7 +4,7 @@ import { BreadCrumb } from '@/components/breadcrumbs';
 
 import { breadcrumbManagementsData } from '@/modules/admin/managements/constant';
 
-const HeaderAppreciationsSection = () => {
+const HeaderManagementSection = () => {
   return (
     <div className='flex flex-col  border-b pb-5'>
       <BreadCrumb
@@ -19,4 +19,4 @@ const HeaderAppreciationsSection = () => {
   );
 };
 
-export default HeaderAppreciationsSection;
+export default HeaderManagementSection;
