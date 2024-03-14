@@ -92,7 +92,100 @@ export interface Self {
   href: string;
 }
 
+export interface TAllManagementData {
+  id: number;
+  name: string;
+  description: string;
+  vision: string;
+  mission: string[];
+  period_year: string;
+  period_start_date: string;
+  period_end_date: string;
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
+  dept_count: string;
+  awardee_count: string;
+  program_count: string;
+}
+
+export interface TPostManagementData {
+  id: number;
+  name: string;
+  photo_id: number;
+  video_id: number;
+  description: string;
+  vision: string;
+  mission: string[];
+  period_year: string;
+  period_start_date: string;
+  period_end_date: string;
+  is_active: boolean;
+  updatedAt: string;
+  createdAt: string;
+}
+
+export interface TPostManagamentPayload {
+  photo: File;
+  video: File;
+  name: string;
+  description: string;
+  vision: string;
+  mission: string[];
+  period_year: string;
+  period_start_date: string;
+  period_end_date: string;
+  is_active: boolean;
+}
+export interface TPutManagamentPayload {
+  photo?: File;
+  video?: File;
+  name?: string;
+  description?: string;
+  vision?: string;
+  mission?: string[];
+  period_year?: string;
+  period_start_date?: string;
+  period_end_date?: string;
+  is_active?: boolean;
+}
+
+export interface TPostManagementResponse {
+  id: number;
+  name: string;
+  photo_id: number;
+  video_id: number;
+  description: string;
+  vision: string;
+  mission: string[];
+  period_year: string;
+  period_start_date: string;
+  period_end_date: string;
+  is_active: boolean;
+  updatedAt: string;
+  createdAt: string;
+}
+
+export interface TPutManagementResponse {
+  id: number;
+}
+
+export interface TGetAllManagementParams {
+  limit: number;
+  page: number;
+  sort: string;
+  type: string;
+  options?: boolean;
+}
+
 export type TDataGetOptionManagementResponse =
   TMetaResponse<TOptionManagementsData>;
 export type TDataGetActiveManagementsResponse =
   TMetaResponseSingle<TActiveManagementsData>;
+export type TDataGetAllManagementsResponse = TMetaResponse<TAllManagementData>;
+export type TDataPostManagementResponse =
+  TMetaResponseSingle<TPostManagementResponse>;
+export type TDataPutManagementResponse =
+  TMetaResponseSingle<TPutManagementResponse>;
+export type TDataDeleteManagementResponse =
+  TMetaResponseSingle<TPutManagementResponse>;
