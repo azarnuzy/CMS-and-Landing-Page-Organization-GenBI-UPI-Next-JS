@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { WideBaseLayout } from '@/components/layouts/base';
+
 import ContentDetailAwardeeAdminSection from '@/modules/admin/awardee/detail/content-section';
 import HeaderDetailAwardeeAdminSection from '@/modules/admin/awardee/detail/header-section';
 
@@ -11,10 +13,12 @@ const DetailAwardeeManagementPage = ({
   const { id } = params;
 
   return (
-    <main>
-      <HeaderDetailAwardeeAdminSection id={id} />
-      <ContentDetailAwardeeAdminSection />
-    </main>
+    <WideBaseLayout>
+      <>
+        <HeaderDetailAwardeeAdminSection id={id} />
+        <ContentDetailAwardeeAdminSection />
+      </>
+    </WideBaseLayout>
   );
 };
 

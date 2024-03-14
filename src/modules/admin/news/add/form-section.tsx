@@ -230,13 +230,8 @@ const FormAddNewsSection = () => {
                       <FormLabel>Select Department *</FormLabel>
                       <Select
                         // value={String(field.value)}
-                        onValueChange={(e) => {
-                          if (e.length > 0) {
-                            field.onChange(Number(e));
-                          } else {
-                            field.onChange(undefined);
-                          }
-                        }}
+                        // defaultValue={String(field.value)}
+                        onValueChange={field.onChange}
                       >
                         <FormControl>
                           <SelectTrigger>
@@ -285,9 +280,9 @@ const FormAddNewsSection = () => {
                             )}
                           >
                             {field.value
-                              ? usersOptionData.find(
-                                  (language) => language.value === field.value
-                                )?.label
+                              ? usersOptionData.find((language) => {
+                                  return language.value == field.value;
+                                })?.label
                               : 'Select Author'}
                             <ChevronsUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
                           </Button>
@@ -299,25 +294,29 @@ const FormAddNewsSection = () => {
                           <CommandEmpty>No Author found.</CommandEmpty>
                           <ScrollArea className='h-[200px]'>
                             <CommandGroup>
-                              {usersOptionData.map((item) => (
-                                <CommandItem
-                                  value={item.label}
-                                  key={item.value}
-                                  onSelect={() => {
-                                    form.setValue('author_id', item.value);
-                                  }}
-                                >
-                                  <Check
-                                    className={cn(
-                                      'mr-2 h-4 w-4',
-                                      item.value === field.value
-                                        ? 'opacity-100'
-                                        : 'opacity-0'
-                                    )}
-                                  />
-                                  {item.label}
-                                </CommandItem>
-                              ))}
+                              {usersOptionData.map((item) => {
+                                return (
+                                  item.label !== null && (
+                                    <CommandItem
+                                      value={item.label}
+                                      key={item.value}
+                                      onSelect={() => {
+                                        form.setValue('author_id', item.value);
+                                      }}
+                                    >
+                                      <Check
+                                        className={cn(
+                                          'mr-2 h-4 w-4',
+                                          item.value === field.value
+                                            ? 'opacity-100'
+                                            : 'opacity-0'
+                                        )}
+                                      />
+                                      {item.label}
+                                    </CommandItem>
+                                  )
+                                );
+                              })}
                             </CommandGroup>
                           </ScrollArea>
                         </Command>
@@ -356,13 +355,7 @@ const FormAddNewsSection = () => {
                       <FormLabel>Select Event *</FormLabel>
                       <Select
                         // value={String(field.value)}
-                        onValueChange={(e) => {
-                          if (e.length > 0) {
-                            field.onChange(Number(e));
-                          } else {
-                            field.onChange(undefined);
-                          }
-                        }}
+                        onValueChange={field.onChange}
                       >
                         <FormControl>
                           <SelectTrigger>

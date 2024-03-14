@@ -1,14 +1,18 @@
 import React from 'react';
 
+import { WideBaseLayout } from '@/components/layouts/base';
+
 import AddAwardeeFormSection from '@/modules/admin/awardee/add/form-section';
 import HeaderAddAwardeeSection from '@/modules/admin/awardee/add/header-section';
 
 const AddAwardeePage = () => {
   return (
-    <div>
-      <HeaderAddAwardeeSection />
-      <AddAwardeeFormSection />
-    </div>
+    <WideBaseLayout>
+      <>
+        <HeaderAddAwardeeSection />
+        <AddAwardeeFormSection />
+      </>
+    </WideBaseLayout>
   );
 };
 

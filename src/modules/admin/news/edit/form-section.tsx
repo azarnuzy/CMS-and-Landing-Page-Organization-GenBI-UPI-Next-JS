@@ -332,25 +332,29 @@ const FormEditNewsSection = ({ id }: { id: string }) => {
                           <CommandEmpty>No Author found.</CommandEmpty>
                           <ScrollArea className='h-[200px]'>
                             <CommandGroup>
-                              {dataUser?.data.map((item: TUserOptionsData) => (
-                                <CommandItem
-                                  value={item.awardee_name}
-                                  key={item.id}
-                                  onSelect={() => {
-                                    form.setValue('author_id', item.id);
-                                  }}
-                                >
-                                  <Check
-                                    className={cn(
-                                      'mr-2 h-4 w-4',
-                                      item.id === field.value
-                                        ? 'opacity-100'
-                                        : 'opacity-0'
-                                    )}
-                                  />
-                                  {item.awardee_name}
-                                </CommandItem>
-                              ))}
+                              {dataUser?.data.map((item: TUserOptionsData) => {
+                                return (
+                                  item.awardee_name !== null && (
+                                    <CommandItem
+                                      value={item.awardee_name}
+                                      key={item.id}
+                                      onSelect={() => {
+                                        form.setValue('author_id', item.id);
+                                      }}
+                                    >
+                                      <Check
+                                        className={cn(
+                                          'mr-2 h-4 w-4',
+                                          item.id === field.value
+                                            ? 'opacity-100'
+                                            : 'opacity-0'
+                                        )}
+                                      />
+                                      {item.awardee_name}
+                                    </CommandItem>
+                                  )
+                                );
+                              })}
                             </CommandGroup>
                           </ScrollArea>
                         </Command>
