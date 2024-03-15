@@ -10,12 +10,12 @@ export const breadcrumbAddManagementsData = [
     link: '/',
   },
   {
-    name: 'Appreciations',
-    link: '/admin/appreciations',
+    name: 'Managements',
+    link: '/admin/managements',
   },
   {
-    name: 'Add Appreciations',
-    link: '/admin/appreciations/add',
+    name: 'Add Managements',
+    link: '/admin/managements/add',
   },
 ];
 

@@ -3,7 +3,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { format } from 'date-fns';
 import { CalendarIcon } from 'lucide-react';
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { DayPicker } from 'react-day-picker';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
@@ -34,26 +34,35 @@ const DraftEditor = dynamic(() => import('@/components/text-editor'), {
 });
 
 import { convertToRaw, EditorState } from 'draft-js';
+import { stateFromHTML } from 'draft-js-import-html';
 import draftToHtml from 'draftjs-to-html';
 import dynamic from 'next/dynamic';
+import Image from 'next/image';
 import Link from 'next/link';
+import { useParams } from 'next/navigation';
 
-import { ValidationSchemaAddManagementForm } from '@/lib/validations/managements';
-import { useAddManagement } from '@/hooks/managements/hook';
+import { ValidationSchemaUpdateManagementForm } from '@/lib/validations/managements';
+import {
+  useGetManagementsById,
+  useUpdateManagement,
+} from '@/hooks/managements/hook';
 
 import { UploadField } from '@/components/input/upload-file';
 import MiniSpinner from '@/components/spinner';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 
+import { defaultValuesAddManagements } from '@/modules/admin/managements/add/constant';
 import {
-  addFormDataManagement,
-  defaultValuesAddManagements,
-} from '@/modules/admin/managements/add/constant';
+  defaultValuesUpdateManagements,
+  updateFormDataManagement,
+} from '@/modules/admin/managements/edit/constant';
 
-import { TPostManagamentPayload } from '@/types/managements';
-function FormAddManagementSection() {
-  const form = useForm<z.infer<typeof ValidationSchemaAddManagementForm>>({
-    resolver: zodResolver(ValidationSchemaAddManagementForm),
+import { TPutManagamentPayload } from '@/types/managements';
+function FormEditManagementSection() {
+  const { id } = useParams();
+
+  const form = useForm<z.infer<typeof ValidationSchemaUpdateManagementForm>>({
+    resolver: zodResolver(ValidationSchemaUpdateManagementForm),
     defaultValues: defaultValuesAddManagements,
   });
   const { fields, append, remove } = useFieldArray({
@@ -61,7 +70,8 @@ function FormAddManagementSection() {
     name: 'mission',
   });
 
-  const { mutate, status } = useAddManagement();
+  const { data } = useGetManagementsById({ id: Number(id) });
+  const { mutate, status } = useUpdateManagement();
 
   const [editorState, setEditorState] = useState<EditorState>(
     EditorState.createEmpty()
@@ -70,41 +80,58 @@ function FormAddManagementSection() {
   const [getPhoto, setPhoto] = useState<string>('');
   const [getVideo, setVideo] = useState<string>('');
 
-  const handleEditorChange = (editorState: EditorState) => {
-    setEditorState(editorState);
+  const handleEditorChange = useCallback(
+    (editorState: EditorState) => {
+      setEditorState(editorState);
 
-    const contentState = editorState.getCurrentContent();
-    const rawContentState = convertToRaw(contentState);
-    const htmlContent = draftToHtml(rawContentState);
+      const contentState = editorState.getCurrentContent();
+      const rawContentState = convertToRaw(contentState);
+      const htmlContent = draftToHtml(rawContentState);
 
-    form.setValue('description', htmlContent, {
-      shouldDirty: true,
-      shouldValidate: true,
-    });
-  };
+      form.setValue('description', htmlContent, {
+        shouldDirty: true,
+        shouldValidate: true,
+      });
+    },
+    [form]
+  );
 
   const onSubmit = (
-    data: z.infer<typeof ValidationSchemaAddManagementForm>
+    data: z.infer<typeof ValidationSchemaUpdateManagementForm>
   ) => {
     try {
-      const formData = addFormDataManagement(data);
-
-      mutate(formData as unknown as TPostManagamentPayload, {
-        onSuccess: () => {
-          form.reset(defaultValuesAddManagements);
-          toast.success('Appreciation added successfully');
-          setEditorState(EditorState.createEmpty());
-          setPhoto('');
-          setVideo('');
+      const formData = updateFormDataManagement(data);
+      mutate(
+        {
+          payload: formData as unknown as TPutManagamentPayload,
+          id: Number(id),
         },
-        onError: (error) => {
-          toast.error(error?.response?.data?.message);
-        },
-      });
+        {
+          onSuccess: () => {
+            toast.success('Management updated successfully');
+          },
+          onError: (error) => {
+            toast.error(error?.response?.data?.message);
+          },
+        }
+      );
     } catch (error) {
       throw new Error('Error adding appreciation');
     }
   };
+
+  useEffect(() => {
+    if (data) {
+      form.reset(defaultValuesUpdateManagements(data?.data));
+      setPhoto(data?.data?.management?.photo?.alt || 'Tidak ada foto');
+      setVideo(data?.data?.management?.video?.alt || 'Tidak ada video');
+      const contentState = stateFromHTML(
+        data.data?.management?.description || ''
+      );
+      const editorState = EditorState.createWithContent(contentState);
+      setEditorState(editorState);
+    }
+  }, [data, form]);
 
   return (
     <div className='border rounded-3xl px-6 py-6  sm:my-10 shadow-sm'>
@@ -171,31 +198,33 @@ function FormAddManagementSection() {
                   control={form.control}
                   key={field.id}
                   name={`mission.${index}.value`}
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className={cn(index !== 0 && 'sr-only')}>
-                        Missions
-                      </FormLabel>
-                      <div className='flex gap-2'>
-                        <FormControl>
-                          <Input
-                            placeholder='Input your list of missions'
-                            {...field}
-                          />
-                        </FormControl>
-                        <Button
-                          type='button'
-                          variant='outline'
-                          disabled={index === 0}
-                          size='sm'
-                          onClick={() => remove(index)}
-                        >
-                          Remove
-                        </Button>
-                      </div>
-                      <FormMessage />
-                    </FormItem>
-                  )}
+                  render={({ field }) => {
+                    return (
+                      <FormItem>
+                        <FormLabel className={cn(index !== 0 && 'sr-only')}>
+                          Missions
+                        </FormLabel>
+                        <div className='flex gap-2'>
+                          <FormControl>
+                            <Input
+                              placeholder='Input your list of missions'
+                              {...field}
+                            />
+                          </FormControl>
+                          <Button
+                            type='button'
+                            variant='outline'
+                            disabled={index === 0}
+                            size='sm'
+                            onClick={() => remove(index)}
+                          >
+                            Remove
+                          </Button>
+                        </div>
+                        <FormMessage />
+                      </FormItem>
+                    );
+                  }}
                 />
               ))}
               <Button
@@ -353,43 +382,78 @@ function FormAddManagementSection() {
                 )}
               />
             </div>
-            <div className='w-full col-span-2 lg:col-span-1'>
-              <FormLabel
-                className={`${
-                  form.formState?.errors?.photo ? 'text-red-500' : 'text-black'
-                }`}
-              >
-                Photo <span className='text-error-main'>*</span>
-              </FormLabel>
-              <UploadField
-                getname={getPhoto}
-                setname={setPhoto}
-                control={form.control}
-                name='photo'
-                accepted='.jpg, .jpeg, .png'
-                variant='sm'
-                message={form?.formState?.errors?.photo?.message?.toString()}
-                status={form?.formState?.errors?.photo ? 'error' : 'none'}
-              />
+            <div className='w-full col-span-2 lg:col-span-1 flex flex-col'>
+              <div className='w-full'>
+                <FormLabel
+                  className={`${
+                    form.formState?.errors?.photo
+                      ? 'text-red-500'
+                      : 'text-black'
+                  }`}
+                >
+                  Photo <span className='text-error-main'>*</span>
+                </FormLabel>
+                <UploadField
+                  getname={getPhoto}
+                  setname={setPhoto}
+                  control={form.control}
+                  name='photo'
+                  accepted='.jpg, .jpeg, .png'
+                  variant='sm'
+                  message={form?.formState?.errors?.photo?.message?.toString()}
+                  status={form?.formState?.errors?.photo ? 'error' : 'none'}
+                />
+              </div>
+              {data && !form.getValues('photo') && (
+                <div className='relative w-full max-w-[400px]'>
+                  <div className='m-2 w-full'>
+                    <div className='relative mx-auto w-full h-40 overflow-hidden rounded-lg shadow-md'>
+                      <Image
+                        src={
+                          data?.data?.management?.photo.file_url ||
+                          '/images/no-photo-available.png'
+                        }
+                        alt='image'
+                        className='object-cover w-full h-full'
+                        width={0}
+                        height={0}
+                        sizes='50vw'
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
-            <div className='w-full col-span-2 lg:col-span-1'>
-              <FormLabel
-                className={`${
-                  form.formState?.errors?.video ? 'text-red-500' : 'text-black'
-                }`}
-              >
-                Video <span className='text-error-main'>*</span>
-              </FormLabel>
-              <UploadField
-                getname={getVideo}
-                setname={setVideo}
-                control={form.control}
-                name='video'
-                accepted='.mp4, .ogg, .webm'
-                variant='sm'
-                message={form?.formState?.errors?.video?.message?.toString()}
-                status={form?.formState?.errors?.video ? 'error' : 'none'}
-              />
+            <div className='w-full col-span-2 lg:col-span-1 flex flex-col'>
+              <div className='w-full'>
+                <FormLabel
+                  className={`${
+                    form.formState?.errors?.video
+                      ? 'text-red-500'
+                      : 'text-black'
+                  }`}
+                >
+                  Video <span className='text-error-main'>*</span>
+                </FormLabel>
+                <UploadField
+                  getname={getVideo}
+                  setname={setVideo}
+                  control={form.control}
+                  name='video'
+                  accepted='.mp4, .ogg, .webm'
+                  variant='sm'
+                  message={form?.formState?.errors?.video?.message?.toString()}
+                  status={form?.formState?.errors?.video ? 'error' : 'none'}
+                />
+              </div>
+              {data && !form.getValues('video') && (
+                <video
+                  width={400}
+                  controls
+                  height={400}
+                  src={data?.data?.management?.video?.file_url}
+                />
+              )}
             </div>
           </div>
           <div className='flex justify-between'>
@@ -423,4 +487,4 @@ function FormAddManagementSection() {
   );
 }
 
-export default FormAddManagementSection;
+export default FormEditManagementSection;

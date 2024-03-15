@@ -1,5 +1,3 @@
-import { serialize } from 'object-to-formdata';
-
 import { api } from '@/lib/api';
 
 import {
@@ -76,7 +74,7 @@ export const updateManagementRequest = async ({
     headers: {
       'Content-Type': 'multipart/form-data',
     },
-    data: serialize(payload),
+    data: payload,
   });
 
   return data;

@@ -147,10 +147,10 @@ export interface TPutManagamentPayload {
   name?: string;
   description?: string;
   vision?: string;
-  mission?: string[];
+  mission?: Mission[];
   period_year?: string;
-  period_start_date?: string;
-  period_end_date?: string;
+  period_start_date?: Date;
+  period_end_date?: Date;
   is_active?: boolean;
 }
 
