@@ -92,8 +92,92 @@ export interface TDepartmentOptionData {
   name: string;
 }
 
+export interface TDepartmentGetAllParams {
+  page: number;
+  limit: number;
+  sort: string;
+  order: string;
+  options?: boolean;
+}
+
+export interface TAllDepartmentData {
+  id: number;
+  name: string;
+  description: string;
+  cover_id?: number;
+  management_id?: number;
+  createdAt: string;
+  updatedAt: string;
+  cover?: Cover;
+  divisions: Division[];
+  _links: Links;
+}
+export interface Links {
+  self: Self;
+}
+
+export interface Self {
+  href: string;
+}
+
+export interface Cover {
+  id: number;
+  alt: string;
+  file: File;
+}
+
+export interface File {
+  imagekit_url: string;
+  mimetype: string;
+}
+
+export interface TAddDepartementData {
+  id: number;
+  name: string;
+  description: string;
+  cover_id: number;
+  management_id: number;
+  updatedAt: string;
+  createdAt: string;
+}
+
+export interface TAddDepartmentPayload {
+  cover: File;
+  name: string;
+  description: string;
+  management_id: number;
+}
+
+export interface TUpdateDepartmentPayload {
+  cover?: File;
+  name?: string;
+  description?: string;
+  management_id?: number;
+}
+
+export interface TUpdateDepartmentData {
+  id: number;
+}
+
+export interface TDepartmentByDivisionData {
+  id: number;
+  name: string;
+  department_id: number;
+  description: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export type TDataGetDepartmentsTagResponse = TMetaResponse<string>;
 export type TDataGetDepartmentsByIdResponse =
   TMetaResponseSingle<TDepartmentByIdData>;
 export type TDataGetDepartmentOptionResponse =
   TMetaResponse<TDepartmentOptionData>;
+export type TDataGetAllDepartmentResponse = TMetaResponse<TAllDepartmentData>;
+export type TDataAddDepartmentResponse =
+  TMetaResponseSingle<TAddDepartementData>;
+export type TDataUpdateDepartmentResponse =
+  TMetaResponseSingle<TUpdateDepartmentData>;
+export type TDataDeleteDepartmentResponse = TMetaResponseSingle<null>;
+export type TDataGetDepartmentByDivisionResponse =
+  TMetaResponse<TDepartmentByDivisionData>;
