@@ -96,7 +96,7 @@ export interface TDepartmentGetAllParams {
   page: number;
   limit: number;
   sort: string;
-  order: string;
+  type: string;
   options?: boolean;
 }
 

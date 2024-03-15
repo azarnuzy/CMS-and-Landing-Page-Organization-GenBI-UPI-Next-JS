@@ -8,8 +8,10 @@ import {
 import {
   addDepartmentRequest,
   deleteDepartmentRequest,
+  getAllDepartmentRequest,
   getDepartmentByIdRequest,
   getDepartmentsTagsRequest,
+  getDivisionsByDepartment,
   getOptionDepartmentsRequest,
   updateDepartmentRequest,
 } from '@/hooks/departments/request';
@@ -19,10 +21,13 @@ import {
   TAddDepartmentPayload,
   TDataAddDepartmentResponse,
   TDataDeleteDepartmentResponse,
+  TDataGetAllDepartmentResponse,
+  TDataGetDepartmentByDivisionResponse,
   TDataGetDepartmentOptionResponse,
   TDataGetDepartmentsByIdResponse,
   TDataGetDepartmentsTagResponse,
   TDataUpdateDepartmentResponse,
+  TDepartmentGetAllParams,
   TUpdateDepartmentPayload,
 } from '@/types/departments';
 
@@ -53,6 +58,17 @@ export const useGetOptionDepartments = (): UseQueryResult<
     queryKey: ['get-option-departments'],
     queryFn: async () => await getOptionDepartmentsRequest(),
   });
+
+export const useGetAllDepartment = ({
+  params,
+}: {
+  params: TDepartmentGetAllParams;
+}): UseQueryResult<TDataGetAllDepartmentResponse, TMetaErrorResponse> => {
+  return useQuery({
+    queryKey: ['get-all-managements', params],
+    queryFn: async () => await getAllDepartmentRequest(params),
+  });
+};
 
 export const useAddDepartments = (): UseMutationResult<
   TDataAddDepartmentResponse,
@@ -120,3 +136,13 @@ export const useDeleteDepartment = (): UseMutationResult<
     }
   );
 };
+
+export const useGetDivisionByDepartment = ({
+  id,
+}: {
+  id: number;
+}): UseQueryResult<TDataGetDepartmentByDivisionResponse, TMetaErrorResponse> =>
+  useQuery({
+    queryKey: ['get-division-by-department', id],
+    queryFn: async () => await getDivisionsByDepartment(id),
+  });
