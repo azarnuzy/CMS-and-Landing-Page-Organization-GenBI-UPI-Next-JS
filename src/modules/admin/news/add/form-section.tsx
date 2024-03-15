@@ -496,7 +496,8 @@ const FormAddNewsSection = () => {
             <div className='flex justify-end'>
               <Button
                 type='submit'
-                className='rounded-full text-white px-6 py-2.5 font-semibold border-primary-main bg-primary-main hover:bg-primary-dark transition-colors duration-200 ease-in-out flex gap-2 items-center'
+                className='rounded-full text-white px-6 py-2.5 font-semibold border-primary-main bg-primary-main hover:bg-primary-dark transition-colors duration-200 ease-in-out flex gap-2 items-center disabled:bg-neutral-600'
+                disabled={status === 'pending'}
               >
                 {status === 'pending' ? (
                   <>

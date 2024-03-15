@@ -12,7 +12,7 @@ const HeaderManageDepartmentSection = ({ name }: { name: string }) => {
         textColor='text-primary-main'
       />
       <div className='flex flex-col lg:flex-row justify-between lg:items-center gap-y-4'>
-        <h3 className='text-primary-900'>Manage {name} </h3>
+        <h3 className='text-primary-900'>Manage {decodeURI(name)} </h3>
         <div className='flex gap-4 items-center'></div>
       </div>
     </div>

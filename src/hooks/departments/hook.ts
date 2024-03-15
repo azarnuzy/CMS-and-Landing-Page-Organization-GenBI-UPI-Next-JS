@@ -34,7 +34,7 @@ import {
 export const useGetDepartmentById = ({
   id,
 }: {
-  id: string;
+  id: number;
 }): UseQueryResult<TDataGetDepartmentsByIdResponse, TMetaErrorResponse> =>
   useQuery({
     queryKey: ['get-department-by-id', id],

@@ -13,7 +13,7 @@ import { BreadcrumbDepartmentData } from '@/modules/about-genbi/upi/department/c
 import { departmentDataState } from '@/recoils/departments/atom';
 
 const HeaderDepartmentSection = ({ id }: { id: string }) => {
-  const { data } = useGetDepartmentById({ id });
+  const { data } = useGetDepartmentById({ id: Number(id) });
 
   const [departmentData, setDepartmentData] =
     useRecoilState(departmentDataState);

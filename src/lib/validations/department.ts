@@ -16,13 +16,13 @@ export const ValidationSchemaAddDepartmentForm = z.object({
     .min(1, 'Department Name should be filled'),
   description: z
     .string({
-      required_error: 'Description should be filled with minimum 5 character',
+      required_error: 'Description should be filled with minimum 25 character',
     })
     .min(30, {
-      message: 'Description should be filled with minimum 5 character',
+      message: 'Description should be filled with minimum 25 character',
     })
     .refine((value) => value.trim() !== '<p></p>', {
-      message: 'Description should be filled with minimum 5 character',
+      message: 'Description should be filled with minimum 25 character',
     }),
   management_id: z.number().int().positive(),
   cover: z
@@ -39,4 +39,38 @@ export const ValidationSchemaAddDepartmentForm = z.object({
       (files: File[]) => ACCEPTED_MEDIA_TYPES.includes(files?.[0]?.type),
       'Accepts only .jpg, .jpeg, .png, and .webp'
     ),
+});
+
+export const ValidationSchemaUpdateDepartmentForm = z.object({
+  name: z
+    .string({
+      required_error: 'Department Name should be filled',
+    })
+    .min(1, 'Department Name should be filled'),
+  description: z
+    .string({
+      required_error: 'Description should be filled with minimum 25 character',
+    })
+    .min(30, {
+      message: 'Description should be filled with minimum 25 character',
+    })
+    .refine((value) => value.trim() !== '<p></p>', {
+      message: 'Description should be filled with minimum 25 character',
+    }),
+  management_id: z.number().int().positive(),
+  cover: z
+    .any()
+    .refine(
+      (files: File[]) => files !== undefined && files?.length >= 1,
+      'Cover should be uploaded.'
+    )
+    .refine((files: File[]) => {
+      // console.log(files);
+      return files !== undefined && files?.[0]?.size <= MAX_FILE_SIZE;
+    }, 'Maximum file size is 3mb.')
+    .refine(
+      (files: File[]) => ACCEPTED_MEDIA_TYPES.includes(files?.[0]?.type),
+      'Accepts only .jpg, .jpeg, .png, and .webp'
+    )
+    .optional(),
 });

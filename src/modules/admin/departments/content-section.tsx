@@ -62,7 +62,7 @@ const ContentDepartmentManagementSection = () => {
       parentRef?.current.scrollIntoView({ behavior: 'smooth' });
     }
 
-    router.replace(`/admin/managements?page=${page}`);
+    router.replace(`/admin/department?page=${page}`);
   };
 
   const handleRemoveData = () => {

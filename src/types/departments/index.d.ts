@@ -8,11 +8,17 @@ export interface TDepartmentByIdData {
 export interface Department {
   id: number;
   name: string;
-  management: string;
+  management: Management;
   cover: Cover;
   description: string;
   divisions: Division[];
   programs: Program[];
+}
+
+export interface Management {
+  id: number;
+  name: string;
+  period_year: string;
 }
 
 export interface Cover {

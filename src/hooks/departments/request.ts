@@ -24,7 +24,7 @@ export const getDepartmentsTagsRequest =
   };
 
 export const getDepartmentByIdRequest = async (
-  id: string
+  id: number
 ): Promise<TDataGetDepartmentsByIdResponse> => {
   const { data } = await api.get(`v1/departments/${id}`);
 
