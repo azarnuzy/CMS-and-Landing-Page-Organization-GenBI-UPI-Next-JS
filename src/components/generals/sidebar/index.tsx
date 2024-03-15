@@ -5,7 +5,7 @@ import Link from 'next/link';
 import React, { FC } from 'react';
 import { BiMenu, BiSolidBookAlt } from 'react-icons/bi';
 import { BiMenuAltRight } from 'react-icons/bi';
-import { FaAward } from 'react-icons/fa6';
+import { FaAward, FaLayerGroup } from 'react-icons/fa6';
 import { GoOrganization } from 'react-icons/go';
 import { HiMiniUsers } from 'react-icons/hi2';
 import { useRecoilState } from 'recoil';
@@ -188,11 +188,11 @@ const dataSideBar = [
       //   link: '/admin',
       //   icon: <FaRegUser className='w-6 h-6  text-white' />,
       // },
-      // {
-      //   title: 'Department',
-      //   link: '/admin/department',
-      //   icon: <FaLayerGroup className='w-6 h-6  text-white' />,
-      // },
+      {
+        title: 'Department',
+        link: '/admin/department',
+        icon: <FaLayerGroup className='w-6 h-6  text-white' />,
+      },
     ],
   },
 ];

@@ -95,8 +95,7 @@ const FormEditDepartmentSection = () => {
       { id: Number(id), payload },
       {
         onSuccess: () => {
-          form.reset(defaultValuesAddDepartment);
-          toast.success('Department added successfully');
+          toast.success('Department edited successfully');
           refetch();
         },
         onError: (error) => {
