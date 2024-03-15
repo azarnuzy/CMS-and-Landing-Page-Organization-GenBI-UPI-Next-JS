@@ -53,7 +53,7 @@ import { cn } from '@/lib/utils';
 import { useGetEventOptions } from '@/hooks/events/hook';
 import { useGetUserOptions } from '@/hooks/users/hook';
 
-import { LoadingSpinner } from '@/components/loading-spinner';
+import MiniSpinner from '@/components/spinner';
 import {
   Command,
   CommandEmpty,
@@ -229,9 +229,9 @@ const FormAddNewsSection = () => {
                     <FormItem>
                       <FormLabel>Select Department *</FormLabel>
                       <Select
-                        // value={String(field.value)}
-                        // defaultValue={String(field.value)}
-                        onValueChange={field.onChange}
+                        onValueChange={(e) => {
+                          field.onChange(Number(e));
+                        }}
                       >
                         <FormControl>
                           <SelectTrigger>
@@ -354,8 +354,9 @@ const FormAddNewsSection = () => {
                     <FormItem>
                       <FormLabel>Select Event *</FormLabel>
                       <Select
-                        // value={String(field.value)}
-                        onValueChange={field.onChange}
+                        onValueChange={(e) => {
+                          field.onChange(Number(e));
+                        }}
                       >
                         <FormControl>
                           <SelectTrigger>
@@ -495,9 +496,15 @@ const FormAddNewsSection = () => {
             <div className='flex justify-end'>
               <Button
                 type='submit'
-                className='rounded-full text-white px-6 py-2.5 font-semibold border-primary-main bg-primary-main hover:bg-primary-dark transition-colors duration-200 ease-in-out'
+                className='rounded-full text-white px-6 py-2.5 font-semibold border-primary-main bg-primary-main hover:bg-primary-dark transition-colors duration-200 ease-in-out flex gap-2 items-center'
               >
-                {status === 'pending' ? <LoadingSpinner /> : 'Simpan'}
+                {status === 'pending' ? (
+                  <>
+                    <MiniSpinner /> <span>Loading...</span>
+                  </>
+                ) : (
+                  'Simpan'
+                )}
               </Button>
             </div>
           </div>

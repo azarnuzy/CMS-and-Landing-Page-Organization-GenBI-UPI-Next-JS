@@ -7,12 +7,15 @@ import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 import { z } from 'zod';
 
-import logger from '@/lib/logger';
 import { ValidationSchemaAddDepartmentForm } from '@/lib/validations/department';
+import { useAddDepartments } from '@/hooks/departments/hook';
+import { useGetOptionManagements } from '@/hooks/managements/hook';
 
 import { UploadField } from '@/components/input/upload-file';
+import MiniSpinner from '@/components/spinner';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -23,14 +26,26 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 
 import { defaultValuesAddDepartment } from '@/modules/admin/departments/add/constant';
+
+import { TAddDepartmentPayload } from '@/types/departments';
 
 const DraftEditor = dynamic(() => import('@/components/text-editor'), {
   ssr: false,
 });
 
 const FormAddDepartmentSection = () => {
+  const { data } = useGetOptionManagements();
+  const { mutate, status } = useAddDepartments();
+
   const form = useForm<z.infer<typeof ValidationSchemaAddDepartmentForm>>({
     resolver: zodResolver(ValidationSchemaAddDepartmentForm),
     defaultValues: defaultValuesAddDepartment,
@@ -57,7 +72,22 @@ const FormAddDepartmentSection = () => {
   const onSubmit = (
     data: z.infer<typeof ValidationSchemaAddDepartmentForm>
   ) => {
-    logger(data);
+    const payload: TAddDepartmentPayload = {
+      ...data,
+      cover: data.cover[0],
+    };
+
+    mutate(payload, {
+      onSuccess: () => {
+        form.reset(defaultValuesAddDepartment);
+        toast.success('Department added successfully');
+        setEditorState(EditorState.createEmpty());
+        setCoverName('');
+      },
+      onError: (error) => {
+        toast.error(error?.response?.data?.message);
+      },
+    });
   };
 
   return (
@@ -71,7 +101,7 @@ const FormAddDepartmentSection = () => {
             <div className='col-span-2 lg:col-span-1'>
               <FormField
                 control={form.control}
-                name='department_name'
+                name='name'
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>
@@ -88,16 +118,56 @@ const FormAddDepartmentSection = () => {
                 )}
               />
             </div>
+            <div className='col-span-2 lg:col-span-1'>
+              <FormField
+                control={form.control}
+                name='management_id'
+                render={({ field }) => {
+                  return (
+                    <FormItem>
+                      <FormLabel>
+                        Select Management{' '}
+                        <span className='text-error-main'>*</span>
+                      </FormLabel>
+                      <Select
+                        onValueChange={(e) => {
+                          field.onChange(Number(e));
+                        }}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder='Select Management ' />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {data?.data?.map((item, index) => {
+                            return (
+                              <SelectItem key={index} value={String(item.id)}>
+                                {item.name}
+                              </SelectItem>
+                            );
+                          })}
+                        </SelectContent>
+                      </Select>
+
+                      <FormMessage />
+                    </FormItem>
+                  );
+                }}
+              />
+            </div>
             <div className='col-span-2'>
               <DraftEditor
                 editorState={editorState}
                 setEditorState={(editorStateParams) => {
                   handleEditorChange(editorStateParams);
                 }}
+                required
                 label='Description'
                 error={form.formState.errors.description?.message}
               />
             </div>
+
             <div className='col-span-2'>
               <FormLabel
                 className={`${
@@ -125,14 +195,21 @@ const FormAddDepartmentSection = () => {
               variant='outline'
               className='border-primary-main rounded-full text-primary-main px-6 py-2.5 font-semibold '
             >
-              <Link href='/admin/news'>Batal</Link>
+              <Link href='/admin/department'>Batal</Link>
             </Button>
             <div className='flex justify-end'>
               <Button
                 type='submit'
-                className='rounded-full text-white px-6 py-2.5 font-semibold border-primary-main bg-primary-main hover:bg-primary-dark transition-colors duration-200 ease-in-out'
+                className='rounded-full text-white px-6 py-2.5 font-semibold border-primary-main bg-primary-main hover:bg-primary-dark transition-colors duration-200 ease-in-out flex items-center gap-2'
+                disabled={status === 'pending'}
               >
-                Simpan
+                {status === 'pending' ? (
+                  <>
+                    <MiniSpinner /> <span>Loading...</span>
+                  </>
+                ) : (
+                  'Simpan'
+                )}
               </Button>
             </div>
           </div>

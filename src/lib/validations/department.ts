@@ -9,7 +9,7 @@ const ACCEPTED_MEDIA_TYPES = [
 ];
 
 export const ValidationSchemaAddDepartmentForm = z.object({
-  department_name: z
+  name: z
     .string({
       required_error: 'Department Name should be filled',
     })
@@ -18,12 +18,13 @@ export const ValidationSchemaAddDepartmentForm = z.object({
     .string({
       required_error: 'Description should be filled with minimum 5 character',
     })
-    .min(5, {
+    .min(30, {
       message: 'Description should be filled with minimum 5 character',
     })
     .refine((value) => value.trim() !== '<p></p>', {
       message: 'Description should be filled with minimum 5 character',
     }),
+  management_id: z.number().int().positive(),
   cover: z
     .any()
     .refine(

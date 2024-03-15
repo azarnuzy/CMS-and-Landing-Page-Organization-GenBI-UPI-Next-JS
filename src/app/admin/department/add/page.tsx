@@ -1,13 +1,19 @@
 import React from 'react';
 
+import { WideBaseLayout } from '@/components/layouts/base';
+
 import FormAddDepartmentSection from '@/modules/admin/departments/add/form-section';
 import HeaderAddDepartmentSection from '@/modules/admin/departments/add/header-section';
 
 const AddDepartmentPage = () => {
   return (
     <main>
-      <HeaderAddDepartmentSection />
-      <FormAddDepartmentSection />
+      <WideBaseLayout>
+        <>
+          <HeaderAddDepartmentSection />
+          <FormAddDepartmentSection />
+        </>
+      </WideBaseLayout>
     </main>
   );
 };

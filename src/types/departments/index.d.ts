@@ -142,10 +142,10 @@ export interface TAddDepartementData {
 }
 
 export interface TAddDepartmentPayload {
-  cover: File;
+  cover?: File;
   name: string;
   description: string;
-  management_id: number;
+  management_id?: number;
 }
 
 export interface TUpdateDepartmentPayload {

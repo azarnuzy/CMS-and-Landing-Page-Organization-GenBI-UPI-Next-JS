@@ -1,3 +1,5 @@
+import { TAddDepartmentPayload } from '@/types/departments';
+
 export const breadcrumbAddDepartmentData = [
   {
     name: 'Home',
@@ -13,8 +15,9 @@ export const breadcrumbAddDepartmentData = [
   },
 ];
 
-export const defaultValuesAddDepartment = {
-  department_name: '',
-  description: '<p></p>\n',
+export const defaultValuesAddDepartment: TAddDepartmentPayload = {
+  name: '',
+  description: '',
   cover: undefined,
+  management_id: undefined,
 };
