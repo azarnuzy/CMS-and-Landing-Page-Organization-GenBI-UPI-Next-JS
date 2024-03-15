@@ -52,7 +52,7 @@ export function addFormDataManagement(
   formData.append('video', data.video[0]);
 
   // translate data.missions to array of string
-  const missions = data?.missions?.map((mission) => mission.value);
+  const missions = data?.mission?.map((mission) => mission.value);
 
   formData.append('mission', JSON.stringify(missions));
 
