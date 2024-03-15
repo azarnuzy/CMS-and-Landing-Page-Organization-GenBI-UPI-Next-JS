@@ -12,7 +12,7 @@ export async function generateMetadata({
   params: { id: string };
 }): Promise<Metadata> {
   try {
-    const response = await getDepartmentByIdRequest(params.id);
+    const response = await getDepartmentByIdRequest(Number(params.id));
     const data = response;
 
     if (!data) {

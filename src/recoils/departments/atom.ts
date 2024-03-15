@@ -8,8 +8,16 @@ export const departmentDataState = atom<TDepartmentByIdData>({
     department: {
       id: 0,
       name: '',
-      management: '',
+      management: {
+        id: 0,
+        name: '',
+        period_year: '',
+      },
       cover: {
+        file: {
+          imagekit_url: '',
+          mimetype: '',
+        },
         id: 0,
         alt: '',
         file_url: '',
