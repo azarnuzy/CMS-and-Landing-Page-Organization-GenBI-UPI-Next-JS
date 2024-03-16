@@ -77,11 +77,10 @@ const AddDivisionModal = ({
         onClick={() => {
           setOpen(true);
         }}
+        className='bg-primary-main text-neutral-100 text-sm font-semibold hover:bg-primary-600 rounded-full flex gap-2 items-center py-2.5 px-4'
       >
-        <Button className='bg-primary-main text-neutral-100 text-sm font-semibold hover:bg-primary-600 rounded-full flex gap-2 items-center'>
-          <LuPlus className='text-lg text-neutral-100' />
-          <span>Tambah Divisi</span>
-        </Button>
+        <LuPlus className='text-lg text-neutral-100' />
+        <span>Tambah Divisi</span>
       </DialogTrigger>
       <DialogContent className='w-full md:max-w-xl lg:max-w-2xl xl:max-w-3xl rounded-3xl '>
         <DialogHeader>
