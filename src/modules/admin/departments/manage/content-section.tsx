@@ -32,6 +32,7 @@ import {
 } from '@/components/ui/table';
 
 import AddDivisionModal from '@/modules/admin/departments/manage/add-division-modal';
+import EditDivisionModal from '@/modules/admin/departments/manage/edit-division-modal';
 
 const ContentManageDepartmentSection = ({ id }: { id: string }) => {
   const pathname = usePathname();
@@ -114,63 +115,16 @@ const ContentManageDepartmentSection = ({ id }: { id: string }) => {
                   <TableCell className='text-ellipsis min-w-[100px] max-w-[200px]'>
                     {item.name}
                   </TableCell>
-                  <TableCell>{contentTrimmed(item.description, 75)}</TableCell>
-
+                  <TableCell>{item.description}</TableCell>
                   <TableCell className='flex gap-2 h-full items-center'>
-                    <Link href={`/admin/department/edit/${item.id}`}>
-                      <TbEdit className='text-warning-main text-2xl' />
-                    </Link>
-                    <Dialog open={open} onOpenChange={setOpen}>
-                      <DialogTrigger
-                        onClick={() => {
-                          setId(item.id);
-                        }}
-                      >
-                        <MdDelete className='text-2xl text-error-main' />
-                      </DialogTrigger>
-                      <DialogContent className='max-w-[320px] rounded-3xl '>
-                        <DialogHeader>
-                          <div className='flex flex-col gap-2'>
-                            <div className='w-7 h-7 bg-error-100 rounded-full'>
-                              <Trash className='text-error-main w-5 h-5 mx-auto my-1' />
-                            </div>
-                            <h4 className='text-error-main'>Hapus Data?</h4>
-                            <p className='text-neutral-600'>
-                              Data yang sudah dihapus tidak dapat dikembalikan
-                              lagi harap periksa data sebelum menghapus
-                            </p>
-                          </div>
-                          <div className='mt-7 w-full flex justify-between items-center gap-3'>
-                            <DialogClose asChild>
-                              <Button
-                                className='rounded-full w-full'
-                                type='button'
-                                variant='secondary'
-                              >
-                                Batal
-                              </Button>
-                            </DialogClose>
-                            <Button
-                              type='button'
-                              variant='destructive'
-                              className='border-neutral-main bg-neutral-main rounded-full text-neutral-100  px-6 py-2.5 font-semibold w-full'
-                              onClick={() => {
-                                handleRemoveData();
-                                setId(0);
-                              }}
-                            >
-                              {status === 'pending' ? (
-                                <div className='flex gap-2 items-center'>
-                                  <MiniSpinner /> Loading...
-                                </div>
-                              ) : (
-                                `Hapus`
-                              )}
-                            </Button>
-                          </div>
-                        </DialogHeader>
-                      </DialogContent>
-                    </Dialog>
+                    <EditDivisionModal
+                      data={{
+                        department_id: data?.data?.department?.id,
+                        description: item.description,
+                        name: item.name,
+                        id: item.id,
+                      }}
+                    />
                   </TableCell>
                 </TableRow>
               );
