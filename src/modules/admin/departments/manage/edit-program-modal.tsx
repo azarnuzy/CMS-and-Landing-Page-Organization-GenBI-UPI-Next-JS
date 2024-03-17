@@ -3,7 +3,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useQueryClient } from '@tanstack/react-query';
 import { format } from 'date-fns';
 import { CalendarIcon, Trash } from 'lucide-react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { DayPicker } from 'react-day-picker';
 import { useForm } from 'react-hook-form';
 import { MdDelete } from 'react-icons/md';
@@ -17,6 +17,7 @@ import { cn } from '@/lib/utils';
 import { ValidationSchemaAddProgramForm } from '@/lib/validations/program';
 import {
   useDeleteProgram,
+  useGetProgramDetail,
   useGetProgramType,
   useUpdateProgram,
 } from '@/hooks/program/hook';
@@ -67,6 +68,7 @@ const EditProgramModal = ({
   const { mutate: mutateDelete, status: statusDelete } = useDeleteProgram();
   const { mutate: mutateUpdate, status: statusUpdate } = useUpdateProgram();
   const { data: programData } = useGetProgramType();
+  const { data: dataDetailProgram } = useGetProgramDetail({ id: program_id });
 
   const [openEdit, setOpenEdit] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
@@ -95,7 +97,7 @@ const EditProgramModal = ({
       { id: program_id, payload },
       {
         onSuccess: () => {
-          setOpenDelete(false);
+          setOpenEdit(false);
           toast.success('Division edited successfully');
           queryClient.invalidateQueries({
             queryKey: ['get-department-by-id', data.department_id],
@@ -126,23 +128,29 @@ const EditProgramModal = ({
     });
   };
 
+  useEffect(() => {
+    if (dataDetailProgram) {
+      const { data } = dataDetailProgram;
+      formEdit.reset(
+        defaultEditProgramData({
+          name: data.name,
+          description: data.description,
+          implementation_desc: data.implementation_desc,
+          type: data.type,
+          date_start: new Date(data.date_start),
+          date_end: new Date(data.date_end),
+          department_id: data.department_id,
+        })
+      );
+    }
+  }, [dataDetailProgram, formEdit]);
+
   return (
     <>
       <Dialog open={openEdit} onOpenChange={setOpenEdit}>
         <DialogTrigger
           onClick={() => {
             setOpenEdit(true);
-            formEdit.reset(
-              defaultEditProgramData({
-                name: data.name,
-                description: data.description,
-                implementation_desc: data.implementation_desc,
-                type: 'Monthly',
-                date_start: new Date(),
-                date_end: new Date(),
-                department_id: data.department_id,
-              })
-            );
           }}
         >
           <TbEdit className='text-warning-main text-2xl' />
@@ -200,7 +208,10 @@ const EditProgramModal = ({
                             Select Program Type{' '}
                             <span className='text-error-main'>*</span>
                           </FormLabel>
-                          <Select onValueChange={field.onChange}>
+                          <Select
+                            onValueChange={field.onChange}
+                            value={field.value}
+                          >
                             <FormControl>
                               <SelectTrigger>
                                 <SelectValue placeholder='Select Program Type ' />

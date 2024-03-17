@@ -74,3 +74,9 @@ export const ValidationSchemaUpdateDepartmentForm = z.object({
     )
     .optional(),
 });
+
+export const ValidationSchemaAddAwardeeToManagementForm = z.object({
+  awardee_id: z.number().int().positive(),
+  division_id: z.number().int().positive(),
+  position_id: z.number().int().positive(),
+});

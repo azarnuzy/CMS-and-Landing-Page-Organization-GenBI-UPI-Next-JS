@@ -8,6 +8,7 @@ import {
 import {
   addProgramRequest,
   deleteProgramRequest,
+  getProgramDetailRequest,
   getProgramTypesRequest,
   updateProgramRequest,
 } from '@/hooks/program/request';
@@ -17,6 +18,7 @@ import {
   TAddProgramPayload,
   TDataAddProgramResponse,
   TDataDeleteProgramResponse,
+  TDataGetProgramDetailResponse,
   TDataGetProgramTypeResponse,
   TDataUpdateProgramResponse,
 } from '@/types/program';
@@ -93,4 +95,14 @@ export const useGetProgramType = (): UseQueryResult<
   useQuery({
     queryKey: ['get-program-type'],
     queryFn: async () => await getProgramTypesRequest(),
+  });
+
+export const useGetProgramDetail = ({
+  id,
+}: {
+  id: number;
+}): UseQueryResult<TDataGetProgramDetailResponse, TMetaErrorResponse> =>
+  useQuery({
+    queryKey: ['get-program-detail', id],
+    queryFn: async () => await getProgramDetailRequest(id),
   });

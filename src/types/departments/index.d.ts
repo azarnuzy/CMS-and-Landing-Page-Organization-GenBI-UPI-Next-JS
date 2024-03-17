@@ -2,7 +2,7 @@ import { TMetaResponse, TMetaResponseSingle } from '@/types';
 
 export interface TDepartmentByIdData {
   department: Department;
-  structure: Structure;
+  structure: StructureAwardeeDepartment;
 }
 
 export interface Department {
@@ -41,9 +41,9 @@ export interface Program {
   implementation_desc: string;
 }
 
-export interface Structure {
+export interface StructureAwardeeDepartment {
   manager: Manager;
-  awardees: Awardee[];
+  awardees: AwardeeDepartment[];
 }
 
 export interface Manager {
@@ -67,14 +67,14 @@ export interface Photo {
   mimetype: string;
 }
 
-export interface Awardee {
+export interface AwardeeDepartment {
   id: number;
   name: string;
   description: string;
-  awardees: Awardee2[];
+  awardees: Awardee2Department[];
 }
 
-export interface Awardee2 {
+export interface Awardee2Department {
   id: number;
   awardee_id: number;
   name: string;
@@ -174,6 +174,30 @@ export interface TDepartmentByDivisionData {
   updatedAt: string;
 }
 
+export interface TAddAwardeeToManagementPayload {
+  management_id: number;
+  awardee_id: number;
+  department_id: number;
+  division_id: number;
+  position_id: number;
+}
+
+export interface TAddAwardeToManagementData {
+  id: number;
+  awardee_id: number;
+  management_id: number;
+  department_id: number;
+  division_id: number;
+  position_id: number;
+  updatedAt: string;
+  createdAt: string;
+}
+
+export interface TDeleteAwardeeToManagementPayload {
+  id_management: number;
+  id_awardee: number;
+}
+
 export type TDataGetDepartmentsTagResponse = TMetaResponse<string>;
 export type TDataGetDepartmentsByIdResponse =
   TMetaResponseSingle<TDepartmentByIdData>;
@@ -187,3 +211,6 @@ export type TDataUpdateDepartmentResponse =
 export type TDataDeleteDepartmentResponse = TMetaResponseSingle<null>;
 export type TDataGetDepartmentByDivisionResponse =
   TMetaResponse<TDepartmentByDivisionData>;
+export type TDataAddAwardeeToManagementResponse =
+  TMetaResponseSingle<TAddAwardeToManagementData>;
+export type TDataDeleteAwardeeToManagementResponse = TMetaResponseSingle<null>;

@@ -3,8 +3,11 @@ import { serialize } from 'object-to-formdata';
 import { api } from '@/lib/api';
 
 import {
+  TAddAwardeeToManagementPayload,
   TAddDepartmentPayload,
+  TDataAddAwardeeToManagementResponse,
   TDataAddDepartmentResponse,
+  TDataDeleteAwardeeToManagementResponse,
   TDataDeleteDepartmentResponse,
   TDataGetAllDepartmentResponse,
   TDataGetDepartmentByDivisionResponse,
@@ -12,6 +15,7 @@ import {
   TDataGetDepartmentsByIdResponse,
   TDataGetDepartmentsTagResponse,
   TDataUpdateDepartmentResponse,
+  TDeleteAwardeeToManagementPayload,
   TDepartmentGetAllParams,
   TUpdateDepartmentPayload,
 } from '@/types/departments';
@@ -90,6 +94,25 @@ export const getDivisionsByDepartment = async (
   id: number
 ): Promise<TDataGetDepartmentByDivisionResponse> => {
   const { data } = await api.get(`v1/departments/${id}/divisions`);
+
+  return data;
+};
+
+export const addAwardeeToManagementRequest = async (
+  payload: TAddAwardeeToManagementPayload
+): Promise<TDataAddAwardeeToManagementResponse> => {
+  const { data } = await api.post(`v1/managements/awardees`, payload);
+
+  return data;
+};
+
+export const deleteAwardeeFromManagementRequest = async (
+  payload: TDeleteAwardeeToManagementPayload
+): Promise<TDataDeleteAwardeeToManagementResponse> => {
+  const { id_management, id_awardee } = payload;
+  const { data } = await api.delete(
+    `v1/managements/${id_management}/awardees/${id_awardee}`
+  );
 
   return data;
 };

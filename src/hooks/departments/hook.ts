@@ -6,7 +6,9 @@ import {
 } from '@tanstack/react-query';
 
 import {
+  addAwardeeToManagementRequest,
   addDepartmentRequest,
+  deleteAwardeeFromManagementRequest,
   deleteDepartmentRequest,
   getAllDepartmentRequest,
   getDepartmentByIdRequest,
@@ -18,8 +20,11 @@ import {
 
 import { TMetaErrorResponse } from '@/types';
 import {
+  TAddAwardeeToManagementPayload,
   TAddDepartmentPayload,
+  TDataAddAwardeeToManagementResponse,
   TDataAddDepartmentResponse,
+  TDataDeleteAwardeeToManagementResponse,
   TDataDeleteDepartmentResponse,
   TDataGetAllDepartmentResponse,
   TDataGetDepartmentByDivisionResponse,
@@ -27,6 +32,7 @@ import {
   TDataGetDepartmentsByIdResponse,
   TDataGetDepartmentsTagResponse,
   TDataUpdateDepartmentResponse,
+  TDeleteAwardeeToManagementPayload,
   TDepartmentGetAllParams,
   TUpdateDepartmentPayload,
 } from '@/types/departments';
@@ -146,3 +152,45 @@ export const useGetDivisionByDepartment = ({
     queryKey: ['get-division-by-department', id],
     queryFn: async () => await getDivisionsByDepartment(id),
   });
+
+export const useAddAwardeeToManagement = (): UseMutationResult<
+  TDataAddAwardeeToManagementResponse,
+  TMetaErrorResponse,
+  TAddAwardeeToManagementPayload
+> => {
+  return useMutation<
+    TDataAddAwardeeToManagementResponse,
+    TMetaErrorResponse,
+    TAddAwardeeToManagementPayload
+  >({
+    mutationKey: ['add-awardee-to-management'],
+    mutationFn: async (payload: TAddAwardeeToManagementPayload) => {
+      const response = await addAwardeeToManagementRequest(payload);
+      if (!response) {
+        throw new Error('Invalid response');
+      }
+      return response;
+    },
+  });
+};
+
+export const useDeleteAwardeeToManagement = (): UseMutationResult<
+  TDataDeleteAwardeeToManagementResponse,
+  TMetaErrorResponse,
+  TDeleteAwardeeToManagementPayload
+> => {
+  return useMutation<
+    TDataDeleteAwardeeToManagementResponse,
+    TMetaErrorResponse,
+    TDeleteAwardeeToManagementPayload
+  >({
+    mutationKey: ['delete-awardee-to-management'],
+    mutationFn: async (payload: TDeleteAwardeeToManagementPayload) => {
+      const response = await deleteAwardeeFromManagementRequest(payload);
+      if (!response) {
+        throw new Error('Invalid response');
+      }
+      return response;
+    },
+  });
+};
