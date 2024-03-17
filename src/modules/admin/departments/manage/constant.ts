@@ -24,6 +24,7 @@ export const defaultAddProgramData = {
   date_start: undefined,
   date_end: undefined,
   department_id: undefined,
+  programType: '',
 };
 export const defaultEditProgramData = (
   data: TAddProgramPayload

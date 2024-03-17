@@ -15,7 +15,11 @@ import 'react-day-picker/dist/style.css';
 
 import { cn } from '@/lib/utils';
 import { ValidationSchemaAddProgramForm } from '@/lib/validations/program';
-import { useDeleteProgram, useUpdateProgram } from '@/hooks/program/hook';
+import {
+  useDeleteProgram,
+  useGetProgramType,
+  useUpdateProgram,
+} from '@/hooks/program/hook';
 
 import MiniSpinner from '@/components/spinner';
 import { Button } from '@/components/ui/button';
@@ -40,6 +44,13 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { TextField } from '@/components/ui/text-field';
 
 import { defaultEditProgramData } from '@/modules/admin/departments/manage/constant';
@@ -55,6 +66,7 @@ const EditProgramModal = ({
 }) => {
   const { mutate: mutateDelete, status: statusDelete } = useDeleteProgram();
   const { mutate: mutateUpdate, status: statusUpdate } = useUpdateProgram();
+  const { data: programData } = useGetProgramType();
 
   const [openEdit, setOpenEdit] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
@@ -181,15 +193,34 @@ const EditProgramModal = ({
                   <FormField
                     control={formEdit.control}
                     name='type'
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Type</FormLabel>
-                        <FormControl>
-                          <Input placeholder='(Ex: Monthly)...' {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
+                    render={({ field }) => {
+                      return (
+                        <FormItem>
+                          <FormLabel>
+                            Select Program Type{' '}
+                            <span className='text-error-main'>*</span>
+                          </FormLabel>
+                          <Select onValueChange={field.onChange}>
+                            <FormControl>
+                              <SelectTrigger>
+                                <SelectValue placeholder='Select Program Type ' />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              {programData?.data?.map((item, index) => {
+                                return (
+                                  <SelectItem key={index} value={String(item)}>
+                                    {item}
+                                  </SelectItem>
+                                );
+                              })}
+                            </SelectContent>
+                          </Select>
+
+                          <FormMessage />
+                        </FormItem>
+                      );
+                    }}
                   />
                   <FormField
                     control={formEdit.control}

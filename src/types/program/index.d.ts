@@ -1,4 +1,4 @@
-import { TMetaResponseSingle } from '@/types';
+import { TMetaResponse, TMetaResponseSingle } from '@/types';
 
 export interface TAddProgramPayload {
   name: string;
@@ -32,3 +32,4 @@ export type TDataAddProgramResponse = TMetaResponseSingle<TAddProgramData>;
 export type TDataUpdateProgramResponse =
   TMetaResponseSingle<TUpdateProgramData>;
 export type TDataDeleteProgramResponse = TMetaResponseSingle<null>;
+export type TDataGetProgramTypeResponse = TMetaResponse<string[]>;

@@ -4,6 +4,7 @@ import {
   TAddProgramPayload,
   TDataAddProgramResponse,
   TDataDeleteProgramResponse,
+  TDataGetProgramTypeResponse,
   TDataUpdateProgramResponse,
 } from '@/types/program';
 
@@ -36,3 +37,10 @@ export const deleteProgramRequest = async (
 
   return data;
 };
+
+export const getProgramTypesRequest =
+  async (): Promise<TDataGetProgramTypeResponse> => {
+    const { data } = await api.get(`v1/programs/types`);
+
+    return data;
+  };

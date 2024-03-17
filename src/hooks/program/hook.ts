@@ -1,8 +1,14 @@
-import { useMutation, UseMutationResult } from '@tanstack/react-query';
+import {
+  useMutation,
+  UseMutationResult,
+  useQuery,
+  UseQueryResult,
+} from '@tanstack/react-query';
 
 import {
   addProgramRequest,
   deleteProgramRequest,
+  getProgramTypesRequest,
   updateProgramRequest,
 } from '@/hooks/program/request';
 
@@ -11,6 +17,7 @@ import {
   TAddProgramPayload,
   TDataAddProgramResponse,
   TDataDeleteProgramResponse,
+  TDataGetProgramTypeResponse,
   TDataUpdateProgramResponse,
 } from '@/types/program';
 
@@ -78,3 +85,12 @@ export const useDeleteProgram = (): UseMutationResult<
     },
   });
 };
+
+export const useGetProgramType = (): UseQueryResult<
+  TDataGetProgramTypeResponse,
+  TMetaErrorResponse
+> =>
+  useQuery({
+    queryKey: ['get-program-type'],
+    queryFn: async () => await getProgramTypesRequest(),
+  });
