@@ -1,4 +1,4 @@
-export const breadCrumbGenBIBanggaData = (param: string) => {
+export const breadCrumbGenBIBanggaData = (param: string, title: string) => {
   return [
     {
       name: 'Home',
@@ -9,7 +9,7 @@ export const breadCrumbGenBIBanggaData = (param: string) => {
       link: '/acara',
     },
     {
-      name: 'Pelatihan Desain Grafis untuk Social Media',
+      name: title,
       link: `/acara/${param}`,
     },
   ];

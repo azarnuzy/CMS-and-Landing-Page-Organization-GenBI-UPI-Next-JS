@@ -24,6 +24,7 @@ export async function generateMetadata({
 
     return {
       title: data.data.event.title,
+      description: data.data.event.description_preview,
       openGraph: {
         images: data.data.event.thumbnail.file_url,
         title: data.data.event.title,

@@ -41,13 +41,16 @@ export interface DetailEvent {
   title: string;
   slug: string;
   type: string;
+  scope: string;
   status: string;
   thumbnail: Thumbnail;
   poster: Poster;
   banner: Banner;
+  description_preview: string;
   description: string;
   start_date: string;
   end_date: string;
+  participants: number;
   location: string;
   location_url: string;
   registration_link: string;

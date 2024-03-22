@@ -45,7 +45,8 @@ const HeaderDetailAcaraSection = ({ id }: { id: string }) => {
         <div className=''>
           <BreadCrumb
             items={breadCrumbGenBIBanggaData(
-              `${data?.data?.event?.id}/${data?.data?.event?.slug}`
+              `${data?.data?.event?.id}/${data?.data?.event?.slug}`,
+              data?.data?.event?.title || 'Detail Event'
             )}
             textColor='text-neutral-main'
           />
