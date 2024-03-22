@@ -119,7 +119,14 @@ const HeaderDetailAcaraSection = ({ id }: { id: string }) => {
                     )}
                   </div>
                   <div>
-                    {/* <p className='text-[10px] text-blue-600'>Open Registrasi</p> */}
+                    <p className='text-[10px] text-blue-600'>
+                      {new Date(
+                        data?.data?.event?.end_reg_date ||
+                          '2024-02-13T05:20:22.754Z'
+                      ) < new Date()
+                        ? 'Closed Registration '
+                        : 'Open Registration '}
+                    </p>
                     <p className='text-sm'>
                       {formatDate(
                         data?.data?.event?.start_reg_date ||
