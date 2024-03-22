@@ -110,5 +110,44 @@ export interface TGetAllEventParams {
   filter?: string;
 }
 
+export interface TRegistrationEventPayload {
+  event_id: number;
+  name: string;
+  email: string;
+  institution: string;
+  role: string;
+  field: string;
+  telp: string;
+  city: string;
+}
+
+export interface TRegistrationEventData {
+  id: number;
+  event_id: number;
+  name: string;
+  email: string;
+  institution: string;
+  role: string;
+  field: string;
+  telp: string;
+  city: string;
+  updatedAt: string;
+  createdAt: string;
+}
+
+export interface TUpdateRegistrationEventData {
+  id: string;
+}
+
 export type TDataGetAllEventResponse = TMetaResponse<TEventData>;
 export type TDataGetDetailEventResponse = TMetaResponseSingle<TDetailEventData>;
+export type TDataRegistrationEventResponse =
+  TMetaResponseSingle<TRegistrationEventData>;
+export type TDataUpdateRegistrationEventResponse =
+  TMetaResponseSingle<TUpdateRegistrationEventData>;
+export type TDataGetOptionEventParticipantsRolesResponse = TMetaResponse<
+  Array<string>
+>;
+export type TDataGetOptionEventParticipantsFieldsResponse = TMetaResponse<
+  Array<string>
+>;

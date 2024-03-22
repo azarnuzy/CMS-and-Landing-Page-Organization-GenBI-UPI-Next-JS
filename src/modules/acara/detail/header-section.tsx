@@ -2,7 +2,6 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import React, { useEffect } from 'react';
 import { LuCalendarCheck } from 'react-icons/lu';
 import { RiMapPinLine } from 'react-icons/ri';
@@ -17,10 +16,9 @@ import { BreadCrumb } from '@/components/breadcrumbs';
 import BaseLayout from '@/components/layouts/base';
 
 import { breadCrumbGenBIBanggaData } from '@/modules/acara/detail/constant';
+import RegistrationEventModal from '@/modules/acara/detail/registration-modal';
 import { eventsDetailDataState } from '@/recoils/events/atom';
 const HeaderDetailAcaraSection = ({ id }: { id: string }) => {
-  const router = useRouter();
-
   const { data } = useGetDetailEvent({ id: Number(id) });
 
   const [, setDetailEvent] = useRecoilState(eventsDetailDataState);
@@ -32,7 +30,7 @@ const HeaderDetailAcaraSection = ({ id }: { id: string }) => {
   }, [data, setDetailEvent]);
 
   return (
-    <div className='relative py-10'>
+    <div className='relative overflow-hidden py-10'>
       <Image
         src='/svg/line-pattern-detail-acara.svg'
         alt='line-pattern'
@@ -108,18 +106,20 @@ const HeaderDetailAcaraSection = ({ id }: { id: string }) => {
                       <RiMapPinLine className='text-neutral-main text-lg ' />
                       <p className='text-sm '>{data?.data?.event?.location}</p>
                     </div>
-                    <Link
-                      href={data?.data?.event?.location_url || '#'}
-                      className='flex gap-2 text-wrap '
-                    >
-                      <RiLinkM className='text-neutral-main text-lg min-w-[18px]' />
-                      <p className='text-sm '>
-                        {data?.data?.event?.location_url || ''}
-                      </p>
-                    </Link>
+                    {data?.data?.event?.location_url && (
+                      <Link
+                        href={data?.data?.event?.location_url || '#'}
+                        className='flex gap-2 text-wrap '
+                      >
+                        <RiLinkM className='text-neutral-main text-lg min-w-[18px]' />
+                        <p className='text-sm '>
+                          {data?.data?.event?.location_url || ''}
+                        </p>
+                      </Link>
+                    )}
                   </div>
                   <div>
-                    <p className='text-[10px] text-blue-600'>Open Registrasi</p>
+                    {/* <p className='text-[10px] text-blue-600'>Open Registrasi</p> */}
                     <p className='text-sm'>
                       {formatDate(
                         data?.data?.event?.start_reg_date ||
@@ -133,25 +133,18 @@ const HeaderDetailAcaraSection = ({ id }: { id: string }) => {
                     </p>
                   </div>
                   <div className='flex flex-col gap-2'>
-                    <button
-                      disabled={
-                        // check if the date is already passed
-                        new Date(
-                          data?.data?.event?.end_reg_date ||
-                            '2024-02-13T05:20:22.754Z'
-                        ) < new Date()
-                      }
-                      onClick={() => {
-                        if (data?.data?.event?.registration_link !== null) {
-                          router.push(
-                            data?.data?.event?.registration_link || '#'
-                          );
-                        }
-                      }}
-                      className='bg-primary-main text-white px-6 py-2 rounded-full border border-transparent  hover:bg-primary-600 hover:border-primary-main  duration-300 transition-all ease-in-out font-semibold text-sm disabled:bg-neutral-300 disabled:hover:border-neutral-300'
-                    >
-                      <span>Daftar Sekarang</span>
-                    </button>
+                    {data &&
+                      (data?.data?.event?.registration_link !== null ? (
+                        <Link
+                          className='bg-primary-main text-white px-6 py-2 rounded-full border border-transparent  hover:bg-primary-600 hover:border-primary-main  duration-300 transition-all ease-in-out font-semibold text-sm disabled:bg-neutral-300 disabled:hover:border-neutral-300'
+                          href={data?.data?.event?.registration_link || '#'}
+                        >
+                          Daftar Sekarang
+                        </Link>
+                      ) : (
+                        <RegistrationEventModal data={data.data} />
+                      ))}
+
                     <Link
                       href={data?.data?.event?.contact || '#'}
                       className='bg-neutral-100 border border-primary-main text-center text-primary-main px-6 py-2 rounded-full  hover:bg-primary-600 duration-300 transition-all ease-in-out hover:text-neutral-100 font-semibold text-sm'

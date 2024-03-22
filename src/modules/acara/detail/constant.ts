@@ -14,3 +14,13 @@ export const breadCrumbGenBIBanggaData = (param: string, title: string) => {
     },
   ];
 };
+
+export const defaultRegistrationEvent = {
+  name: '',
+  email: '',
+  institution: '',
+  role: '',
+  field: '',
+  telp: '',
+  city: '',
+};
