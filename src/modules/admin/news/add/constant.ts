@@ -53,13 +53,13 @@ export function createFormData(
 
   formData.append('title', data.title);
   formData.append('type', data.type);
-  formData.append('department_id', String(data.department_id));
-  formData.append('author_id', String(data.author_id));
+  formData.append('department_id', Number(data.department_id));
+  formData.append('author_id', Number(data.author_id));
   formData.append('content', data.content);
   formData.append('tags', JSON.stringify(data.tags));
   formData.append('cover', data.cover[0]);
   formData.append('caption_cover', data.caption_cover);
-  formData.append('event_id', String(data.event_id));
+  formData.append('event_id', Number(data.event_id));
 
   if (data.other) {
     data.other.forEach((file: File) => {
