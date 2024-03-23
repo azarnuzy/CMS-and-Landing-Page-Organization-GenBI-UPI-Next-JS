@@ -1,14 +1,14 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { revalidateTag } from 'next/cache';
 import Image from 'next/image';
 import { useParams } from 'next/navigation';
 import { useSession } from 'next-auth/react';
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 import { FaRegEdit, FaRegTrashAlt } from 'react-icons/fa';
+import { useRecoilValue } from 'recoil';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
@@ -20,6 +20,7 @@ import {
   useDeleteComment,
   usePutComment,
 } from '@/hooks/comments/hook';
+import { useGetCommentPost } from '@/hooks/posts/hook';
 
 import MiniSpinner from '@/components/spinner';
 import { Button } from '@/components/ui/button';
@@ -41,6 +42,8 @@ import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
 import { TextField } from '@/components/ui/text-field';
 import { Textarea } from '@/components/ui/textarea';
+
+import { totalCommentsSelector } from '@/recoils/comments/atom';
 
 import { TDataCommentPostResponse } from '@/types/posts';
 
@@ -76,20 +79,17 @@ const CommentsSection = ({ data }: { data: TDataCommentPostResponse }) => {
     },
   });
 
+  const { data: dataComment, refetch } = useGetCommentPost({ id: Number(id) });
+
   const { mutate, status } = useCreateComment();
   const { mutate: mutateReply, status: statusMutateReply } = useCreateReply();
   const { mutate: mutateEditComment, status: statusEditComment } =
     usePutComment();
   const { mutate: mutateDeleteComment } = useDeleteComment();
 
-  const commentsData = data.data;
-  let totalComments = commentsData.length;
+  const totalComments = useRecoilValue(totalCommentsSelector);
 
-  // Iterate over comments and add the number of replies for each comment
-  commentsData.forEach((comment) => {
-    totalComments += comment.replies.length;
-  });
-
+  const [getComments, setComments] = useState(data.data);
   const [formReplyOpen, setFormReplyOpen] = useState<number | null>(null);
   const [formEditCommentOpen, setFormEditCommentOpen] = useState<number | null>(
     null
@@ -104,7 +104,7 @@ const CommentsSection = ({ data }: { data: TDataCommentPostResponse }) => {
       },
       {
         onSuccess: () => {
-          revalidateTag('comments');
+          refetch();
           form.reset();
           form.setValue('name', '');
           form.setValue('content', '');
@@ -130,7 +130,7 @@ const CommentsSection = ({ data }: { data: TDataCommentPostResponse }) => {
       },
       {
         onSuccess: () => {
-          revalidateTag('comments');
+          refetch();
           formReply.reset();
           setFormReplyOpen(null);
           formReply.setValue('name', '');
@@ -156,7 +156,7 @@ const CommentsSection = ({ data }: { data: TDataCommentPostResponse }) => {
       },
       {
         onSuccess: () => {
-          revalidateTag('comments');
+          refetch();
           formEditComment.reset();
           setFormEditCommentOpen(null);
           formEditComment.setValue('name', '');
@@ -175,7 +175,7 @@ const CommentsSection = ({ data }: { data: TDataCommentPostResponse }) => {
   const handleDeleteComment = (id: number) => {
     mutateDeleteComment(id, {
       onSuccess: () => {
-        revalidateTag('comments');
+        refetch();
         toast.success('Berhasil menghapus komentar');
       },
       onError: (error) => {
@@ -185,6 +185,12 @@ const CommentsSection = ({ data }: { data: TDataCommentPostResponse }) => {
       },
     });
   };
+
+  useEffect(() => {
+    if (dataComment) {
+      setComments(dataComment.data);
+    }
+  }, [dataComment]);
 
   return (
     <div className='flex flex-col gap-4'>
@@ -244,7 +250,7 @@ const CommentsSection = ({ data }: { data: TDataCommentPostResponse }) => {
         </form>
       </Form>
       <div className='flex flex-col gap-4'>
-        {data.data.map((comment, i) => (
+        {getComments.map((comment, i) => (
           <Fragment key={i}>
             <Separator />
             <div key={i} className='flex flex-col gap-3'>
