@@ -1,14 +1,14 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import { revalidateTag } from 'next/cache';
 import Image from 'next/image';
 import { useParams } from 'next/navigation';
 import { useSession } from 'next-auth/react';
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 import { FaRegEdit, FaRegTrashAlt } from 'react-icons/fa';
-import { useRecoilState, useRecoilValue } from 'recoil';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
@@ -20,7 +20,6 @@ import {
   useDeleteComment,
   usePutComment,
 } from '@/hooks/comments/hook';
-import { useGetCommentPost } from '@/hooks/posts/hook';
 
 import MiniSpinner from '@/components/spinner';
 import { Button } from '@/components/ui/button';
@@ -43,12 +42,9 @@ import { Separator } from '@/components/ui/separator';
 import { TextField } from '@/components/ui/text-field';
 import { Textarea } from '@/components/ui/textarea';
 
-import {
-  commentsDataState,
-  totalCommentsSelector,
-} from '@/recoils/comments/atom';
+import { TDataCommentPostResponse } from '@/types/posts';
 
-const CommentsSection = () => {
+const CommentsSection = ({ data }: { data: TDataCommentPostResponse }) => {
   const params = useParams();
   const { id } = params;
 
@@ -80,15 +76,19 @@ const CommentsSection = () => {
     },
   });
 
-  const { data, refetch } = useGetCommentPost({ id: Number(id) });
   const { mutate, status } = useCreateComment();
   const { mutate: mutateReply, status: statusMutateReply } = useCreateReply();
   const { mutate: mutateEditComment, status: statusEditComment } =
     usePutComment();
   const { mutate: mutateDeleteComment } = useDeleteComment();
 
-  const [getComments, setComments] = useRecoilState(commentsDataState);
-  const totalComments = useRecoilValue(totalCommentsSelector);
+  const commentsData = data.data;
+  let totalComments = commentsData.length;
+
+  // Iterate over comments and add the number of replies for each comment
+  commentsData.forEach((comment) => {
+    totalComments += comment.replies.length;
+  });
 
   const [formReplyOpen, setFormReplyOpen] = useState<number | null>(null);
   const [formEditCommentOpen, setFormEditCommentOpen] = useState<number | null>(
@@ -104,7 +104,7 @@ const CommentsSection = () => {
       },
       {
         onSuccess: () => {
-          refetch();
+          revalidateTag('comments');
           form.reset();
           form.setValue('name', '');
           form.setValue('content', '');
@@ -130,7 +130,7 @@ const CommentsSection = () => {
       },
       {
         onSuccess: () => {
-          refetch();
+          revalidateTag('comments');
           formReply.reset();
           setFormReplyOpen(null);
           formReply.setValue('name', '');
@@ -156,7 +156,7 @@ const CommentsSection = () => {
       },
       {
         onSuccess: () => {
-          refetch();
+          revalidateTag('comments');
           formEditComment.reset();
           setFormEditCommentOpen(null);
           formEditComment.setValue('name', '');
@@ -175,7 +175,7 @@ const CommentsSection = () => {
   const handleDeleteComment = (id: number) => {
     mutateDeleteComment(id, {
       onSuccess: () => {
-        refetch();
+        revalidateTag('comments');
         toast.success('Berhasil menghapus komentar');
       },
       onError: (error) => {
@@ -185,12 +185,6 @@ const CommentsSection = () => {
       },
     });
   };
-
-  useEffect(() => {
-    if (data) {
-      setComments(data.data);
-    }
-  }, [data, setComments]);
 
   return (
     <div className='flex flex-col gap-4'>
@@ -250,7 +244,7 @@ const CommentsSection = () => {
         </form>
       </Form>
       <div className='flex flex-col gap-4'>
-        {getComments.map((comment, i) => (
+        {data.data.map((comment, i) => (
           <Fragment key={i}>
             <Separator />
             <div key={i} className='flex flex-col gap-3'>

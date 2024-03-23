@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import React from 'react';
 
-import { getDetailPost } from '@/hooks/posts/request';
+import { getComments, getDetailPost } from '@/hooks/posts/request';
 
 import BaseLayout from '@/components/layouts/base';
 
@@ -45,14 +45,27 @@ export async function generateMetadata({
   }
 }
 
-const DetailNewsPage = ({ params }: { params: { id: string } }) => {
+const DetailNewsPage = async ({ params }: { params: { id: string } }) => {
   const { id } = params;
+
+  const response = await getDetailPost(Number(id));
+  const responseComments = await getComments(Number(id));
+
+  const data = response;
+  const dataComments = responseComments;
+
+  if (!data) {
+    return {
+      notFound: true,
+    };
+  }
+
   return (
     <main>
       <BaseLayout>
         <div className='py-9 grid grid-cols-6 gap-14'>
-          <ContentSection id={Number(id)} />
-          <SideContentSection />
+          <ContentSection data={data} dataComments={dataComments} />
+          <SideContentSection data={data.data} />
         </div>
       </BaseLayout>
     </main>

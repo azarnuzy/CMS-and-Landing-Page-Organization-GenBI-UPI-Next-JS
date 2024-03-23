@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import {
   FacebookIcon,
   FacebookShareButton,
@@ -13,14 +13,11 @@ import {
   WhatsappIcon,
   WhatsappShareButton,
 } from 'react-share';
-import { useRecoilState, useRecoilValue } from 'recoil';
 
 import './index.css';
 
-import logger from '@/lib/logger';
 import { badgeColor } from '@/lib/utils/badge-color';
 import { formatDate, splitAndJoinWithDash } from '@/lib/utils/general-function';
-import { useAddVisitorPost, useGetDetailPost } from '@/hooks/posts/hook';
 
 import GalleryComponent from '@/components/gallery';
 import { Badge } from '@/components/ui/badge';
@@ -32,39 +29,27 @@ import {
 
 import { siteConfig } from '@/constant/config';
 import CommentsSection from '@/modules/news/detail/comment-section';
-import { totalCommentsSelector } from '@/recoils/comments/atom';
-import { postDetailDataState } from '@/recoils/news/detail/atom';
 
-const ContentSection = ({ id }: { id: number }) => {
-  useAddVisitorPost({ id });
-  const { data } = useGetDetailPost({ id });
+import {
+  TDataCommentPostResponse,
+  TDataGetDetailPostResponse,
+} from '@/types/posts';
 
-  const totalComments = useRecoilValue(totalCommentsSelector);
+const ContentSection = ({
+  data,
+  dataComments,
+}: {
+  data: TDataGetDetailPostResponse;
+  dataComments: TDataCommentPostResponse;
+}) => {
+  // const totalComments = useRecoilValue(totalCommentsSelector);
+  const commentsData = dataComments.data;
+  let totalComments = commentsData.length;
 
-  const [type, setType] = useState('Article');
-  const [department, setDepartment] = useState('Marketing');
-  const [images, setImages] = useState([
-    {
-      src: '/images/no-photo-available.png',
-    },
-  ]);
-  const [, setDetailPost] = useRecoilState(postDetailDataState);
-
-  useEffect(() => {
-    logger(data);
-    if (data) {
-      const tempImages = data.data.post.images
-        .filter((item) => item.category === 'post_other_image')
-        .map((item) => ({
-          src: item.file_url,
-        }));
-
-      setType(data.data.post.type);
-      setDepartment(data.data.post.department_name);
-      setImages(tempImages);
-      setDetailPost(data.data);
-    }
-  }, [data, setDetailPost]);
+  // Iterate over comments and add the number of replies for each comment
+  commentsData.forEach((comment) => {
+    totalComments += comment.replies.length;
+  });
 
   return (
     <div className='md:col-span-4 col-span-6'>
@@ -92,17 +77,21 @@ const ContentSection = ({ id }: { id: number }) => {
           <div className='flex gap-4 items-center'>
             <div
               className={`py-1.5 px-4 ${badgeColor(
-                (splitAndJoinWithDash(type) as string) || ''
+                (splitAndJoinWithDash(
+                  data?.data?.post?.type || ''
+                ) as string) || ''
               )} rounded-full whitespace-nowrap border text-xs`}
             >
-              {type}
+              {data?.data?.post?.type || ''}
             </div>
             <div
               className={`py-1.5 px-4 ${badgeColor(
-                (splitAndJoinWithDash(department) as string) || ''
+                (splitAndJoinWithDash(
+                  data?.data?.post?.department_name || ''
+                ) as string) || ''
               )} rounded-full whitespace-nowrap border text-xs`}
             >
-              {department}
+              {data?.data?.post?.department_name}
             </div>
           </div>
           <div className='flex gap-4 items-center'></div>
@@ -181,7 +170,7 @@ const ContentSection = ({ id }: { id: number }) => {
           className='flex flex-col gap-2 content-dangerously'
           dangerouslySetInnerHTML={{ __html: data?.data?.post?.content || '' }}
         ></div>
-        {data && <GalleryComponent images={images} />}
+        {data && <GalleryComponent data={data.data.post.images} />}
         {data && data?.data?.post?.attachments?.length > 0 && (
           <div>
             <h4>Attachments Files</h4>
@@ -212,7 +201,7 @@ const ContentSection = ({ id }: { id: number }) => {
             </Badge>
           )) || ''}
         </div>
-        <CommentsSection />
+        <CommentsSection data={dataComments} />
       </div>
     </div>
   );

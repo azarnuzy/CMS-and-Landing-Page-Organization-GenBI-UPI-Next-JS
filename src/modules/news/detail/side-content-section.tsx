@@ -1,9 +1,6 @@
-'use client';
-
 import { ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 import React from 'react';
-import { useRecoilState } from 'recoil';
 
 import { contentTrimmed } from '@/lib/utils/general-function';
 
@@ -13,11 +10,10 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 
 import { dataFilter } from '@/modules/news/constant';
-import { postDetailDataState } from '@/recoils/news/detail/atom';
 
-const SideContentSection = () => {
-  const [dataPost] = useRecoilState(postDetailDataState);
+import { TPostDetailData } from '@/types/posts';
 
+const SideContentSection = ({ data }: { data: TPostDetailData }) => {
   return (
     <div className='md:col-span-2 col-span-6 flex flex-col gap-3'>
       <div className='mb-3 flex gap-3 items-center'>
@@ -25,7 +21,7 @@ const SideContentSection = () => {
           <Avatar>
             <AvatarImage
               src={
-                dataPost?.post?.author?.photo.file_url ||
+                data?.post?.author?.photo.file_url ||
                 '/images/profile-no-photo.png'
               }
             />
@@ -35,7 +31,7 @@ const SideContentSection = () => {
         <div className='flex flex-col gap-[5px]'>
           <p className='text-cm text-neutral-600'>Diunggah oleh</p>
           <p className='font-semibold text-primary-main'>
-            {dataPost?.post?.author.name || 'Admin'}
+            {data?.post?.author.name || 'Admin'}
           </p>
         </div>
       </div>
@@ -53,8 +49,8 @@ const SideContentSection = () => {
           </Link>
         ))}
       </div>
-      {dataPost?.similarPosts?.length > 0 && <h4>Berita Serupa</h4>}
-      {dataPost?.similarPosts
+      {data?.similarPosts?.length > 0 && <h4>Berita Serupa</h4>}
+      {data?.similarPosts
         .filter((_, i) => i !== 5)
         .map((item, i) => (
           <div

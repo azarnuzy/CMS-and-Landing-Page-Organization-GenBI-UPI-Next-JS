@@ -1,13 +1,15 @@
 import Image from 'next/image';
 
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
-const GalleryComponent = ({
-  images,
-}: {
-  images: {
-    src: string;
-  }[];
-}) => {
+
+import { Image as TImage } from '@/types/posts';
+const GalleryComponent = ({ data }: { data: TImage[] }) => {
+  const images = data
+    .filter((item) => item.category === 'post_other_image')
+    .map((item) => ({
+      src: item.file_url,
+    }));
+
   const getGridClass = (numberOfImages: number) => {
     switch (numberOfImages) {
       case 1:

@@ -58,7 +58,13 @@ export const updateVisitorPost = async (
 export const getComments = async (
   id: number
 ): Promise<TDataCommentPostResponse> => {
-  const { data } = await api.get(`v1/posts/${id}/comments`);
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}v1/posts/${id}/comments`,
+    {
+      next: { tags: ['comments'] },
+    }
+  );
+  const data = await response.json();
 
   return data;
 };
