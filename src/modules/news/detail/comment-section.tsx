@@ -8,7 +8,6 @@ import React, { Fragment, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 import { FaRegEdit, FaRegTrashAlt } from 'react-icons/fa';
-import { useRecoilValue } from 'recoil';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
@@ -42,8 +41,6 @@ import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
 import { TextField } from '@/components/ui/text-field';
 import { Textarea } from '@/components/ui/textarea';
-
-import { totalCommentsSelector } from '@/recoils/comments/atom';
 
 import { TDataCommentPostResponse } from '@/types/posts';
 
@@ -87,13 +84,19 @@ const CommentsSection = ({ data }: { data: TDataCommentPostResponse }) => {
     usePutComment();
   const { mutate: mutateDeleteComment } = useDeleteComment();
 
-  const totalComments = useRecoilValue(totalCommentsSelector);
-
   const [getComments, setComments] = useState(data.data);
   const [formReplyOpen, setFormReplyOpen] = useState<number | null>(null);
   const [formEditCommentOpen, setFormEditCommentOpen] = useState<number | null>(
     null
   );
+
+  const commentsData = getComments;
+  let totalComments = commentsData.length;
+
+  // Iterate over comments and add the number of replies for each comment
+  commentsData.forEach((comment) => {
+    totalComments += comment.replies.length;
+  });
 
   const onSubmit = (data: z.infer<typeof ValidationSchemaAddCommentForm>) => {
     mutate(
