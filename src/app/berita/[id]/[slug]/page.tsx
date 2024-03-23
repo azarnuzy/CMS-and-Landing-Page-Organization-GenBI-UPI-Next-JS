@@ -1,7 +1,11 @@
 import { Metadata } from 'next';
 import React from 'react';
 
-import { getComments, getDetailPost } from '@/hooks/posts/request';
+import {
+  getComments,
+  getDetailPost,
+  updateVisitorPost,
+} from '@/hooks/posts/request';
 
 import BaseLayout from '@/components/layouts/base';
 
@@ -50,6 +54,7 @@ const DetailNewsPage = async ({ params }: { params: { id: string } }) => {
 
   const response = await getDetailPost(Number(id));
   const responseComments = await getComments(Number(id));
+  await updateVisitorPost(Number(id));
 
   const data = response;
   const dataComments = responseComments;
