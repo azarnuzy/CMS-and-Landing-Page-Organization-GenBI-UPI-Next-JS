@@ -47,6 +47,8 @@ export const defaultValuesPutPost = (
 export const putPayloadPost = (
   data: z.infer<typeof ValidationSchemaAddNewsForm>
 ): TPutPostPayload => {
+  const tags = data.tags.filter((tag) => tag !== '' || tag !== null);
+
   return {
     title: data.title,
     type: data.type,
@@ -54,7 +56,7 @@ export const putPayloadPost = (
     author_id: data.author_id,
     event_id: data.event_id,
     content: data.content,
-    tags: data.tags,
+    tags: tags,
   };
 };
 
