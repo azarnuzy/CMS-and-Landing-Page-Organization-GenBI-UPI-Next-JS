@@ -352,7 +352,7 @@ const FormAddNewsSection = () => {
                 render={({ field }) => {
                   return (
                     <FormItem>
-                      <FormLabel>Select Event *</FormLabel>
+                      <FormLabel>Select Event </FormLabel>
                       <Select
                         onValueChange={(e) => {
                           field.onChange(Number(e));
