@@ -59,7 +59,10 @@ export function createFormData(
   formData.append('tags', JSON.stringify(data.tags));
   formData.append('cover', data.cover[0]);
   formData.append('caption_cover', data.caption_cover);
-  formData.append('event_id', String(data.event_id));
+
+  if (data.event_id) {
+    formData.append('event_id', String(data.event_id));
+  }
 
   if (data.other) {
     data.other.forEach((file: File) => {
