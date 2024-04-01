@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import React from 'react';
+import React, { useState } from 'react';
 import {
   FacebookIcon,
   FacebookShareButton,
@@ -43,7 +43,9 @@ const ContentSection = ({
   dataComments: TDataCommentPostResponse;
 }) => {
   // const totalComments = useRecoilValue(totalCommentsSelector);
-  const commentsData = dataComments.data;
+  const [getComment] = useState(dataComments.data);
+
+  const commentsData = getComment;
   let totalComments = commentsData.length;
 
   // Iterate over comments and add the number of replies for each comment
