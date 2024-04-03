@@ -69,10 +69,22 @@ export interface Transcript {
 
 export interface Management {
   id: number;
-  management: string;
-  department: string;
-  division: string;
-  position: string;
+  management: {
+    id: number;
+    name: string;
+  };
+  department: {
+    id: number;
+    name: string;
+  };
+  division: {
+    id: number;
+    name: string;
+  };
+  position: {
+    id: number;
+    name: string;
+  };
 }
 
 export interface TAwardeesParams {

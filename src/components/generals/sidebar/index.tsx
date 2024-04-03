@@ -178,16 +178,6 @@ const dataSideBar = [
         link: '/admin/managements',
         icon: <GoOrganization className='w-6 h-6  text-white' />,
       },
-      // {
-      //   title: 'Event',
-      //   link: '/admin',
-      //   icon: <FaCalendarCheck className='w-6 h-6  text-white' />,
-      // },
-      // {
-      //   title: 'Role',
-      //   link: '/admin',
-      //   icon: <FaRegUser className='w-6 h-6  text-white' />,
-      // },
       {
         title: 'Department',
         link: '/admin/department',

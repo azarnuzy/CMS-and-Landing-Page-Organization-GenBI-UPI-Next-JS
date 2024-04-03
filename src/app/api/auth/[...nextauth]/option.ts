@@ -78,6 +78,7 @@ export const authOptions: NextAuthOptions = {
           token: jwt_token,
           id: tempToken?.data?.uuid as string,
           username: tempToken?.data.username as string,
+          roles: tempToken?.data.roles as number[],
         },
       };
 

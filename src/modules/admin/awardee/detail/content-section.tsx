@@ -64,7 +64,7 @@ const ContentDetailAwardeeAdminSection = () => {
     <div className='py-5 border rounded-3xl w-full sm:mt-10 mb-5 px-5'>
       <h4 className='text-neutral-600'>General Data</h4>
       <div className='flex flex-col lg:flex-row justify-between'>
-        {dataDetail?.name.length > 0 && (
+        {dataDetail?.name?.length > 0 && (
           <div className='overflow-x-auto'>
             <table className='w-full' border={0}>
               <tbody>
@@ -122,22 +122,22 @@ const ContentDetailAwardeeAdminSection = () => {
                       {dataDetail?.managements?.map((item, i) => (
                         <div className=' flex flex-col list-disc' key={i}>
                           <span className='font-semibold'>
-                            {item.management}
+                            {item.management.name}
                           </span>
                           <div className='flex gap-4 items-center'>
                             <td className='min-w-36 font-medium'>Department</td>
                             <td className='min-w-3'>: </td>
-                            <td>{item.department || '-'}</td>
+                            <td>{item.department.name || '-'}</td>
                           </div>
                           <div className='flex gap-4 items-center'>
                             <td className='min-w-36 font-medium'>Division</td>
                             <td className='min-w-3'>: </td>
-                            <td>{item.division || '-'}</td>
+                            <td>{item.division.name || '-'}</td>
                           </div>
                           <div className='flex gap-4 items-center'>
                             <td className='min-w-36 font-semibold'>Position</td>
                             <td className='min-w-3'>: </td>
-                            <td>{item.position || '-'}</td>
+                            <td>{item.position.name || '-'}</td>
                           </div>
                         </div>
                       ))}

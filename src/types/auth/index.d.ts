@@ -5,6 +5,7 @@ export type TLoginData = {
     uuid: string;
     username: string;
     token: string;
+    roles: number[];
   };
 } & User;
 

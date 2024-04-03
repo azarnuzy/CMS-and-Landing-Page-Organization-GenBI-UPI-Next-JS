@@ -77,11 +77,23 @@ export const awardeesDataDetailState = atom<TAwardeeDetailData>({
     },
     managements: [
       {
-        department: '',
+        department: {
+          id: 0,
+          name: '',
+        },
         id: 0,
-        management: '',
-        division: '',
-        position: '',
+        management: {
+          id: 0,
+          name: '',
+        },
+        division: {
+          id: 0,
+          name: '',
+        },
+        position: {
+          id: 0,
+          name: '',
+        },
       },
     ],
   },
@@ -135,11 +147,23 @@ export const awardeesDataEditState = atom<TAwardeeDetailData>({
     },
     managements: [
       {
-        department: '',
+        department: {
+          id: 0,
+          name: '',
+        },
         id: 0,
-        management: '',
-        division: '',
-        position: '',
+        management: {
+          id: 0,
+          name: '',
+        },
+        division: {
+          id: 0,
+          name: '',
+        },
+        position: {
+          id: 0,
+          name: '',
+        },
       },
     ],
   },
