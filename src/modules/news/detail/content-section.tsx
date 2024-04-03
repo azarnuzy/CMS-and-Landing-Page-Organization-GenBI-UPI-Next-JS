@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import React, { useState } from 'react';
+import React from 'react';
 import {
   FacebookIcon,
   FacebookShareButton,
@@ -42,17 +42,6 @@ const ContentSection = ({
   data: TDataGetDetailPostResponse;
   dataComments: TDataCommentPostResponse;
 }) => {
-  // const totalComments = useRecoilValue(totalCommentsSelector);
-  const [getComment] = useState(dataComments.data);
-
-  const commentsData = getComment;
-  let totalComments = commentsData.length;
-
-  // Iterate over comments and add the number of replies for each comment
-  commentsData.forEach((comment) => {
-    totalComments += comment.replies.length;
-  });
-
   return (
     <div className='md:col-span-4 col-span-6'>
       <div className='flex flex-col gap-6'>
@@ -122,7 +111,7 @@ const ContentSection = ({
                 width={24}
                 height={24}
               />
-              <p>{totalComments || 0}</p>
+              <p>{data?.data?.post?.comments || 0}</p>
             </div>
             <div className='flex gap-1.5 items-center text-neutral-main'>
               <Popover>

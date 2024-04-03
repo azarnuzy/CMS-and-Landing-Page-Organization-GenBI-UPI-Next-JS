@@ -32,7 +32,7 @@ export const defaultValuesPutPost = (
     content: data?.post?.content || '<p></p>\n',
     department_id: data?.post?.department_id || undefined,
     event_id: data?.post?.event?.id || undefined,
-    tags: data?.post?.tags.filter((_, index) => index > 1) || [],
+    tags: data?.post?.tags.filter((item, index) => item && index > 0) || [],
     caption_cover: data?.post?.image_cover?.caption || '',
     caption_other1: data?.post?.images[0]?.caption || '',
     caption_other2: data?.post?.images[1]?.caption || '',

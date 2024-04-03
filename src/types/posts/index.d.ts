@@ -45,6 +45,7 @@ export interface Post {
   content: string;
   visitors: number;
   tags: string[];
+  comments: number;
   department_id: number;
   department_name: string;
   event: Event;

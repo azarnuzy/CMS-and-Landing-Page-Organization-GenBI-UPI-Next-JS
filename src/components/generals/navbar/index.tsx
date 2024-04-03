@@ -323,7 +323,7 @@ const NavbarMobileMenu = ({
               Gallery
             </Link>
             <Link href='/login'>
-              <Button variant='light' size='base' className='hidden sm:block'>
+              <Button variant='light' size='base' className='block sm:hidden'>
                 Login
               </Button>
             </Link>
