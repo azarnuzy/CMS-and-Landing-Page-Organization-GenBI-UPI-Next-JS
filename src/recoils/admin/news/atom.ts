@@ -48,6 +48,7 @@ export const postAdminDetailDataState = atom<TPostDetailData>({
       id: 0,
       content_preview: '',
       title: '',
+      comments: 0,
       type: '',
       slug: '',
       content: '',
