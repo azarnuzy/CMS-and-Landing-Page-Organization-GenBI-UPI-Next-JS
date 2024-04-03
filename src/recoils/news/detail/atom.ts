@@ -16,6 +16,7 @@ export const postDetailDataState = atom<TPostDetailData>({
       tags: [],
       department_id: 0,
       department_name: '',
+      comments: 0,
       author: {
         id: 0,
         name: '',
