@@ -1,13 +1,18 @@
 import { api } from '@/lib/api';
 
 import {
+  TAddEventPayload,
+  TDataAddEventResponse,
+  TDataDeleteEventResponse,
   TDataGetAllEventResponse,
   TDataGetDetailEventResponse,
   TDataGetOptionEventParticipantsFieldsResponse,
   TDataGetOptionEventParticipantsRolesResponse,
+  TDataPutEventResponse,
   TDataRegistrationEventResponse,
   TDataUpdateRegistrationEventResponse,
   TGetAllEventParams,
+  TPutEventPayload,
   TRegistrationEventPayload,
 } from '@/types/events';
 import { TUserParams } from '@/types/users';
@@ -89,3 +94,36 @@ export const getOptionEventParticipantsField =
 
     return data;
   };
+
+export const addEventRequest = async (
+  payload: TAddEventPayload
+): Promise<TDataAddEventResponse> => {
+  const { data } = await api({
+    method: 'post',
+    url: 'v1/events',
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+    data: payload,
+  });
+  return data;
+};
+
+export const putEventRequest = async ({
+  payload,
+  id,
+}: {
+  payload: TPutEventPayload;
+  id: number;
+}): Promise<TDataPutEventResponse> => {
+  const { data } = await api.put(`v1/events/${id}`, payload);
+
+  return data;
+};
+
+export const deleteEventRequest = async (
+  id: number
+): Promise<TDataDeleteEventResponse> => {
+  const { data } = await api.delete(`v1/events/${id}`);
+  return data;
+};

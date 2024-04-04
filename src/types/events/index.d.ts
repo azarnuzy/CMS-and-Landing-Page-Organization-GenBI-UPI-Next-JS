@@ -139,6 +139,76 @@ export interface TUpdateRegistrationEventData {
   id: string;
 }
 
+export interface TAddEventPayload {
+  thumbnail: File | undefined;
+  poster: File | undefined;
+  banner: File | undefined;
+  title: string;
+  program_id?: number | undefined;
+  type: string;
+  description: string;
+  start_date: date | undefined;
+  end_date: date | undefined;
+  location: string;
+  location_url?: string;
+  registration_link?: string;
+  start_reg_date: date | undefined;
+  end_reg_date: date | undefined;
+  contact: string;
+  tags: string[];
+  scope: string;
+}
+
+export interface TAddEventData {
+  id: number;
+  title: string;
+  slug: string;
+  program_id: number;
+  type: string;
+  status: string;
+  thumbnail_id: number;
+  poster_id: number;
+  banner_id: number;
+  description: string;
+  start_date: string;
+  end_date: string;
+  participants: number;
+  location: string;
+  location_url: string;
+  registration_link: string;
+  start_reg_date: string;
+  end_reg_date: string;
+  contact: string;
+  tag1: string;
+  tag2: string;
+  tag3: string;
+  tag4: string;
+  tag5: string;
+  updatedAt: string;
+  createdAt: string;
+}
+
+export interface TPutEventPayload {
+  title?: string;
+  program_id?: number;
+  type?: string;
+  scope?: string;
+  description?: string;
+  start_date?: string;
+  end_date?: string;
+  location?: string;
+  location_url?: string;
+  registration_link?: string;
+  start_reg_date?: string;
+  end_reg_date?: string;
+  contact?: string;
+  tags?: string[];
+}
+
+export interface TPutEventData {
+  id: string;
+}
+
 export type TDataGetAllEventResponse = TMetaResponse<TEventData>;
 export type TDataGetDetailEventResponse = TMetaResponseSingle<TDetailEventData>;
 export type TDataRegistrationEventResponse =
@@ -151,3 +221,6 @@ export type TDataGetOptionEventParticipantsRolesResponse = TMetaResponse<
 export type TDataGetOptionEventParticipantsFieldsResponse = TMetaResponse<
   Array<string>
 >;
+export type TDataAddEventResponse = TMetaResponseSingle<TAddEventData>;
+export type TDataPutEventResponse = TMetaResponseSingle<TPutEventData>;
+export type TDataDeleteEventResponse = TMetaResponseSingle<null>;

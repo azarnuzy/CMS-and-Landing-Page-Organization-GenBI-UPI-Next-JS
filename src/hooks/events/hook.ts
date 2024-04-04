@@ -6,24 +6,32 @@ import {
 } from '@tanstack/react-query';
 
 import {
+  addEventRequest,
+  deleteEventRequest,
   getAllEvents,
   getDetailEvent,
   getEventOptionRequest,
   getOptionEventParticipantsField,
   getOptionEventParticipantsRole,
   getSearchEvent,
+  putEventRequest,
   registrationEventRequest,
   updateRegistrationEventRequest,
 } from '@/hooks/events/request';
 
 import { TMetaErrorResponse } from '@/types';
 import {
+  TAddEventPayload,
+  TDataAddEventResponse,
+  TDataDeleteEventResponse,
   TDataGetAllEventResponse,
   TDataGetDetailEventResponse,
   TDataGetOptionEventParticipantsFieldsResponse,
   TDataGetOptionEventParticipantsRolesResponse,
+  TDataPutEventResponse,
   TDataRegistrationEventResponse,
   TDataUpdateRegistrationEventResponse,
+  TPutEventPayload,
   TRegistrationEventPayload,
 } from '@/types/events';
 import { TUserParams } from '@/types/users';
@@ -63,7 +71,7 @@ export const useGetDetailEvent = ({
   id: number;
 }): UseQueryResult<TDataGetDetailEventResponse, TMetaErrorResponse> =>
   useQuery({
-    queryKey: ['get-detail-post', id],
+    queryKey: ['get-detail-event', id],
     queryFn: async () => await getDetailEvent(id),
   });
 
@@ -142,5 +150,70 @@ export const useGetOptionEventParticipantsFields = (): UseQueryResult<
   return useQuery({
     queryKey: ['get-option-event-participants-fields'],
     queryFn: async () => await getOptionEventParticipantsField(),
+  });
+};
+
+export const useAddEvent = (): UseMutationResult<
+  TDataAddEventResponse,
+  TMetaErrorResponse,
+  TAddEventPayload
+> => {
+  return useMutation<
+    TDataAddEventResponse,
+    TMetaErrorResponse,
+    TAddEventPayload
+  >({
+    mutationKey: ['add-event'],
+    mutationFn: async (payload: TAddEventPayload) => {
+      const response = await addEventRequest(payload);
+      if (!response) {
+        throw new Error('Invalid response');
+      }
+      return response;
+    },
+  });
+};
+
+export const usePutEvent = (): UseMutationResult<
+  TDataPutEventResponse,
+  TMetaErrorResponse,
+  { payload: TPutEventPayload; id: number }
+> => {
+  return useMutation<
+    TDataPutEventResponse,
+    TMetaErrorResponse,
+    { payload: TPutEventPayload; id: number }
+  >({
+    mutationKey: ['put-event'],
+    mutationFn: async ({
+      payload,
+      id,
+    }: {
+      payload: TPutEventPayload;
+      id: number;
+    }) => {
+      const response = await putEventRequest({ payload, id });
+      if (!response) {
+        throw new Error('Invalid response');
+      }
+      return response;
+    },
+  });
+};
+
+export const useDeleteEvent = (): UseMutationResult<
+  TDataDeleteEventResponse,
+  TMetaErrorResponse,
+  number
+> => {
+  return useMutation<TDataDeleteEventResponse, TMetaErrorResponse, number>({
+    mutationKey: ['delete-event'],
+    mutationFn: async (id) => {
+      const response = await deleteEventRequest(id);
+      if (!response) {
+        throw new Error('Invalid response');
+      }
+      return response;
+    },
   });
 };
