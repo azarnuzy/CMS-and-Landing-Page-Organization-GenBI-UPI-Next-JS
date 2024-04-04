@@ -1,12 +1,19 @@
+'use client';
+
 import Image from 'next/image';
 import React from 'react';
+import { useRecoilState } from 'recoil';
 
 import BaseLayout from '@/components/layouts/base';
+
+import { activeManagementsState } from '@/recoils/managements/atom';
 
 const HeaderUpiSection = () => {
   // const { data } = useGetManagement('23.24');
 
   // const { setDataManagement } = useManagementDataState();
+
+  const [activeManagements] = useRecoilState(activeManagementsState);
 
   // useEffect(() => {
   //   if (data) {
@@ -53,10 +60,15 @@ const HeaderUpiSection = () => {
           </div>
           <div className='p-4 rounded-3xl w-full h-full bg-neutral-100 shadow-md relative z-[1] md:col-span-2 col-span-5'>
             <Image
-              src='/images/genbi-upi-header.png'
+              src={
+                activeManagements?.management?.photo?.file_url ||
+                '/images/genbi-upi-header.png'
+              }
               width={0}
               height={0}
-              alt='about header'
+              alt={
+                activeManagements?.management?.photo?.caption || 'about header'
+              }
               className='w-full h-full object-cover rounded-3xl bg-primary-main'
               sizes='50vw'
             />
