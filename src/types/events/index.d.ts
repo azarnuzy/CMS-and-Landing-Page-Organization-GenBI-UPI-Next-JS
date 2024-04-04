@@ -156,7 +156,7 @@ export interface TAddEventPayload {
   end_reg_date: date | undefined;
   contact: string;
   tags: string[];
-  scope: string;
+  scope: string | undefined;
 }
 
 export interface TAddEventData {
@@ -241,3 +241,5 @@ export type TDataDeleteEventResponse = TMetaResponseSingle<null>;
 export type TDataGetEventParticipansResponse =
   TMetaResponse<TEventParticipantsData>;
 export type TDataGetStatusEventResposne = TMetaResponse<string>;
+export type TDataGetEventTypesResponse = TMetaResponse<string>;
+export type TDataGetEventScopesResponse = TMetaResponse<string>;

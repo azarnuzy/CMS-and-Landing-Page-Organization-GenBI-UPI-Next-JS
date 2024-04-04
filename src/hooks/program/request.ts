@@ -1,9 +1,13 @@
+import { useQuery, UseQueryResult } from '@tanstack/react-query';
+
 import { api } from '@/lib/api';
 
+import { TMetaErrorResponse } from '@/types';
 import {
   TAddProgramPayload,
   TDataAddProgramResponse,
   TDataDeleteProgramResponse,
+  TDataGetProgramOptionsResponse,
   TDataGetProgramTypeResponse,
   TDataUpdateProgramResponse,
   TProgramDetailData,
@@ -53,3 +57,27 @@ export const getProgramDetailRequest = async (
 
   return data;
 };
+
+export const getProgramOptionsRequest =
+  async (): Promise<TDataGetProgramOptionsResponse> => {
+    const params = {
+      params: {
+        type: 'desc',
+
+        options: true,
+      },
+    };
+
+    const { data } = await api.get(`v1/programs`, params);
+
+    return data;
+  };
+
+export const useGetOptionPrograms = (): UseQueryResult<
+  TDataGetProgramOptionsResponse,
+  TMetaErrorResponse
+> =>
+  useQuery({
+    queryKey: ['get-option-programs'],
+    queryFn: async () => await getProgramOptionsRequest(),
+  });

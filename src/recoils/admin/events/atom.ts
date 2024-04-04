@@ -47,3 +47,8 @@ export const eventsAdminDataState = atom<Array<TEventData>>({
     },
   ],
 });
+
+export const inputTagStateEvent = atom<string[]>({
+  key: 'inputTagStateEvent',
+  default: [],
+});

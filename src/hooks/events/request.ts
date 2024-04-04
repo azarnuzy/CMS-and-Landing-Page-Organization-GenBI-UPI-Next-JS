@@ -7,6 +7,8 @@ import {
   TDataGetAllEventResponse,
   TDataGetDetailEventResponse,
   TDataGetEventParticipansResponse,
+  TDataGetEventScopesResponse,
+  TDataGetEventTypesResponse,
   TDataGetOptionEventParticipantsFieldsResponse,
   TDataGetOptionEventParticipantsRolesResponse,
   TDataGetStatusEventResposne,
@@ -141,5 +143,17 @@ export const getEventParticipants = async (
 export const getStatusEventRequest =
   async (): Promise<TDataGetStatusEventResposne> => {
     const { data } = await api.get('v1/events/status');
+    return data;
+  };
+
+export const getEventTypesRequest =
+  async (): Promise<TDataGetEventTypesResponse> => {
+    const { data } = await api.get('v1/events/types');
+    return data;
+  };
+
+export const getEventScopesRequest =
+  async (): Promise<TDataGetEventScopesResponse> => {
+    const { data } = await api.get('v1/events/scopes');
     return data;
   };

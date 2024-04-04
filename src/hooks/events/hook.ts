@@ -12,6 +12,8 @@ import {
   getDetailEvent,
   getEventOptionRequest,
   getEventParticipants,
+  getEventScopesRequest,
+  getEventTypesRequest,
   getOptionEventParticipantsField,
   getOptionEventParticipantsRole,
   getSearchEvent,
@@ -28,6 +30,8 @@ import {
   TDataDeleteEventResponse,
   TDataGetAllEventResponse,
   TDataGetDetailEventResponse,
+  TDataGetEventScopesResponse,
+  TDataGetEventTypesResponse,
   TDataGetOptionEventParticipantsFieldsResponse,
   TDataGetOptionEventParticipantsRolesResponse,
   TDataGetStatusEventResposne,
@@ -240,5 +244,23 @@ export const useGetEventStatus = (): UseQueryResult<
   return useQuery({
     queryKey: ['get-event-status'],
     queryFn: async () => await getStatusEventRequest(),
+  });
+};
+export const useGetEventTypes = (): UseQueryResult<
+  TDataGetEventTypesResponse,
+  TMetaErrorResponse
+> => {
+  return useQuery({
+    queryKey: ['get-event-types'],
+    queryFn: async () => await getEventTypesRequest(),
+  });
+};
+export const useGetEventScopes = (): UseQueryResult<
+  TDataGetEventScopesResponse,
+  TMetaErrorResponse
+> => {
+  return useQuery({
+    queryKey: ['get-event-scopes'],
+    queryFn: async () => await getEventScopesRequest(),
   });
 };

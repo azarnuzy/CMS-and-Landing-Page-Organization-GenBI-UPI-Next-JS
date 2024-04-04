@@ -62,3 +62,4 @@ export type TDataDeleteProgramResponse = TMetaResponseSingle<null>;
 export type TDataGetProgramTypeResponse = TMetaResponse<string[]>;
 export type TDataGetProgramDetailResponse =
   TMetaResponseSingle<TProgramDetailData>;
+export type TDataGetProgramOptionsResponse = TMetaResponse<TProgramDetailData>;
