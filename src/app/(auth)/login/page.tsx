@@ -1,5 +1,7 @@
 import { Metadata } from 'next';
-import React from 'react';
+import React, { Suspense } from 'react';
+
+import { LoadingSpinner } from '@/components/loading-spinner';
 
 import LoginSection from '@/modules/login/login-section';
 
@@ -11,9 +13,11 @@ export const metadata: Metadata = {
 
 const LoginPage = () => {
   return (
-    <main>
-      <LoginSection />
-    </main>
+    <Suspense fallback={<LoadingSpinner />}>
+      <main>
+        <LoginSection />
+      </main>
+    </Suspense>
   );
 };
 
