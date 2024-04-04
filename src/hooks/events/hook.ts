@@ -11,9 +11,11 @@ import {
   getAllEvents,
   getDetailEvent,
   getEventOptionRequest,
+  getEventParticipants,
   getOptionEventParticipantsField,
   getOptionEventParticipantsRole,
   getSearchEvent,
+  getStatusEventRequest,
   putEventRequest,
   registrationEventRequest,
   updateRegistrationEventRequest,
@@ -28,6 +30,7 @@ import {
   TDataGetDetailEventResponse,
   TDataGetOptionEventParticipantsFieldsResponse,
   TDataGetOptionEventParticipantsRolesResponse,
+  TDataGetStatusEventResposne,
   TDataPutEventResponse,
   TDataRegistrationEventResponse,
   TDataUpdateRegistrationEventResponse,
@@ -215,5 +218,27 @@ export const useDeleteEvent = (): UseMutationResult<
       }
       return response;
     },
+  });
+};
+
+export const useGetEventParticipants = (
+  id: number
+): UseQueryResult<
+  TDataGetOptionEventParticipantsRolesResponse,
+  TMetaErrorResponse
+> => {
+  return useQuery({
+    queryKey: ['get-event-participants', id],
+    queryFn: async () => await getEventParticipants(id),
+  });
+};
+
+export const useGetEventStatus = (): UseQueryResult<
+  TDataGetStatusEventResposne,
+  TMetaErrorResponse
+> => {
+  return useQuery({
+    queryKey: ['get-event-status'],
+    queryFn: async () => await getStatusEventRequest(),
   });
 };

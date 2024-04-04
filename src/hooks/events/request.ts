@@ -6,8 +6,10 @@ import {
   TDataDeleteEventResponse,
   TDataGetAllEventResponse,
   TDataGetDetailEventResponse,
+  TDataGetEventParticipansResponse,
   TDataGetOptionEventParticipantsFieldsResponse,
   TDataGetOptionEventParticipantsRolesResponse,
+  TDataGetStatusEventResposne,
   TDataPutEventResponse,
   TDataRegistrationEventResponse,
   TDataUpdateRegistrationEventResponse,
@@ -127,3 +129,17 @@ export const deleteEventRequest = async (
   const { data } = await api.delete(`v1/events/${id}`);
   return data;
 };
+
+export const getEventParticipants = async (
+  id: number
+): Promise<TDataGetEventParticipansResponse> => {
+  const { data } = await api.get(`v1/events/${id}/participants`);
+
+  return data;
+};
+
+export const getStatusEventRequest =
+  async (): Promise<TDataGetStatusEventResposne> => {
+    const { data } = await api.get('v1/events/status');
+    return data;
+  };

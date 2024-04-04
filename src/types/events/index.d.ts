@@ -209,6 +209,20 @@ export interface TPutEventData {
   id: string;
 }
 
+export interface TEventParticipantsData {
+  id: number;
+  event_id: number;
+  name: string;
+  email: string;
+  institution: string;
+  role: string;
+  field: string;
+  telp: string;
+  city: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export type TDataGetAllEventResponse = TMetaResponse<TEventData>;
 export type TDataGetDetailEventResponse = TMetaResponseSingle<TDetailEventData>;
 export type TDataRegistrationEventResponse =
@@ -224,3 +238,6 @@ export type TDataGetOptionEventParticipantsFieldsResponse = TMetaResponse<
 export type TDataAddEventResponse = TMetaResponseSingle<TAddEventData>;
 export type TDataPutEventResponse = TMetaResponseSingle<TPutEventData>;
 export type TDataDeleteEventResponse = TMetaResponseSingle<null>;
+export type TDataGetEventParticipansResponse =
+  TMetaResponse<TEventParticipantsData>;
+export type TDataGetStatusEventResposne = TMetaResponse<string>;

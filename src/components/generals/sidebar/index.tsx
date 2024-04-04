@@ -8,6 +8,7 @@ import { BiMenuAltRight } from 'react-icons/bi';
 import { FaAward, FaLayerGroup } from 'react-icons/fa6';
 import { GoOrganization } from 'react-icons/go';
 import { HiMiniUsers } from 'react-icons/hi2';
+import { MdEvent } from 'react-icons/md';
 import { useRecoilState } from 'recoil';
 
 import './index.css';
@@ -167,6 +168,11 @@ const dataSideBar = [
         title: 'News',
         link: '/admin/news',
         icon: <BiSolidBookAlt className='w-6 h-6  text-white' />,
+      },
+      {
+        title: 'Events',
+        link: '/admin/events',
+        icon: <MdEvent className='w-6 h-6  text-white' />,
       },
       {
         title: 'Appreciations',
