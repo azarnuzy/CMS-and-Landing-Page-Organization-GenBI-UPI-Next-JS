@@ -42,6 +42,8 @@ export interface DetailEvent {
   slug: string;
   type: string;
   scope: string;
+  tags: string[];
+  program_id: number;
   status: string;
   thumbnail: Thumbnail;
   poster: Poster;
@@ -194,13 +196,13 @@ export interface TPutEventPayload {
   type?: string;
   scope?: string;
   description?: string;
-  start_date?: string;
-  end_date?: string;
+  start_date?: Date;
+  end_date?: Date;
   location?: string;
   location_url?: string;
   registration_link?: string;
-  start_reg_date?: string;
-  end_reg_date?: string;
+  start_reg_date?: Date;
+  end_reg_date?: Date;
   contact?: string;
   tags?: string[];
 }

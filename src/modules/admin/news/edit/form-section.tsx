@@ -83,7 +83,7 @@ import { postAdminDetailDataState } from '@/recoils/admin/news/atom';
 
 import { TUserOptionsData } from '@/types/users';
 
-const FormEditNewsSection = ({ id }: { id: string }) => {
+const FormEditEventSection = ({ id }: { id: string }) => {
   const { data, refetch } = useGetDetailPost({ id: Number(id) });
   const { data: dataDepartmentOption } = useGetOptionDepartments();
   const { data: dataPostType } = useGetPostTypes();
@@ -179,7 +179,7 @@ const FormEditNewsSection = ({ id }: { id: string }) => {
   useEffect(() => {
     if (data) {
       setTags(
-        data?.data?.post?.tags.filter(
+        data?.data?.post?.tags?.filter(
           (item, index) => index > 0 && item !== null
         )
       );
@@ -745,4 +745,4 @@ const FormEditNewsSection = ({ id }: { id: string }) => {
   );
 };
 
-export default FormEditNewsSection;
+export default FormEditEventSection;

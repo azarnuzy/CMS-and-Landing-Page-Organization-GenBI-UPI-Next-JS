@@ -235,21 +235,7 @@ export const ValidationSchemaPutEventForm = z.object({
     .max(4, 'Maximum tags is 4')
     .optional(),
   //
-  scope: z.enum(
-    [
-      'Public',
-      'Internal',
-      'Executive',
-      'Manager',
-      'Department',
-      'Division',
-      'External',
-      'Collaboration',
-      'UPI',
-      'Other',
-    ],
-    {
-      required_error: 'Scope should be filled',
-    }
-  ),
+  scope: z.string({
+    required_error: 'Scope should be filled',
+  }),
 });
