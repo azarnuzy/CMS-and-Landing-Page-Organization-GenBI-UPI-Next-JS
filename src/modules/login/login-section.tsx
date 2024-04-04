@@ -3,7 +3,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { signIn } from 'next-auth/react';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -21,6 +21,7 @@ import { TextField } from '@/components/ui/text-field';
 
 const LoginSection = () => {
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   const [error, setError] = useState<string | undefined | null>('');
   const [loading, setLoading] = useState<boolean>(false);
@@ -48,8 +49,7 @@ const LoginSection = () => {
 
       if (response?.ok && response?.url !== null) {
         toast.success(`Login Success. Welcome ${data.username}`);
-        router.push('/admin/awardee');
-        // router.push('/beranda');
+        router.push(searchParams.get('callbackUrl') || '/admin/awardee');
       } else {
         setError(response?.error);
       }
