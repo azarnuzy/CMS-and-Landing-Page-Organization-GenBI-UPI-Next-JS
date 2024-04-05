@@ -52,5 +52,9 @@ export const putPayloadEvent = (
     start_reg_date: data.start_reg_date,
     end_reg_date: data.end_reg_date,
     contact: data.contact,
+    tags:
+      data.tags?.filter(
+        (tag) => tag !== '' && tag !== null && tag !== undefined
+      ) || [],
   };
 };

@@ -46,6 +46,7 @@ import {
 } from '@/hooks/events/hook';
 import { useGetOptionPrograms } from '@/hooks/program/request';
 
+import InputTag from '@/components/input/tag';
 import MiniSpinner from '@/components/spinner';
 import {
   Command,
@@ -551,6 +552,7 @@ const FromEditEventSection = ({ id }: { id: number }) => {
                         <span className='text-error-main'>*</span>
                       </FormLabel>
                       <Select
+                        value={field.value}
                         onValueChange={(e) => {
                           field.onChange(e);
                         }}
@@ -589,12 +591,12 @@ const FromEditEventSection = ({ id }: { id: number }) => {
               />
             </div>
             <div className='col-span-2 lg:col-span-1'>
-              {/* <InputTag
+              <InputTag
                 control={form.control}
                 name='tags'
                 label='Hashtag'
                 message={form.formState.errors.tags?.message}
-              /> */}
+              />
             </div>
             <div className='w-full col-span-2 lg:col-span-1'>
               <FormLabel

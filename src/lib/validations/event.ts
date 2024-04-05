@@ -200,18 +200,17 @@ export const ValidationSchemaPutEventForm = z.object({
     .string({
       required_error: 'Location should be filled',
     })
-    .min(5, 'Location should be filled with minimum 5 character'),
+    .min(5, 'Location should be filled with minimum 5 character')
+    .optional(),
   location_url: z
     .string({
       required_error: 'Location URL should be filled',
     })
-    .url('Invalid URL format')
     .optional(),
   registration_link: z
     .string({
       required_error: 'Registration Link should be filled',
     })
-    .url('Invalid URL format')
     .optional(),
   start_reg_date: z.date({
     required_error: 'Start Registration Date should be filled',
