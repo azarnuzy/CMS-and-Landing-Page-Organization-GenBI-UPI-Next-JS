@@ -5,19 +5,20 @@ export default withAuth(
   function middleware(request: NextRequestWithAuth) {
     if (
       request.nextUrl.pathname.startsWith('/admin') &&
-      request.nextauth.token?.data?.roles.includes(3)
+      request.nextauth.token?.data?.roles.includes(1)
     ) {
-      return NextResponse.rewrite(new URL('/admin/denied', request.url));
+      return;
     }
 
     if (
-      request.nextauth.token?.data?.roles.includes(2) &&
+      // include 2 or 1
+      request.nextauth.token?.data?.roles.includes(1 || 2) &&
       request.nextUrl.pathname.startsWith('/admin/users') &&
       request.nextUrl.pathname.startsWith('/admin/roles')
     ) {
-      return NextResponse.rewrite(new URL('/admin/denied', request.url));
+      return;
     }
-    return;
+    return NextResponse.rewrite(new URL('/admin/denied', request.url));
   },
   {
     callbacks: {
