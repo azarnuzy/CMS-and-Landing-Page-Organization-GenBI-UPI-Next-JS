@@ -36,6 +36,8 @@ export const eventsDetailDataState = atom<TDetailEventData>({
   key: 'eventsDetailDataState',
   default: {
     event: {
+      program_id: 0,
+      tags: [],
       id: 0,
       title: '',
       slug: '',

@@ -347,8 +347,8 @@ const FormAddEventSection = () => {
                           selected={field.value}
                           onSelect={field.onChange}
                           captionLayout='dropdown-buttons'
-                          fromYear={1995}
-                          toYear={2010}
+                          fromYear={2021}
+                          toYear={2045}
                         />
                       </PopoverContent>
                     </Popover>
@@ -390,8 +390,8 @@ const FormAddEventSection = () => {
                           selected={field.value}
                           onSelect={field.onChange}
                           captionLayout='dropdown-buttons'
-                          fromYear={1995}
-                          toYear={2010}
+                          fromYear={2021}
+                          toYear={2045}
                         />
                       </PopoverContent>
                     </Popover>
@@ -436,8 +436,8 @@ const FormAddEventSection = () => {
                           selected={field.value}
                           onSelect={field.onChange}
                           captionLayout='dropdown-buttons'
-                          fromYear={1995}
-                          toYear={2010}
+                          fromYear={2021}
+                          toYear={2045}
                         />
                       </PopoverContent>
                     </Popover>
@@ -482,8 +482,8 @@ const FormAddEventSection = () => {
                           selected={field.value}
                           onSelect={field.onChange}
                           captionLayout='dropdown-buttons'
-                          fromYear={1995}
-                          toYear={2010}
+                          fromYear={2021}
+                          toYear={2045}
                         />
                       </PopoverContent>
                     </Popover>

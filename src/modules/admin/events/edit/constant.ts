@@ -26,13 +26,14 @@ export const defaultValuesPutEvent = (data: TDetailEventData) => {
     description: data?.event?.description || '',
     start_date: new Date(data?.event?.start_date) || undefined,
     end_date: new Date(data?.event?.end_date) || undefined,
+    tags: data?.event?.tags.filter((item) => item != null && item !== '') || [],
     location: data?.event?.location || '',
     contact: data?.event?.contact || '',
     end_reg_date: new Date(data?.event?.end_reg_date) || undefined,
     scope: data?.event?.scope || undefined,
     start_reg_date: new Date(data?.event?.start_reg_date) || undefined,
     location_url: data?.event?.location_url || '',
-    // program_id: data?.event?.program_id || undefined,
+    program_id: data?.event?.program_id || undefined,
     registration_link: data?.event?.registration_link || '',
   };
 };

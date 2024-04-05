@@ -143,11 +143,11 @@ const FromEditEventSection = ({ id }: { id: number }) => {
 
   useEffect(() => {
     if (data) {
-      // setTags(
-      //   data?.data?.event?.tags?.filter(
-      //     (item, index) => index > 0 && item !== null
-      //   )
-      // );
+      setTags(
+        data?.data?.event?.tags?.filter(
+          (item, index) => index > 0 && item !== null
+        )
+      );
       setThumbnailName(data.data.event.thumbnail.alt);
       setBannerName(data.data.event.banner.alt);
       setPosterName(data.data.event.poster.alt);
@@ -376,8 +376,8 @@ const FromEditEventSection = ({ id }: { id: number }) => {
                           selected={field.value}
                           onSelect={field.onChange}
                           captionLayout='dropdown-buttons'
-                          fromYear={1995}
-                          toYear={2010}
+                          fromYear={2021}
+                          toYear={2045}
                         />
                       </PopoverContent>
                     </Popover>
@@ -419,8 +419,8 @@ const FromEditEventSection = ({ id }: { id: number }) => {
                           selected={field.value}
                           onSelect={field.onChange}
                           captionLayout='dropdown-buttons'
-                          fromYear={1995}
-                          toYear={2010}
+                          fromYear={2021}
+                          toYear={2045}
                         />
                       </PopoverContent>
                     </Popover>
@@ -465,8 +465,8 @@ const FromEditEventSection = ({ id }: { id: number }) => {
                           selected={field.value}
                           onSelect={field.onChange}
                           captionLayout='dropdown-buttons'
-                          fromYear={1995}
-                          toYear={2010}
+                          fromYear={2021}
+                          toYear={2045}
                         />
                       </PopoverContent>
                     </Popover>
@@ -511,8 +511,8 @@ const FromEditEventSection = ({ id }: { id: number }) => {
                           selected={field.value}
                           onSelect={field.onChange}
                           captionLayout='dropdown-buttons'
-                          fromYear={1995}
-                          toYear={2010}
+                          fromYear={2021}
+                          toYear={2045}
                         />
                       </PopoverContent>
                     </Popover>
@@ -615,7 +615,7 @@ const FromEditEventSection = ({ id }: { id: number }) => {
                     isEdit={true}
                     isRemove={false}
                     payload={{
-                      caption: form.getValues('thumbnail') || '',
+                      caption: '',
                       photo_id: data?.data?.event.thumbnail?.id,
                       post_id: data?.data?.event?.id,
                       category: 'post_cover_image',
@@ -639,7 +639,7 @@ const FromEditEventSection = ({ id }: { id: number }) => {
                   isEdit={true}
                   isRemove={false}
                   payload={{
-                    caption: form.getValues('poster') || '',
+                    caption: '',
                     photo_id: data?.data?.event.poster?.id,
                     post_id: data?.data?.event?.id,
                     category: 'post_cover_image',
@@ -663,7 +663,7 @@ const FromEditEventSection = ({ id }: { id: number }) => {
                   isEdit={true}
                   isRemove={false}
                   payload={{
-                    caption: form.getValues('banner') || '',
+                    caption: '',
                     photo_id: data?.data?.event.banner?.id,
                     post_id: data?.data?.event?.id,
                     category: 'post_cover_image',
