@@ -4,7 +4,6 @@ import { Trash } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
-import { BiLinkExternal } from 'react-icons/bi';
 import { LuPlus } from 'react-icons/lu';
 import { MdDelete } from 'react-icons/md';
 import { TbEdit } from 'react-icons/tb';
@@ -194,7 +193,7 @@ const ContentEventManagementSection = () => {
                       ? formatDate(item.end_date || '1970-10-10T05:20:22.754Z')
                       : '-'}{' '}
                   </TableCell>
-                  <TableCell className='flex gap-2 h-full '>
+                  <TableCell className='flex gap-2 h-full items-center'>
                     <Link href={`/admin/events/edit/${item.id}`}>
                       <TbEdit className='text-warning-main text-2xl' />
                     </Link>
@@ -249,9 +248,15 @@ const ContentEventManagementSection = () => {
                         </DialogHeader>
                       </DialogContent>
                     </Dialog>
-                    <Link target='_blank' href={`/acara/${item.id}`}>
-                      <BiLinkExternal className='text-primary-main text-2xl' />
-                    </Link>
+                    <Button
+                      asChild
+                      size='sm'
+                      className='bg-neutral-100 text-primary-main rounded-full text-sm font-semibold border-primary-main border hover:bg-neutral-100'
+                    >
+                      <Link href={`/admin/events/detail/${item?.id}`}>
+                        <span>Detail</span>
+                      </Link>
+                    </Button>
                   </TableCell>
                 </TableRow>
               );

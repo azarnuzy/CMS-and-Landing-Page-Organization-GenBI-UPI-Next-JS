@@ -132,10 +132,16 @@ export const deleteEventRequest = async (
   return data;
 };
 
-export const getEventParticipants = async (
-  id: number
-): Promise<TDataGetEventParticipansResponse> => {
-  const { data } = await api.get(`v1/events/${id}/participants`);
+export const getEventParticipants = async ({
+  id,
+  params,
+}: {
+  id: number;
+  params: TGetAllEventParams;
+}): Promise<TDataGetEventParticipansResponse> => {
+  const { data } = await api.get(`v1/events/${id}/participants`, {
+    params,
+  });
 
   return data;
 };

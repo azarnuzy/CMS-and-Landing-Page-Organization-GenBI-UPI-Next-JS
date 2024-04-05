@@ -30,6 +30,7 @@ import {
   TDataDeleteEventResponse,
   TDataGetAllEventResponse,
   TDataGetDetailEventResponse,
+  TDataGetEventParticipansResponse,
   TDataGetEventScopesResponse,
   TDataGetEventTypesResponse,
   TDataGetOptionEventParticipantsFieldsResponse,
@@ -38,6 +39,7 @@ import {
   TDataPutEventResponse,
   TDataRegistrationEventResponse,
   TDataUpdateRegistrationEventResponse,
+  TGetAllEventParams,
   TPutEventPayload,
   TRegistrationEventPayload,
 } from '@/types/events';
@@ -225,15 +227,16 @@ export const useDeleteEvent = (): UseMutationResult<
   });
 };
 
-export const useGetEventParticipants = (
-  id: number
-): UseQueryResult<
-  TDataGetOptionEventParticipantsRolesResponse,
-  TMetaErrorResponse
-> => {
+export const useGetEventParticipants = ({
+  id,
+  params,
+}: {
+  id: number;
+  params: TGetAllEventParams;
+}): UseQueryResult<TDataGetEventParticipansResponse, TMetaErrorResponse> => {
   return useQuery({
-    queryKey: ['get-event-participants', id],
-    queryFn: async () => await getEventParticipants(id),
+    queryKey: ['get-event-participants', id, params],
+    queryFn: async () => await getEventParticipants({ id, params }),
   });
 };
 
