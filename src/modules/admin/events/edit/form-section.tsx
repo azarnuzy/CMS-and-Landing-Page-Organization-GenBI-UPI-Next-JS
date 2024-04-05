@@ -652,7 +652,7 @@ const FromEditEventSection = ({ id }: { id: number }) => {
             <div className='w-full col-span-2 lg:col-span-1'>
               <FormLabel
                 className={`${
-                  form.formState?.errors?.poster ? 'text-red-500' : 'text-black'
+                  form.formState?.errors?.banner ? 'text-red-500' : 'text-black'
                 }`}
               >
                 Banner <span className='text-error-main'>*</span>
@@ -664,7 +664,7 @@ const FromEditEventSection = ({ id }: { id: number }) => {
                   isRemove={false}
                   payload={{
                     caption: form.getValues('banner') || '',
-                    photo_id: data?.data?.event.poster?.id,
+                    photo_id: data?.data?.event.banner?.id,
                     post_id: data?.data?.event?.id,
                     category: 'post_cover_image',
                   }}
