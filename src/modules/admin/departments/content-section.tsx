@@ -107,92 +107,98 @@ const ContentDepartmentManagementSection = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {data?.data?.map((item, index) => {
-            return (
-              <TableRow key={index}>
-                <TableCell>{index + 1}</TableCell>
-                <TableCell className='text-ellipsis min-w-[100px] max-w-[200px]'>
-                  {item.name}
-                </TableCell>
-                <TableCell>{contentTrimmed(item.description, 50)}</TableCell>
-                <TableCell>
-                  <div className='flex gap-2 items-center'>
-                    {item.divisions.map((item2, i) => (
-                      <BadgeTag size='sm' key={i} title={item2.name} />
-                    ))}
-                  </div>
-                </TableCell>
+          {data &&
+            data?.data?.map((item, index) => {
+              return (
+                <TableRow key={index}>
+                  <TableCell>{index + 1}</TableCell>
+                  <TableCell className='text-ellipsis min-w-[100px] max-w-[200px]'>
+                    {item.name}
+                  </TableCell>
+                  <TableCell>{contentTrimmed(item.description, 50)}</TableCell>
+                  <TableCell>
+                    <div className='flex gap-2 items-center'>
+                      {item.divisions.map((item2, i) => (
+                        <BadgeTag size='sm' key={i} title={item2.name} />
+                      ))}
+                    </div>
+                  </TableCell>
 
-                <TableCell className='flex gap-2 h-full items-center'>
-                  <Link href={`/admin/department/edit/${item.id}`}>
-                    <TbEdit className='text-warning-main text-2xl' />
-                  </Link>
-                  <Dialog open={open} onOpenChange={setOpen}>
-                    <DialogTrigger
-                      onClick={() => {
-                        setId(item.id);
-                      }}
-                    >
-                      <MdDelete className='text-2xl text-error-main' />
-                    </DialogTrigger>
-                    <DialogContent className='max-w-[320px] rounded-3xl '>
-                      <DialogHeader>
-                        <div className='flex flex-col gap-2'>
-                          <div className='w-7 h-7 bg-error-100 rounded-full'>
-                            <Trash className='text-error-main w-5 h-5 mx-auto my-1' />
+                  <TableCell className='flex gap-2 h-full items-center'>
+                    <Link href={`/admin/department/edit/${item.id}`}>
+                      <TbEdit className='text-warning-main text-2xl' />
+                    </Link>
+                    <Dialog open={open} onOpenChange={setOpen}>
+                      <DialogTrigger
+                        onClick={() => {
+                          setId(item.id);
+                        }}
+                      >
+                        <MdDelete className='text-2xl text-error-main' />
+                      </DialogTrigger>
+                      <DialogContent className='max-w-[320px] rounded-3xl '>
+                        <DialogHeader>
+                          <div className='flex flex-col gap-2'>
+                            <div className='w-7 h-7 bg-error-100 rounded-full'>
+                              <Trash className='text-error-main w-5 h-5 mx-auto my-1' />
+                            </div>
+                            <h4 className='text-error-main'>Hapus Data?</h4>
+                            <p className='text-neutral-600'>
+                              Data yang sudah dihapus tidak dapat dikembalikan
+                              lagi harap periksa data sebelum menghapus
+                            </p>
                           </div>
-                          <h4 className='text-error-main'>Hapus Data?</h4>
-                          <p className='text-neutral-600'>
-                            Data yang sudah dihapus tidak dapat dikembalikan
-                            lagi harap periksa data sebelum menghapus
-                          </p>
-                        </div>
-                        <div className='mt-7 w-full flex justify-between items-center gap-3'>
-                          <DialogClose asChild>
+                          <div className='mt-7 w-full flex justify-between items-center gap-3'>
+                            <DialogClose asChild>
+                              <Button
+                                className='rounded-full w-full'
+                                type='button'
+                                variant='secondary'
+                              >
+                                Batal
+                              </Button>
+                            </DialogClose>
                             <Button
-                              className='rounded-full w-full'
                               type='button'
-                              variant='secondary'
+                              variant='destructive'
+                              className='border-neutral-main bg-neutral-main rounded-full text-neutral-100  px-6 py-2.5 font-semibold w-full'
+                              onClick={() => {
+                                handleRemoveData();
+                                setId(0);
+                              }}
                             >
-                              Batal
+                              {status === 'pending' ? (
+                                <div className='flex gap-2 items-center'>
+                                  <MiniSpinner /> Loading...
+                                </div>
+                              ) : (
+                                `Hapus`
+                              )}
                             </Button>
-                          </DialogClose>
-                          <Button
-                            type='button'
-                            variant='destructive'
-                            className='border-neutral-main bg-neutral-main rounded-full text-neutral-100  px-6 py-2.5 font-semibold w-full'
-                            onClick={() => {
-                              handleRemoveData();
-                              setId(0);
-                            }}
-                          >
-                            {status === 'pending' ? (
-                              <div className='flex gap-2 items-center'>
-                                <MiniSpinner /> Loading...
-                              </div>
-                            ) : (
-                              `Hapus`
-                            )}
-                          </Button>
-                        </div>
-                      </DialogHeader>
-                    </DialogContent>
-                  </Dialog>
-                  <Link target='_blank' href={`/tentang-genbi/upi/${item.id}`}>
-                    <Button
-                      asChild
-                      size='sm'
-                      className='bg-neutral-100 text-primary-main rounded-full text-sm font-semibold border-primary-main border hover:bg-neutral-100'
+                          </div>
+                        </DialogHeader>
+                      </DialogContent>
+                    </Dialog>
+                    <Link
+                      target='_blank'
+                      href={`/tentang-genbi/upi/${item.id}`}
                     >
-                      <Link href={`/admin/department/${item.id}/${item.name}`}>
-                        <span>Manage</span>
-                      </Link>
-                    </Button>
-                  </Link>
-                </TableCell>
-              </TableRow>
-            );
-          })}
+                      <Button
+                        asChild
+                        size='sm'
+                        className='bg-neutral-100 text-primary-main rounded-full text-sm font-semibold border-primary-main border hover:bg-neutral-100'
+                      >
+                        <Link
+                          href={`/admin/department/${item.id}/${item.name}`}
+                        >
+                          <span>Manage</span>
+                        </Link>
+                      </Button>
+                    </Link>
+                  </TableCell>
+                </TableRow>
+              );
+            })}
         </TableBody>
       </Table>
       <div className='flex flex-col sm:flex-row justify-between items-center py-2'>
