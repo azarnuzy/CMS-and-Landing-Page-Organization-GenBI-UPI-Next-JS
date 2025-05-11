@@ -39,7 +39,10 @@ export function formatDate(dateString: string) {
   const month = months[date.getMonth()];
   const year = date.getFullYear();
 
-  return `${day} ${month}, ${year}`;
+  const minutes = date.getMinutes();
+  const hours = date.getHours();
+
+  return `${day} ${month}, ${year}: ${hours}:${minutes}`;
 }
 
 export function getTimeDifference(dateString: string): string {

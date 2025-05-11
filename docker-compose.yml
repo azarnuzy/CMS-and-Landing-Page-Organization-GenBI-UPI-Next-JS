@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+  genbiupi:
+    container_name: genbiupi
+    build:
+      context: ./
+    image: azarnuzy/genbiupi
+    ports:
+      - '3000:3000'
+    restart: unless-stopped
+    networks:
+      - genbiupi-network
+
+networks:
+  genbiupi-network:
+    driver: bridge

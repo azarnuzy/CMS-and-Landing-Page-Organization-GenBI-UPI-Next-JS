@@ -118,7 +118,7 @@ const ContentDepartmentManagementSection = () => {
                   <TableCell>{contentTrimmed(item.description, 50)}</TableCell>
                   <TableCell>
                     <div className='flex gap-2 items-center'>
-                      {item.divisions.map((item2, i) => (
+                      {item?.divisions?.map((item2, i) => (
                         <BadgeTag size='sm' key={i} title={item2.name} />
                       ))}
                     </div>
