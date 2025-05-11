@@ -33,7 +33,7 @@ export const useLogin = (): UseMutationResult<
 };
 
 export const useGetWhoAmI = (): UseQueryResult<
-  TDataWhoAmIResponse,
+  TDataWhoAmIResponse | undefined,
   TMetaErrorResponse
 > => {
   const { data: session } = useSession();
