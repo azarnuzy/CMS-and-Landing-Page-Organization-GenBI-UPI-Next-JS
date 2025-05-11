@@ -10,7 +10,6 @@ import {
   TDataGetProgramOptionsResponse,
   TDataGetProgramTypeResponse,
   TDataUpdateProgramResponse,
-  TProgramDetailData,
 } from '@/types/program';
 
 export const addProgramRequest = async (
@@ -50,9 +49,7 @@ export const getProgramTypesRequest =
     return data;
   };
 
-export const getProgramDetailRequest = async (
-  id: number
-): Promise<TProgramDetailData> => {
+export const getProgramDetailRequest = async (id: number) => {
   const { data } = await api.get(`v1/programs/${id}`);
 
   return data;

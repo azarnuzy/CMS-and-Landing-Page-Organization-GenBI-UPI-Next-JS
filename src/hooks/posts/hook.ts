@@ -64,7 +64,10 @@ export const useGetDetailPost = ({
   id,
 }: {
   id: number;
-}): UseQueryResult<TDataGetDetailPostResponse, TMetaErrorResponse> =>
+}): UseQueryResult<
+  TDataGetDetailPostResponse | undefined,
+  TMetaErrorResponse
+> =>
   useQuery({
     queryKey: ['get-detail-post', id],
     queryFn: async () => await getDetailPost(id),
