@@ -54,10 +54,15 @@ const MemberSection = () => {
               />
               <div className='flex flex-col gap-2 max-w-[554px]'>
                 <h3 className='text-neutral-main'>Deskripsi</h3>
-                <p className='text-neutral-600 text-lg'>
-                  {departmentData?.department?.description ||
-                    'lorem ipsum dolor ismet'}
-                </p>
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: departmentData?.department?.description || '',
+                  }}
+                  className='text-neutral-600 text-lg'
+                >
+                  {/* {departmentData?.department?.description ||
+                    'lorem ipsum dolor ismet'} */}
+                </div>
                 <ol className='list-disc pl-5'>
                   {departmentData?.department?.divisions.map((item, i) => (
                     <li key={i} className='text-neutral-600 text-lg'>
