@@ -187,15 +187,9 @@ export const ValidationSchemaPutAwardeeForm = z.object({
     required_error: 'member_since should be filled',
   }),
 
-  scholarship: z
-    .number({
-      required_error: 'scholarship should be filled',
-    })
-    .gte(1, 'scholarship  should be more than 1')
-    .positive({
-      message: 'scholarship should be positive',
-    })
-    .int(),
+  scholarship: z.string({
+    required_error: 'scholarship should be filled',
+  }),
   year: z
     .string({
       required_error: 'year should be filled',

@@ -267,7 +267,7 @@ const EditAwardeeFormSection = ({ id }: { id: string }) => {
                               <FormControl>
                                 <RadioGroupItem
                                   value={(index + 1).toString()}
-                                  checked={field.value == index + 1}
+                                  checked={Number(field.value) == index + 1}
                                 />
                               </FormControl>
                               <FormLabel className='font-normal'>

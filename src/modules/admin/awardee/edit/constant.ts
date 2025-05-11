@@ -51,7 +51,7 @@ export const defaultValuesPutAwardee = (data: TAwardeeDetailData) => {
     name: data?.name || '',
     birth_date: new Date(data?.birth_date) || new Date(),
     member_since: new Date(data?.member_since) || new Date(),
-    scholarship: data?.scholarship || 0,
+    scholarship: String(data?.scholarship) || '0',
     year: data?.year || '',
     nim: data?.nim || '',
     study_program_id: data?.study_program_id || 0,

@@ -171,7 +171,7 @@ export interface TAwardeePutPayload {
   instagram_username?: string;
   telp?: string;
   member_since?: Date | undefined;
-  scholarship?: number;
+  scholarship?: string;
   nim?: string;
   study_program_id?: number;
   year?: string;
