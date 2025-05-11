@@ -47,7 +47,10 @@ export const useGetDetailAwardee = ({
   id,
 }: {
   id: number;
-}): UseQueryResult<TDataDetailAwardeeResponse, TMetaErrorResponse> =>
+}): UseQueryResult<
+  TDataDetailAwardeeResponse | undefined,
+  TMetaErrorResponse
+> =>
   useQuery({
     queryKey: ['get-detail-awardee', id],
     queryFn: async () => await getDetailAwardeeRequest(id),
